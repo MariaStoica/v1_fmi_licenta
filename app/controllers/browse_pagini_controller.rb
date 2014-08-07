@@ -124,7 +124,7 @@ class BrowsePaginiController < ApplicationController
   end
 
   def sendmail
-      UserMailer.notification_email(User.find(current_user.id).email,params[:to], params[:title], params[:text]).deliver
+      #UserMailer.notification_email(User.find(current_user.id).email,params[:to], params[:title], params[:text]).deliver
       redirect_to licentaHome_path
   end
 

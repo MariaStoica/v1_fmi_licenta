@@ -67,29 +67,29 @@
   
 
   <!-- Distractia pentru a trimite mail studentului -->
-  <%if @from == "Profesor"%>
-    <hr>
-    <div class="field">
-		  <%= label_tag(:to, "Catre", class: "control-label") %><br/>
-		  <%= text_field_tag("Catre" , params[:to], :readonly => true, class: "span6") %>
-	  </div>
+  <!-- <if @from == "Profesor"%> -->
+    <!-- <hr> -->
+    <!-- <div class="field"> -->
+		  <!-- <= label_tag(:to, "Catre", class: "control-label") %><br/> -->
+		  <!-- <= text_field_tag("Catre" , params[:to], :readonly => true, class: "span6") %> -->
+	  <!-- </div> -->
 
-  	<div class="field"> 
-  		<%= label_tag(:title, "Titlu", class: "control-label") %><br/>
-  		<%= text_field_tag("Titlu", "Raspuns pentru tema "+Tema.find(params[:tema_id]).nume, class: "span6") %>
-  	</div>
+  	<!-- <div class="field">  -->
+  		<!-- <= label_tag(:title, "Titlu", class: "control-label") %><br/> -->
+  		<!-- <= text_field_tag("Titlu", "Raspuns pentru tema "+Tema.find(params[:tema_id]).nume, class: "span6") %> -->
+  	<!-- </div> -->
 
-  	<div class="field">
-  		<%= label_tag(:text, "Mesaj", class: "control-label") %><br/>
-  		<%= text_area_tag "Mesaj", "Buna ziua,\n\nAti primit un raspuns pentru aceasta tema.\nIntrati pe site pentru a vedea.\n\nO zi buna!\nLicentaFMI App", rows:"7", class: "span6" %>
-  	</div>
-  <%end%>
+  	<!-- <div class="field"> -->
+  		<!-- <= label_tag(:text, "Mesaj", class: "control-label") %><br/> -->
+  		<!-- <= text_area_tag "Mesaj", "Buna ziua,\n\nAti primit un raspuns pentru aceasta tema.\nIntrati pe site pentru a vedea.\n\nO zi buna!\nLicentaFMI App", rows:"7", class: "span6" %> -->
+  	<!-- </div> -->
+  <!-- <end%> -->
 
   <br/>
 
   <div class="actions">
   	<%if @from == "Profesor"%>
-  	  <%= f.submit 'Update status si trimite email', :class => 'btn btn-primary' %>
+  	  <%= f.submit 'Update status si nu mai trimite email', :class => 'btn btn-primary' %>
   	<%else%>
   	  <%= f.submit 'Update status', :class => 'btn btn-primary' %>
   	<%end%>
