@@ -79,14 +79,14 @@ V1FmiLicenta::Application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
 
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-      address:              'smtp.sendgrid.com',
-      port:                 587,
-      authentication:       ':plain',
-      domain:               'heroku.com',
-      user_name:            ENV[SENDGRID_USERNAME],
-      password:             ENV[SENDGRID_PASSWORD],
-      enable_starttls_auto: true  }
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #     address:              'smtp.sendgrid.com',
+  #     port:                 587,
+  #     authentication:       ':plain',
+  #     domain:               'heroku.com',
+  #     user_name:            ENV[SENDGRID_USERNAME],
+  #     password:             ENV[SENDGRID_PASSWORD],
+  #     enable_starttls_auto: true  }
   
 end
