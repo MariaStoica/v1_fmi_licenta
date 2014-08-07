@@ -1,37 +1,59 @@
 <%= form_for(@fisier) do |f| %>
   <% if @fisier.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@fisier.errors.count, "error") %> prohibited this fisier from being saved:</h2>
-
       <ul>
       <% @fisier.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li style="color:red"><%= msg %></li>
       <% end %>
       </ul>
     </div>
+    <hr>
   <% end %>
 
   <div class="field">
     <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <%= f.text_field :name , class: 'span6'%>
   </div>
+
+<!-- cine a uploadat fisierul ca sa fac mai tarziu diff intre fisierele studentului si ale profului -->
+  <%= f.hidden_field :user_id, :value => current_user.id %>
+
+  <br/>
   <div class="field">
-    <%= f.label :path %><br>
-    <%= f.text_field :path %>
+     <% if current_user.rol == "Profesor" %>
+        <!-- verific dc capitolul din params este in licentele profului si sa fie Bibliografie -->
+        <!-- < gasit = 0 %> -->
+        <!-- < @licente.each do |licenta| %> -->
+            <!-- < if Capitol.find(params[:capitol_id]).nume == "Bibliografie" and Capitol.find(params[:capitol_id]).licenta_id == licenta.id %> -->
+                <!-- < gasit = gasit + 1 %> -->
+            <!-- < end %> -->
+        <!-- < end %> -->
+        <!-- < if gasit == 0 %> -->
+            <!-- il trimit acasa dc nu e in tipare. redirect_to nu merge pt ca e o metoda a lui ActionBase nu View -->
+            <!--
+            <script type="text/javascript">
+              window.location.href="/"
+            </script>
+          -->
+             <!-- redirect_to(root_path, :notice =>"Nu ai voie aici.") %> -->
+        <!-- < end %> -->
+
+        <%= f.label :capitol %> : <%= Capitol.find(params[:capitol_id]).nume %>
+        <%= f.hidden_field :capitol_id, :value => params[:capitol_id] %>
+     <% else %>
+        <%= f.label :capitol_id %><br>
+        <%= f.collection_select :capitol_id, Capitol.where(licenta_id: Licenta.where(user_id: current_user.id).first), :id, :nume, :selected => params[:capitol_id] %>
+     <% end %>
   </div>
+  <br/>
   <div class="field">
-    <%= f.label :adaugat %><br>
-    <%= f.date_select :adaugat %>
+    <%= f.label "Browse" %><br>
+    <%= f.file_field 'upload' %></p>
   </div>
-  <div class="field">
-    <%= f.label :user_id %><br>
-    <%= f.number_field :user_id %>
-  </div>
-  <div class="field">
-    <%= f.label :capitol_id %><br>
-    <%= f.number_field :capitol_id %>
-  </div>
+   <!-- f.hidden_field :path, :value => "public/data"/name of the fisier %> -->
+
+  <br/>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit 'Submit', class: "btn btn-primary" %>
   </div>
 <% end %>

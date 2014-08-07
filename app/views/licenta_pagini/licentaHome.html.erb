@@ -1,2 +1,98 @@
-<h1>LicentaPagini#licentaHome</h1>
-<p>Find me in app/views/licenta_pagini/licentaHome.html.erb</p>
+<% tema = Tema.find(@licenta.tema_id) %>
+<h1><%= tema.nume%></h1>
+<br/><br/>
+<!-- <hr> -->
+
+<!-- notificari -->
+<% if flash[:notice] %>
+   <div id="notice"><%= flash[:notice] %></div>
+   <hr>
+<% end %>
+
+
+<div class="container-fluid">
+<div class="row-fluid">
+
+<div class="span9">
+	<!-- titlu -->
+	
+	<div class="progress">
+  		<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: <%= @progres %>%;"><span style="color:black"><%= @progres %>%</span></div>
+	</div>
+	<!-- capitole -->
+	<!-- todo-uri pe capitole -->
+
+	<%if @capitole.count == 0%>
+		Nu sunt capitole.
+	<%else%>
+		Capitole:
+		<ul>
+			<% @capitole.order(:numar).each do |capitol| %>
+				Cap <%= capitol.numar %>. <%= link_to capitol.nume, capitol %>
+				<ul>
+					<% Todo.where(capitol_id: capitol.id).each do |todo| %>
+						<%if current_user.rol == "Student"%>
+						<% if todo.este_gata %>
+							<li style="color:green"><strike><%= link_to todo.continut, edit_todo_path(todo, capitol_id: capitol.id), {:style => "color:green"} %></strike></li>
+						<%else%>
+							<li style="color:red"><%= link_to todo.continut, edit_todo_path(todo, capitol_id: capitol.id), {:style => "color:red"} %></li>
+						<%end%>
+						<%else%>
+							<% if todo.este_gata %>
+								<li style="color:green"><strike><%= todo.continut %></strike></li>
+							<%else%>
+								<li style="color:red"><%= todo.continut %></li>
+							<%end%>
+						<%end%>
+					<%end%>
+				</ul>
+			<%end%>
+		</ul>
+	<%end%>
+	<br/>
+
+	<!-- Daca user-ul curent logat este si cel care va lucra la aceasta licenta, avem si link pt a adauga un nou capitol--> 
+	<%if current_user.id == @licenta.user_id%> 
+		<%=link_to 'Adauga capitol', new_capitol_path(:licenta => @licenta.id)%>
+	<%end%>
+</div>
+
+
+<!-- comentarii pe dreapta -->
+<div class="span3">
+	<%if @comentarii.count == 0%>
+		Nu sunt comentarii.
+	<%else%>
+		<%@comentarii.each do |comentariu|%>
+			<% if User.find(comentariu.user_id).rol == "Profesor" %>
+				<p style="color:green">
+					<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b> 
+					<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
+					<br/>
+					<%=comentariu.continut%></p>
+			<% else %>
+				<p style="color:blue">
+					<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b>
+					<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
+					<br/>
+					<%=comentariu.continut%></p>
+			<% end %>
+		<%end%>
+	<%end%>
+		
+	<%= form_tag(licentaHome_adauga_comentariu_path(:student_id => @student_id), method: "post") do%>
+			<%= hidden_field_tag(:licenta, @licenta.id , class: "form-control") %>
+		<div class="field">
+			<%= text_area_tag(:comentariu, nil , :required => true, class: "form-control",rows:5) %>
+		</div>
+		<br/>
+
+		<%= submit_tag "Adaugă comentariu", class: "btn btn-primary" %>
+	
+	<%end%>
+</div>
+
+</div>
+</div>
+
+

@@ -1,29 +1,60 @@
-<p id="notice"><%= notice %></p>
+<ol class="breadcrumb">
+	<% if current_user.rol == "Profesor"%>
+    	<li><a href="/licenta_pagini/licentaHome?student_id=<%= @studentid%>">Licenta Home</a></li>
+    	<li><a href="/capitols/<%= @fisier.capitol_id %>"><%= Capitol.find(@fisier.capitol_id).nume%></a></li>
+    	<li class="active"><%= @fisier.name %></li>
+	<% else %>
+		<li><a href="/capitols/<%= @fisier.capitol_id %>"><%= Capitol.find(@fisier.capitol_id).nume%></a></li>
+    	<li class="active"><%= @fisier.name %></li>
+	<% end %>
+</ol>
 
-<p>
-  <strong>Name:</strong>
-  <%= @fisier.name %>
-</p>
 
-<p>
-  <strong>Path:</strong>
-  <%= @fisier.path %>
-</p>
+<h1><%= @fisier.name %></h1>
+<hr>
 
-<p>
-  <strong>Adaugat:</strong>
-  <%= @fisier.adaugat %>
-</p>
+<!-- notificari -->
+<% if flash[:notice] %>
+   <div id="notice"><%= flash[:notice] %></div>
+   <hr>
+<% end %>
 
-<p>
-  <strong>User:</strong>
-  <%= @fisier.user_id %>
-</p>
 
-<p>
-  <strong>Capitol:</strong>
-  <%= @fisier.capitol_id %>
-</p>
+<div class="container-fluid">
+<div class="row-fluid">
 
-<%= link_to 'Edit', edit_fisier_path(@fisier) %> |
-<%= link_to 'Back', fisiers_path %>
+	<div class="span9">
+		<!-- <= link_to "Download", action: "download", :path => @fisier.path %> -->
+		<%= link_to "Download", download_fisier_path(@fisier) %>
+	</div>
+
+	<!-- comentarii pe dreapta -->
+	<div class="span3">
+		<%if @comentarii.count == 0%>
+			Nu sunt comentarii.
+		<%else%>
+			<%@comentarii.each do |comentariu|%>
+				<% if User.find(comentariu.user_id).rol == "Profesor" %>
+					<p style="color:green"><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : <%=comentariu.continut%></p>
+				<% else %>
+					<p style="color:blue"><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : <%=comentariu.continut%></p>
+				<% end %>
+			<%end%>
+		<%end%>
+
+		<%= form_tag(fisiers_adauga_comentariu_path(:student_id => @student_id), method: "post") do%>
+			<%= hidden_field_tag(:fisier, @fisier.id , class: "form-control") %>
+			<div class="field">
+				<%= text_area_tag(:continut, nil , :required => true, class: "form-control",rows:5) %>
+			</div>
+			<br/>
+
+			<%= submit_tag "Adaugă comentariu", class: "btn btn-primary" %>
+	
+		<%end%>
+	</div>
+
+
+</div>
+</div>
+

@@ -1,35 +1,25 @@
-<h1>Listing fisiers</h1>
+<h1>Fișierele mele</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Path</th>
-      <th>Adaugat</th>
-      <th>User</th>
-      <th>Capitol</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
+<!-- notificari -->
+<% if flash[:notice] %>
+   <div id="notice"><%= flash[:notice] %></div>
+   <hr>
+<% end %>
 
-  <tbody>
-    <% @fisiers.each do |fisier| %>
-      <tr>
-        <td><%= fisier.name %></td>
-        <td><%= fisier.path %></td>
-        <td><%= fisier.adaugat %></td>
-        <td><%= fisier.user_id %></td>
-        <td><%= fisier.capitol_id %></td>
-        <td><%= link_to 'Show', fisier %></td>
-        <td><%= link_to 'Edit', edit_fisier_path(fisier) %></td>
-        <td><%= link_to 'Destroy', fisier, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<!-- fisierele pe capitole -->
+<% nr = 1 %>
+<% @capitole.each do |capitol| %>
+	Cap <%= nr %>. <%= link_to capitol.nume, capitol %><br/>
+	<% nr = nr + 1 %>
+	
+	<ul>
+		<% Fisier.where(capitol_id: capitol.id).each do |fis| %>
+			<li>
+				<%= link_to fis.name, fis %> - uploaded by
+				<%= User.find(fis.user_id).prenume %>
+			<li/>
+		<% end %>
+	</ul>
+<% end %>
 
-<br>
 
-<%= link_to 'New Fisier', new_fisier_path %>

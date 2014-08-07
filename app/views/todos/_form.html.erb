@@ -1,29 +1,27 @@
 <%= form_for(@todo) do |f| %>
   <% if @todo.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@todo.errors.count, "error") %> prohibited this todo from being saved:</h2>
-
       <ul>
       <% @todo.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li style="color:red"><%= msg %></li>
       <% end %>
       </ul>
     </div>
+    <hr>
   <% end %>
 
-  <div class="field">
-    <%= f.label :capitol_id %><br>
-    <%= f.number_field :capitol_id %>
-  </div>
+  <%= f.hidden_field :capitol_id, :value => params[:capitol_id] %>
   <div class="field">
     <%= f.label :continut %><br>
-    <%= f.text_area :continut %>
+    <%= f.text_area :continut, rows: 1, class: 'span8' %>
   </div>
   <div class="field">
     <%= f.label :este_gata %><br>
-    <%= f.check_box :este_gata %>
+    <%= f.select :este_gata, options_for_select([ ["Da", true],["Nu", false] ])%>
   </div>
+
+  <br/>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit 'Submit', :class => 'btn btn-primary' %>
   </div>
 <% end %>

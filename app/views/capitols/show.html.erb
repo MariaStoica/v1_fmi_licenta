@@ -1,19 +1,90 @@
-<p id="notice"><%= notice %></p>
+<% if current_user.rol == "Profesor"%>
+	<ol class="breadcrumb">
+    	<li><a href="/licenta_pagini/licentaHome?student_id=<%= @studentid%>">Licenta Home</a></li>
+    	<li class="active"><%= @capitol.nume%></li>
+	</ol>
+<% end %>
 
-<p>
-  <strong>Licenta:</strong>
-  <%= @capitol.licenta_id %>
-</p>
 
-<p>
-  <strong>Nume:</strong>
-  <%= @capitol.nume %>
-</p>
+<h1><%= @capitol.nume %></h1>
+<hr>
 
-<p>
-  <strong>Numar:</strong>
-  <%= @capitol.numar %>
-</p>
+<!-- notificari -->
+<% if flash[:notice] %>
+   <hr>
+   <div id="notice"><%= flash[:notice] %></div>
+   <hr>
+<% end %>
 
-<%= link_to 'Edit', edit_capitol_path(@capitol) %> |
-<%= link_to 'Back', capitols_path %>
+<div class="container-fluid">
+<div class="row-fluid">
+	<div class="span9">
+
+		<% if current_user.rol == "Student" %>
+			<%= link_to 'Modifica', edit_capitol_path(@capitol) %> | 
+			<%= link_to 'Șterge', @capitol, method: :delete, data: { confirm: 'Vei sterge capitolul ' + @capitol.nume }, :style => 'color:red' %>
+			<hr>
+		<% end %>
+
+		<!-- afisez todo-urile sale -->
+		<% if @todouri.count == 0 %>
+			Nu sunt todo-uri pentru capitolul acesta.
+		<% else %>
+		<ul>
+			<% @todouri.each do |todo| %>
+				<li><%= todo.continut %></li>
+			<% end %>
+		</ul>
+		<% end %>
+		<br/>
+		<%if current_user.rol == "Student" %>
+			<%= link_to "Adaugă ToDo", new_todo_path(:capitol_id => @capitol.id) %>
+		<% end %>
+
+		</br></br>
+		<!-- afisez fisierele sale -->
+		<hr>
+		<% if @fisierele.count == 0 %>
+			Nu sunt fișiere pentru capitolul acesta.
+		<% else %>
+		<ul>
+			<% @fisierele.each do |fis| %>
+			<!-- as avea nevoie de user_id pt fiecare fisier ca sa stiu cine l-a incarcat - sau de un bool dc e incarcat de prof sau de student ca sa pun culorile sau sa le grupez -->
+				<li><%= link_to fis.name, fis%></li>
+			<% end %>
+		</ul>
+		<% end %>
+		<br/>
+		<% if (@capitol.nume == "Bibliografie" and current_user.rol == "Profesor") or current_user.rol == "Student" %>
+			<%= link_to "Adaugă fișier", new_fisier_path(:capitol_id => @capitol.id) %>
+		<% end %>
+	</div>
+
+	<!-- comentariile -->
+	<div class="span3">
+		<%if @comentarii.count == 0%>
+			Nu sunt comentarii.
+		<%else%>
+			<%@comentarii.each do |comentariu|%>
+				<% if User.find(comentariu.user_id).rol == "Profesor" %>
+					<p style="color:green"><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : <%=comentariu.continut%></p>
+				<% else %>
+					<p style="color:blue"><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : <%=comentariu.continut%></p>
+				<% end %>
+			<%end%>
+		<%end%>
+			
+		<%= form_tag(capitols_adauga_comentariu_path(:student_id => @student_id), method: "post") do%>
+			<%= hidden_field_tag(:capitol, @capitol.id , class: "form-control") %>
+			<div class="field">
+				<%= text_area_tag(:comentariu, nil , :required => true, class: "form-control",rows:5) %>
+			</div>
+			<br/>
+			<%= submit_tag "Adaugă comentariu", class: "btn btn-primary" %>
+		<%end%>
+		
+		
+	</div>
+
+</div>
+</div>

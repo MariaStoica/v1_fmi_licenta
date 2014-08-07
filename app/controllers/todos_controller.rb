@@ -14,11 +14,13 @@ class TodosController < ApplicationController
 
   # GET /todos/new
   def new
+    @u = current_user
     @todo = Todo.new
   end
 
   # GET /todos/1/edit
   def edit
+    @u = current_user
   end
 
   # POST /todos
@@ -28,7 +30,7 @@ class TodosController < ApplicationController
 
     respond_to do |format|
       if @todo.save
-        format.html { redirect_to @todo, notice: 'Todo was successfully created.' }
+        format.html { redirect_to root_path, notice: 'Todo was successfully created.' }
         format.json { render action: 'show', status: :created, location: @todo }
       else
         format.html { render action: 'new' }
@@ -42,7 +44,7 @@ class TodosController < ApplicationController
   def update
     respond_to do |format|
       if @todo.update(todo_params)
-        format.html { redirect_to @todo, notice: 'Todo was successfully updated.' }
+        format.html { redirect_to root_path, notice: 'Todo was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -56,7 +58,7 @@ class TodosController < ApplicationController
   def destroy
     @todo.destroy
     respond_to do |format|
-      format.html { redirect_to todos_url }
+      format.html { redirect_to root_path }
       format.json { head :no_content }
     end
   end

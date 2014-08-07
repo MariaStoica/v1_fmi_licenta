@@ -1,29 +1,29 @@
 <%= form_for(@capitol) do |f| %>
   <% if @capitol.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@capitol.errors.count, "error") %> prohibited this capitol from being saved:</h2>
-
       <ul>
       <% @capitol.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li style="color:red"><%= msg %></li>
       <% end %>
       </ul>
     </div>
+    <hr>
   <% end %>
 
-  <div class="field">
-    <%= f.label :licenta_id %><br>
-    <%= f.number_field :licenta_id %>
-  </div>
+  <% if params[:licenta] %>
+      <%= f.hidden_field :licenta_id, :value => params[:licenta] %>
+  <% end %>
   <div class="field">
     <%= f.label :nume %><br>
     <%= f.text_field :nume %>
   </div>
   <div class="field">
     <%= f.label :numar %><br>
-    <%= f.number_field :numar %>
+    <%= f.number_field :numar, :style => 'height:30px' %>
   </div>
+
+
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit 'Submit', :class => 'btn btn-primary' %>
   </div>
 <% end %>
