@@ -101,7 +101,7 @@ class BrowsePaginiController < ApplicationController
 
   def accepta
       # dau mail profesorului ca acest student a acceptat tema sa.
-      UserMailer.notification_email(User.find(current_user.id).email,User.find(Domeniu.find(Tema.find(params[:temaaleasa_id]).domeniu_id).user_id).email, "Acceptare licenta", "Studentul cu numele " + User.find(current_user.id).nume + " " + User.find(current_user.id).prenume + "este acum studentul dumneavoastra pentru licenta" ).deliver
+      #UserMailer.notification_email(User.find(current_user.id).email,User.find(Domeniu.find(Tema.find(params[:temaaleasa_id]).domeniu_id).user_id).email, "Acceptare licenta", "Studentul cu numele " + User.find(current_user.id).nume + " " + User.find(current_user.id).prenume + "este acum studentul dumneavoastra pentru licenta" ).deliver
       # creez o intrare noua in licenta ca sa stiu ca acest student are aceasta tema la licenta si lucreaza la ea
       licenta = Licenta.create(user_id: current_user.id , tema_id: params[:temaaleasa_id])
       # creez o intrare si in licenta_saved pt arhiva si in cazul in care studentul renunta si se intoarce mai tarziu la ea
