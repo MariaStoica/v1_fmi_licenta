@@ -1,0 +1,2 @@
+module LicentaSalvatasHelper
+end

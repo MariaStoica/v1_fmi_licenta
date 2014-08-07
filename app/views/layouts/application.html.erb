@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>LicentaFmi</title>
+
+		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css" />
+		<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+
+		<%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+		<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+		<%= csrf_meta_tags %>
+
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+
+		<%= yield :css %>
+
+	</head>
+
+	<body>
+		<!-- bara de sus -->
+		<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<b><%= link_to "Licenţă FMI", root_path, class: "navbar-brand", style: "position:relative; left:20px; font-family: Book Antiqua, serif; font-size: 20px" %></b>
+				</div>
+				<div class="navbar-collapse collapse navbar-responsive-collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<% if @current_user != nil %>
+						<li>
+							<%= link_to "Salut, " + @current_user.prenume, @current_user, style: "font-family: Book Antiqua, serif; font-size: 18px" %>
+						</li>
+						<li class="divider"></li>
+						<li>
+							<%= link_to "Delogare", "/logout", style: "font-family: Book Antiqua, serif; font-size: 18px" %>
+						</li>
+						<% else %>
+						<li>
+							<%= link_to "Logare", "/auth/autentificare", style: "font-family: Book Antiqua, serif; font-size: 18px" %>
+						</li>
+						<% end %>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<% if @current_user != nil %>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-3 col-md-2 sidebar">
+					<ul class="nav nav-sidebar">
+						
+						<li>
+							<%= link_to "Arhivă", arhivaHome_path%>
+						</li>
+
+						<!-- pentru studenti -->
+						<% if @current_user.rol == "Student" %>
+						<% if Licenta.where(user_id: @current_user.id).first %>
+							<li>
+								<%= link_to "Acasă", licentaHome_path%>
+							</li>
+							<li>
+								<%= link_to "Fișierele mele", root_path %>
+							</li>
+						<%else%>
+							<li>
+								<%= link_to "Acasă", root_path%>
+							</li>
+							<% if @current_user.este_eligibil_licenta == true %>
+								<li>
+									<%= link_to "Alegerile mele", alegerileMele_path %>
+								</li>
+							<% end %>
+						<%end%>
+						<%else%>
+						<li>
+							<%= link_to "Acasă", root_path%>
+						</li>
+						<%end%>
+
+						<!-- pentru profesori -->
+						<% if @current_user.rol == "Profesor" and @current_user.este_eligibil_licenta == true %>
+						<li>
+							<%= link_to "Temele mele", temeleMele_path %>
+						</li>
+						<li>
+							<%= link_to "Studenții mei", studentiiMei_path %>
+						</li>
+						<% end %>
+
+						<!-- pentru administratori -->
+						<% if @current_user.rol == "Admin" %>
+						<li>
+							<%= link_to "Control Panel", controlPanel_path %>
+						</li>
+						<li>
+							<%= link_to "Specializari", userSpecializari_path(rol: "Profesor") %>
+						</li>
+						<% end %>
+
+					</ul>
+				</div>
+				<!-- ce e in dreapta - continutul paginii -->
+				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+					<%= yield %>
+				</div>
+			</div>
+		</div>
+
+		<!-- dc nu e nimeni logat -->
+		<% else %>
+		<div class="container main col-md-10 col-md-offset-1">
+			<%= yield %>
+		</div>
+		<%end%>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<%= yield :js %>
+
+	</body>
+</html>
+

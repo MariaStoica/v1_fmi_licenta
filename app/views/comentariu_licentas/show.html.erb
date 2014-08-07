@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @comentariu_licenta.user_id %>
+</p>
+
+<p>
+  <strong>Licenta:</strong>
+  <%= @comentariu_licenta.licenta_id %>
+</p>
+
+<p>
+  <strong>Continut:</strong>
+  <%= @comentariu_licenta.continut %>
+</p>
+
+<%= link_to 'Edit', edit_comentariu_licenta_path(@comentariu_licenta) %> |
+<%= link_to 'Back', comentariu_licentas_path %>

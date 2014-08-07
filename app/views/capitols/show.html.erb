@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Licenta:</strong>
+  <%= @capitol.licenta_id %>
+</p>
+
+<p>
+  <strong>Nume:</strong>
+  <%= @capitol.nume %>
+</p>
+
+<p>
+  <strong>Numar:</strong>
+  <%= @capitol.numar %>
+</p>
+
+<%= link_to 'Edit', edit_capitol_path(@capitol) %> |
+<%= link_to 'Back', capitols_path %>

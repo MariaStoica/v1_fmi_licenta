@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  licenta_id: 1
+  nume: MyString
+  numar: 1
+
+two:
+  licenta_id: 1
+  nume: MyString
+  numar: 1

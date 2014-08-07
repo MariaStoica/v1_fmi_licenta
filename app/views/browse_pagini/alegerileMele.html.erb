@@ -1,0 +1,59 @@
+<h1>Alegerile mele</h1>
+
+<!-- notificari -->
+<% if flash[:notice] %>
+   <hr>
+   <div id="notice"><%= flash[:notice] %></div>
+   <hr>
+<% end %>
+
+<% if @alegeri.count > 0 %>
+	
+<table class="table table-striped table hover">
+	<thead>
+		<tr class="info">
+			<th>Profesor</th>
+			<th>Tema</th>
+			<th>Status_profesor</th>
+			<th>Status_student</th>
+			<th></th>
+		</tr>
+  	</thead>
+
+  	<tbody>
+		<% @alegeri.each do |alegere| %>
+	  		<tr>
+				<% tema = Tema.find(alegere.tema_id) %>
+				<% dom = Domeniu.find(tema.domeniu_id) %>
+				<% prof = User.find(dom.user_id) %>
+				<td><%= prof.grad + " " + prof.nume + " " + prof.prenume %></td>
+				<td><%= @teme.where(id: alegere.tema_id).first.nume %></td>   <!--exista o singura alegere cu tema respectiva!-->
+				
+				<% if alegere.status_profesor == "Pending" %>
+					<td style="color:orange"><%= alegere.status_profesor %></td>
+				<% elsif alegere.status_profesor == "Accepted" %>
+					<td style="color:green"><%= alegere.status_profesor %></td>
+				<% else %>
+					<td style="color:red"><%= alegere.status_profesor %></td>
+				<% end %>
+				<% if alegere.status_student == "Pending" %>
+					<td style="color:orange"><%= alegere.status_student %></td>
+				<% elsif alegere.status_student == "Accepted" %>
+					<td style="color:green"><%= alegere.status_student %></td>
+				<% else %>
+					<td style="color:red"><%= alegere.status_student %></td>
+				<% end %>
+
+				<% if alegere.status_profesor == "Accepted" %>
+					<td><%= link_to "Alege ca lucrare de licență", accepta_path(:temaaleasa_id => tema.id), :class => 'btn btn-success'  %></td>
+				<% else %>
+					<td></td>
+				<% end %>
+	  		</tr>
+   		<%end%>
+  	</tbody>
+</table>
+
+<% else %>
+	Nu ai ales nimic, momentan.
+<% end %>

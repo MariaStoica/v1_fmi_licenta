@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @comentariu_tema.user_id %>
+</p>
+
+<p>
+  <strong>Tema:</strong>
+  <%= @comentariu_tema.tema_id %>
+</p>
+
+<p>
+  <strong>Continut:</strong>
+  <%= @comentariu_tema.continut %>
+</p>
+
+<%= link_to 'Edit', edit_comentariu_tema_path(@comentariu_tema) %> |
+<%= link_to 'Back', comentariu_temas_path %>

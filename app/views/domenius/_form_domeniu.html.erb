@@ -1,0 +1,30 @@
+<%= form_for(@domeniu) do |f| %>
+<!-- afiseaza daca sunt erori -->
+  <% if @domeniu.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+      <% @domeniu.errors.full_messages.each do |msg| %>
+        <li style="color:red"><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+    <hr>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :nume %><br>
+    <%= f.text_field :nume, class: 'span6' %>
+  </div>
+  <div class="field">
+    <%= f.label :descriere %><br>
+    <%= f.text_area :descriere, rows: 7, class: 'span6' %>
+  </div>
+  
+  <!-- setez user_id-ul userului curent pt ca lui isi adauga un domeniu -->
+    <%= f.hidden_field :user_id, :value => current_user.id %>
+  
+  </br>
+  <div class="actions">
+	  <%= f.submit 'Submit', :class => 'btn btn-primary' %>
+  </div>
+<% end %>

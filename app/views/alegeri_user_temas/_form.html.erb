@@ -1,0 +1,98 @@
+<%= form_for(@alegeri_user_tema) do |f| %>
+<!-- afiseaza dc sunt erori -->
+  <% if @alegeri_user_tema.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+      <% @alegeri_user_tema.errors.full_messages.each do |msg| %>
+        <li style="color:red"><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+    <hr>
+  <% end %>
+
+
+  
+  <%if @from == "Student"%>
+      <%= f.hidden_field :user_id , :value => current_user.id %>
+  <% elsif @from == "Profesor" %>
+      <%= f.hidden_field :user_id , :value => params[:student_id] %>
+  <%end%>
+
+  <div class="field">
+    <%= f.hidden_field :tema_id, :value => params[:tema_id] %><br>
+    <strong>Tema:</strong> <%= Tema.find(params[:tema_id]).nume %>
+    <br/>
+    <strong>Domeniu:</strong> <%= Domeniu.find(Tema.find(params[:tema_id]).domeniu_id).nume %>
+  </div>
+
+  <%if @from == "Student"%>
+    <div class="field">
+      <%= f.label :status_profesor %><br/>
+      <% if @alegeri_user_tema.status_profesor == "Pending" %>
+        <%= f.text_field :status_profesor ,:value => "Pending" ,:readonly => true, :style => "color:orange" %>
+      <% elsif @alegeri_user_tema.status_profesor == "Accepted" %>
+        <%= f.text_field :status_profesor ,:value => "Accepted" ,:readonly => true, :style => "color:green" %>
+      <% else %>
+        <%= f.text_field :status_profesor ,:value => "Rejected" ,:readonly => true, :style => "color:red" %>
+      <% end %>
+    </div>
+
+    <div class="field">
+      <%= f.label :status_student %><br>
+      <%= f.select :status_student, options_for_select([ ["Pending", "Pending"],["Accepted", "Accepted"],["Rejected", "Rejected"]])%>
+      <!--  cities_array = City.all.map { |city| [city.name, city.id] } %>
+            options_for_select(cities_array) %> -->
+      <!-- options_from_collection_for_select(City.all, :id, :name) %> -->
+    </div>    
+  <%else%>
+
+    <div class="field">
+      <%= f.label :status_student %><br>
+      <% if @alegeri_user_tema.status_student == "Pending" %>
+        <%= f.text_field :status_student ,:value => "Pending" ,:readonly => true, :style => "color:orange" %>
+      <% elsif @alegeri_user_tema.status_student == "Accepted" %>
+        <%= f.text_field :status_student ,:value => "Accepted" ,:readonly => true, :style => "color:green" %>
+      <% else %>
+        <%= f.text_field :status_student ,:value => "Rejected" ,:readonly => true, :style => "color:red" %>
+      <% end %>
+    </div>  
+
+  	<div class="field">
+      <%= f.label :status_profesor %><br>
+      <%= f.select :status_profesor, options_for_select([ ["Pending", "Pending"],["Accepted", "Accepted"],["Rejected", "Rejected"]]) %>
+    </div>
+  <%end%>
+
+  
+
+  <!-- Distractia pentru a trimite mail studentului -->
+  <%if @from == "Profesor"%>
+    <hr>
+    <div class="field">
+		  <%= label_tag(:to, "Catre", class: "control-label") %><br/>
+		  <%= text_field_tag("Catre" , params[:to], :readonly => true, class: "span6") %>
+	  </div>
+
+  	<div class="field"> 
+  		<%= label_tag(:title, "Titlu", class: "control-label") %><br/>
+  		<%= text_field_tag("Titlu", "Raspuns pentru tema "+Tema.find(params[:tema_id]).nume, class: "span6") %>
+  	</div>
+
+  	<div class="field">
+  		<%= label_tag(:text, "Mesaj", class: "control-label") %><br/>
+  		<%= text_area_tag "Mesaj", "Buna ziua,\n\nAti primit un raspuns pentru aceasta tema.\nIntrati pe site pentru a vedea.\n\nO zi buna!\nLicentaFMI App", rows:"7", class: "span6" %>
+  	</div>
+  <%end%>
+
+  <br/>
+
+  <div class="actions">
+  	<%if @from == "Profesor"%>
+  	  <%= f.submit 'Update status si trimite email', :class => 'btn btn-primary' %>
+  	<%else%>
+  	  <%= f.submit 'Update status', :class => 'btn btn-primary' %>
+  	<%end%>
+  </div>
+
+<% end %>

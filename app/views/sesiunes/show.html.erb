@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Data start:</strong>
+  <%= @sesiune.data_start %>
+</p>
+
+<p>
+  <strong>Data end:</strong>
+  <%= @sesiune.data_end %>
+</p>
+
+<%= link_to 'Edit', edit_sesiune_path(@sesiune) %> |
+<%= link_to 'Back', sesiunes_path %>

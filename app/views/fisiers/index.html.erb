@@ -1,0 +1,35 @@
+<h1>Listing fisiers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Path</th>
+      <th>Adaugat</th>
+      <th>User</th>
+      <th>Capitol</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @fisiers.each do |fisier| %>
+      <tr>
+        <td><%= fisier.name %></td>
+        <td><%= fisier.path %></td>
+        <td><%= fisier.adaugat %></td>
+        <td><%= fisier.user_id %></td>
+        <td><%= fisier.capitol_id %></td>
+        <td><%= link_to 'Show', fisier %></td>
+        <td><%= link_to 'Edit', edit_fisier_path(fisier) %></td>
+        <td><%= link_to 'Destroy', fisier, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Fisier', new_fisier_path %>

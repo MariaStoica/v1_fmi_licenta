@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  capitol_id: 1
+  continut: MyText
+  este_gata: false
+
+two:
+  capitol_id: 1
+  continut: MyText
+  este_gata: false

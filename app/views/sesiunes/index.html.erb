@@ -1,0 +1,29 @@
+<h1>Listing sesiunes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Data start</th>
+      <th>Data end</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sesiunes.each do |sesiune| %>
+      <tr>
+        <td><%= sesiune.data_start %></td>
+        <td><%= sesiune.data_end %></td>
+        <td><%= link_to 'Show', sesiune %></td>
+        <td><%= link_to 'Edit', edit_sesiune_path(sesiune) %></td>
+        <td><%= link_to 'Destroy', sesiune, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Sesiune', new_sesiune_path %>

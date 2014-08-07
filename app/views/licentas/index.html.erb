@@ -1,0 +1,29 @@
+<h1>Listing licentas</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Tema</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @licentas.each do |licenta| %>
+      <tr>
+        <td><%= licenta.user_id %></td>
+        <td><%= licenta.tema_id %></td>
+        <td><%= link_to 'Show', licenta %></td>
+        <td><%= link_to 'Edit', edit_licenta_path(licenta) %></td>
+        <td><%= link_to 'Destroy', licenta, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Licenta', new_licenta_path %>

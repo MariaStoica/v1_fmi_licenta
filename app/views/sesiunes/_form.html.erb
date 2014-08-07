@@ -1,0 +1,25 @@
+<%= form_for(@sesiune) do |f| %>
+  <% if @sesiune.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@sesiune.errors.count, "error") %> prohibited this sesiune from being saved:</h2>
+
+      <ul>
+      <% @sesiune.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :data_start %><br>
+    <%= f.date_select :data_start %>
+  </div>
+  <div class="field">
+    <%= f.label :data_end %><br>
+    <%= f.date_select :data_end %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

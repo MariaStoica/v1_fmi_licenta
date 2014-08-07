@@ -1,0 +1,31 @@
+<h1>Listing licenta_salvatas</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Tema</th>
+      <th>Sesiune</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @licenta_salvatas.each do |licenta_salvata| %>
+      <tr>
+        <td><%= licenta_salvata.user_id %></td>
+        <td><%= licenta_salvata.tema_id %></td>
+        <td><%= licenta_salvata.sesiune_id %></td>
+        <td><%= link_to 'Show', licenta_salvata %></td>
+        <td><%= link_to 'Edit', edit_licenta_salvata_path(licenta_salvata) %></td>
+        <td><%= link_to 'Destroy', licenta_salvata, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Licenta salvata', new_licenta_salvata_path %>

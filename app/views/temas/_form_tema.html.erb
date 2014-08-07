@@ -1,0 +1,54 @@
+<%= form_for(@tema) do |f| %>
+<!-- afiseaza daca sunt erori -->
+  <% if @tema.errors.any? %>
+    <div id="error_explanation">
+      <ul>
+      <% @tema.errors.full_messages.each do |msg| %>
+        <li style="color:red"><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+    <hr>
+  <% end %>
+
+<div >
+
+    <!-- setez user_id-ul userului curent pt ca lui isi adauga tema fie ca e prof fie ca e student -->
+    <%= f.hidden_field :user_id, :value => current_user.id %>
+
+    <div class="field">
+      <%= f.label :nume %><br>
+      <%= f.text_field :nume, class: 'span6' %>
+    </div>
+    <br/>
+
+    <div class="field">
+      <%= f.label :descriere %><br>
+      <%= f.text_area :descriere, rows: 7, class: 'span6' %>
+    </div>
+
+    <br/>
+    <% if params[:domeniu_id] %>
+      <%= f.hidden_field :domeniu_id, :value => params[:domeniu_id] %>
+    <% else %>
+      <div class="field">
+      <%= f.label :domeniu_id %><br>
+      <%= f.collection_radio_buttons(:domeniu_id, Domeniu.where(user_id: current_user.id), :id, :nume) do |b| %>
+        <%= b.label(:"data-value" => b.value) { b.radio_button + b.text } %></br>
+      <% end %>
+    </div>
+    <% end %>
+    
+
+    <% if :este_libera != true && :este_libera != false %>
+      <%= f.hidden_field :este_libera, :value => true %>
+    <% end %>
+
+    <br/>
+    <div class="actions">
+  	  <%= f.submit 'Submit', :class => 'btn btn-primary' %>
+    </div>
+
+</div>
+
+<% end %>

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nume: MyString
+  descriere: MyText
+  domeniu_id: 1
+  este_libera: false
+  user_id: 1
+  sesiune_id: 1
+
+two:
+  nume: MyString
+  descriere: MyText
+  domeniu_id: 1
+  este_libera: false
+  user_id: 1
+  sesiune_id: 1

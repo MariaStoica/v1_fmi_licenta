@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  tema_id: 1
+  status_profesor: MyString
+  status_student: MyString
+  sesiune_id: 1
+
+two:
+  user_id: 1
+  tema_id: 1
+  status_profesor: MyString
+  status_student: MyString
+  sesiune_id: 1

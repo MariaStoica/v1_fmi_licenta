@@ -1,0 +1,31 @@
+<h1>Listing comentariu_licentas</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Licenta</th>
+      <th>Continut</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @comentariu_licentas.each do |comentariu_licenta| %>
+      <tr>
+        <td><%= comentariu_licenta.user_id %></td>
+        <td><%= comentariu_licenta.licenta_id %></td>
+        <td><%= comentariu_licenta.continut %></td>
+        <td><%= link_to 'Show', comentariu_licenta %></td>
+        <td><%= link_to 'Edit', edit_comentariu_licenta_path(comentariu_licenta) %></td>
+        <td><%= link_to 'Destroy', comentariu_licenta, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Comentariu licenta', new_comentariu_licenta_path %>

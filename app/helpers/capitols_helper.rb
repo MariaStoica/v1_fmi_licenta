@@ -1,0 +1,2 @@
+module CapitolsHelper
+end

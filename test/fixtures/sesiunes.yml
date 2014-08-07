@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  data_start: 2014-08-06
+  data_end: 2014-08-06
+
+two:
+  data_start: 2014-08-06
+  data_end: 2014-08-06

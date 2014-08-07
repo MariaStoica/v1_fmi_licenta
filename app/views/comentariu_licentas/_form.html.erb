@@ -1,0 +1,29 @@
+<%= form_for(@comentariu_licenta) do |f| %>
+  <% if @comentariu_licenta.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@comentariu_licenta.errors.count, "error") %> prohibited this comentariu_licenta from being saved:</h2>
+
+      <ul>
+      <% @comentariu_licenta.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :user_id %><br>
+    <%= f.number_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :licenta_id %><br>
+    <%= f.number_field :licenta_id %>
+  </div>
+  <div class="field">
+    <%= f.label :continut %><br>
+    <%= f.text_area :continut %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

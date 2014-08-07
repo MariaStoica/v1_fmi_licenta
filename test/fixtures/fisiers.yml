@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  path: MyString
+  adaugat: 2014-08-06
+  user_id: 1
+  capitol_id: 1
+
+two:
+  name: MyString
+  path: MyString
+  adaugat: 2014-08-06
+  user_id: 1
+  capitol_id: 1

@@ -1,0 +1,23 @@
+<h1><%= @tema.nume %></h1>
+<hr>
+
+<p>
+	Domeniu: <%= link_to @domeniu.nume, @domeniu %>
+</p>
+
+<p>
+	Profesor: <%= link_to @prof.grad + " " + @prof.nume + " " + @prof.prenume, @prof %>
+</p>
+
+<p>
+	Descriere: <%= @tema.descriere %>
+</p>
+
+<% if @current_user != nil %>
+	<% if @current_user.rol == "Student" and @current_user.este_eligibil_licenta == true %>
+		<%= link_to "Cere detalii", intreaba_path(:tema_id => @tema.id, :to => User.find(Domeniu.find(Tema.find(params[:id]).domeniu_id).user_id).email), :class => 'btn btn-info' %>
+		<%= link_to "Alege tema", alegerileMele_path(:tema_id => @tema.id), :class => 'btn btn-success' %>
+	<% end %>
+<% end %>
+
+<!-- intreaba_path(:to => User.find(Domeniu.find(Tema.find(params[:id]).domeniu_id).user_id).email) -->

@@ -1,0 +1,31 @@
+<h1>Listing capitols</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Licenta</th>
+      <th>Nume</th>
+      <th>Numar</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @capitols.each do |capitol| %>
+      <tr>
+        <td><%= capitol.licenta_id %></td>
+        <td><%= capitol.nume %></td>
+        <td><%= capitol.numar %></td>
+        <td><%= link_to 'Show', capitol %></td>
+        <td><%= link_to 'Edit', edit_capitol_path(capitol) %></td>
+        <td><%= link_to 'Destroy', capitol, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Capitol', new_capitol_path %>

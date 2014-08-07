@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @fisier.name %>
+</p>
+
+<p>
+  <strong>Path:</strong>
+  <%= @fisier.path %>
+</p>
+
+<p>
+  <strong>Adaugat:</strong>
+  <%= @fisier.adaugat %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @fisier.user_id %>
+</p>
+
+<p>
+  <strong>Capitol:</strong>
+  <%= @fisier.capitol_id %>
+</p>
+
+<%= link_to 'Edit', edit_fisier_path(@fisier) %> |
+<%= link_to 'Back', fisiers_path %>

@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Capitol:</strong>
+  <%= @todo.capitol_id %>
+</p>
+
+<p>
+  <strong>Continut:</strong>
+  <%= @todo.continut %>
+</p>
+
+<p>
+  <strong>Este gata:</strong>
+  <%= @todo.este_gata %>
+</p>
+
+<%= link_to 'Edit', edit_todo_path(@todo) %> |
+<%= link_to 'Back', todos_path %>

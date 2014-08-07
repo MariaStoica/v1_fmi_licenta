@@ -1,0 +1,2 @@
+module LicentasHelper
+end
