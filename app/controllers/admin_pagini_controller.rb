@@ -1,6 +1,9 @@
 class AdminPaginiController < ApplicationController
   def controlPanel
   	@u = current_user
+    if params[:data_end] and params[:data_end] != ""
+      stopSesiuneCurenta
+    end
   end
 
   def userSpecializari
@@ -30,7 +33,15 @@ class AdminPaginiController < ApplicationController
             @results = @results.where("lower(users.nume) LIKE lower(?) or lower(users.prenume) LIKE lower(?) or lower(users.grupa) LIKE lower(?) or lower(users.grad) LIKE lower(?)","%#{cuv}%","%#{cuv}%","%#{cuv}%","%#{cuv}%")
           end
       end
+  end
 
+  def stopSesiuneCurenta
+    if params[:data_end] and params[:data_end] != ""
+      current_sesiune = Sesiune.where("data_end is null").first
+      current_sesiune.update_attributes(data_end: params[:data_end])
+      current_sesiune.save
+      redirect_to "/admin_pagini/controlPanel"
+    end 
   end
 
 

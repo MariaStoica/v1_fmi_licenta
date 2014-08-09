@@ -5,6 +5,8 @@ Azi: <%= Date.today %>
 <br/>
 <hr>
 
+<% if Sesiune.where("data_end is null").count == 0 %>
+
 <!-- sesiune oprita -->
 <b>Status: sesiune oprita</b>
 <br/>
@@ -28,7 +30,7 @@ Azi: <%= Date.today %>
 <br/><br/>
 <%= link_to "Start sesiune", "/sesiunes/new", :class => 'btn btn-success', data: { confirm: 'Are you sure?' } %>
 
-<hr>
+<% elsif Sesiune.where("data_end is null").count == 1 %>
 
 <!-- sesiune activa -->
 <b>Status: sesiune activa</b> 
@@ -44,5 +46,28 @@ Azi: <%= Date.today %>
 <br/>
 <b>Deadline stabilit:</b> data si ora deadline // se va da mail cu 1 sapt inainte sa expire, apoi cu 1 zi inainte, apoi cu 1h
 <br/><br/>
-<%= link_to "Stop sesiune", root_path, :class => 'btn btn-danger', data: { confirm: 'Are you sure?' } %>
+
+<!-- <= link_to "Stop sesiune", {controller: "admin_pagini", action: "stopSesiuneCurenta"}, :class => 'btn btn-danger', data: { confirm: 'Are you sure?' } %> -->
+
+<%= form_tag({controller: "admin_pagini", action:"controlPanel" }, method: "get") do  %>
+    <div class="form-group search-form">
+    	<%= hidden_field_tag(:data_end, Date.today) %>
+		<%= submit_tag("Stop sesiune", class: 'btn btn-danger', data: { confirm: 'Are you sure?' } ) %>
+    </div>
+<% end %>
+
+<% elsif Sesiune.where("data_end is null").count > 1 %>
+
+	Sunt mai multe sesiuni deschise. Verifica urgent baza de date. Nu trebuie sa fie mai mult de o sesiune deschisa o data.
+
+<% end %> <!-- end de la cate sesiuni sunt deschise -->
+
+
+
+
+
+
+
+
+
 

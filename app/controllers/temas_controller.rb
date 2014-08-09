@@ -21,10 +21,18 @@ class TemasController < ApplicationController
   # GET /temas/new
   def new
     @tema = Tema.new
+    @current_sesiune = Sesiune.where("data_end is null").first
+    if @current_sesiune == nil
+      @current_sesiune = Sesiune.where("data_end is not null").last
+    end
   end
 
   # GET /temas/1/edit
   def edit
+      @current_sesiune = Sesiune.where("data_end is null").first
+      if @current_sesiune == nil
+      @current_sesiune = Sesiune.where("data_end is not null").last
+    end
   end
 
   # POST /temas
@@ -80,6 +88,6 @@ class TemasController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def tema_params
-      params.require(:tema).permit(:nume, :descriere, :domeniu_id, :este_libera, :user_id)
+      params.require(:tema).permit(:nume, :descriere, :domeniu_id, :este_libera, :user_id, :sesiune_id)
     end
 end

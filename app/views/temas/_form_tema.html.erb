@@ -15,6 +15,7 @@
 
     <!-- setez user_id-ul userului curent pt ca lui isi adauga tema fie ca e prof fie ca e student -->
     <%= f.hidden_field :user_id, :value => current_user.id %>
+    <%= f.hidden_field :sesiune_id, :value => @current_sesiune.id %>
 
     <div class="field">
       <%= f.label :nume %><br>

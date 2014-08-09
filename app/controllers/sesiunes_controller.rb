@@ -26,7 +26,6 @@ class SesiunesController < ApplicationController
   # POST /sesiunes.json
   def create
     @sesiune = Sesiune.new(sesiune_params)
-    set_current_sesiune(@sesiune)
 
     respond_to do |format|
       if @sesiune.save
