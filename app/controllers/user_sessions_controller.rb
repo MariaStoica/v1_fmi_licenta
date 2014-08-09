@@ -23,6 +23,7 @@ class UserSessionsController < ApplicationController
     
     if omniauth['extra']['student'] == "true"
       rol = "Student"
+      user.rol  = rol
       # fac un get ca sa am mai multe info despre el
       url = "http://fmi-api.herokuapp.com/students/" + omniauth['uid'] + "?oauth_token=" + omniauth['credentials']['token']
       resp = Net::HTTP.get_response(URI.parse(url))
@@ -34,8 +35,9 @@ class UserSessionsController < ApplicationController
       else
         user.este_eligibil_licenta = false
       end
-    elsif omniauth['extra']['teacher'] != "false"
+    elsif omniauth['extra']['teacher'] == "true"
       rol = "Profesor"
+      user.rol  = rol
       # fac un get ca sa am mai multe info despre el
       url = "http://fmi-api.herokuapp.com/teachers/" + omniauth['uid'] + "?oauth_token=" + omniauth['credentials']['token']
       resp = Net::HTTP.get_response(URI.parse(url))
@@ -52,10 +54,11 @@ class UserSessionsController < ApplicationController
         user.este_eligibil_licenta = true
       end
     elsif omniauth['extra']['admin'] == "true"
-      rol = "Admin"
+       rol = "Admin"
+       user.rol  = rol
     end
 
-    user.rol  = rol
+    
     user.save
 
     #p omniauth

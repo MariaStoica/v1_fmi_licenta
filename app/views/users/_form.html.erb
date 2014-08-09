@@ -11,41 +11,25 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :email %><br>
-    <%= f.text_field :email %>
-  </div>
-  <div class="field">
-    <%= f.label :nume %><br>
-    <%= f.text_field :nume %>
-  </div>
-  <div class="field">
-    <%= f.label :prenume %><br>
-    <%= f.text_field :prenume %>
-  </div>
-  <div class="field">
-    <%= f.label :rol %><br>
-    <%= f.text_field :rol %>
-  </div>
-  <div class="field">
-    <%= f.label :specializare %><br>
-    <%= f.text_field :specializare %>
-  </div>
-  <div class="field">
-    <%= f.label :grupa %><br>
-    <%= f.number_field :grupa %>
-  </div>
-  <div class="field">
-    <%= f.label :grad %><br>
-    <%= f.text_field :grad %>
-  </div>
+  <% if @user.rol == "Profesor" %>
+    <%= @user.grad + " " + @user.nume + " " + @user.prenume %><br/><br/>
+  
+    <div class="field">
+      <%= f.label :specializare %><br>
+      <%= f.select :specializare, options_for_select([ ["Informatica", "Informatica"],["Matematica", "Matematica"],["Ambele", "Ambele"]])%>
+    </div>
+
+  <% elsif @user.rol == "Student" %>
+    Student: <%= @user.nume + " " + @user.prenume %><br/>
+    Grupa: <%= @user.grupa %><br/>
+    <%= @user.specializare %><br/><br/>  
+
+  <% end %>
+
+  
   <div class="field">
     <%= f.label :este_eligibil_licenta %><br>
     <%= f.check_box :este_eligibil_licenta %>
-  </div>
-  <div class="field">
-    <%= f.label :token %><br>
-    <%= f.text_field :token %>
   </div>
   <div class="actions">
     <%= f.submit %>

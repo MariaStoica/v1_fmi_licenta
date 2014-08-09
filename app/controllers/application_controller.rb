@@ -21,4 +21,12 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.find_by_email(session[:user_id]['extra']['email'])
   end
 
+  def get_current_sesiune
+    return @current_sesiune
+  end
+
+  def set_current_sesiune(sesiune)
+    @current_sesiune = sesiune
+  end
+
 end

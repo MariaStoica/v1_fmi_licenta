@@ -1,0 +1,60 @@
+<h1>Toate temele din <%= @selected_sesiune.data_start.strftime("%Y") %> - <%= (@selected_sesiune.data_start.strftime("%Y").to_i + 1).to_s %></h1>
+<br/><br/>
+
+<% if flash[:notice] && flash[:notice] != "Alegerea selectata deja exista" && flash[:notice] != "Alegere salvata cu succes"%>
+   <div id="notice"><%= flash[:notice] %></div>
+   <hr>
+<% end %>
+
+<!-- search box -->
+<%= form_tag({controller: "browse_pagini", action:"browseHomeArhiva" }, method: "get") do %>
+    <div class="form-group search-form">
+		<%= text_field_tag(:search,nil, class: ' mysearchbox col-md-3 form-control search-input', :placeholder => "e.g.  servlet, java, promovabil") %>
+		<%= hidden_field_tag(:sesiune_id, @selected_sesiune.id) %>
+    	<%= submit_tag("Caută", class: 'btn btn-primary', style: "position:relative; left:20px") %>
+    </div>
+<% end %>
+<br/>
+
+<% if params[:search] and params[:search] != "" %>
+	<%= @results.count %> teme gasite.
+		<% @results.each do |r| %>
+			<li><%= link_to r.nume, r %></li>
+		<% end %>
+<% else %>
+	<% if @useri_profesori.count == 0 %>
+		<p> Nu sunt profesori eligibili pentru licență. </p>
+	<% end %>
+	<% @useri_profesori.each do |prof| %>
+		<!-- div-ul profului -->
+		<div>
+			<div style="text-align: left">
+				<b><%= link_to prof.grad + " " + prof.nume + " " + prof.prenume, prof, style: "color:black; font-size:20px; font-family:Georgia, serif;" %></b>
+			</div>
+			<% Domeniu.where(user_id: prof.id).each do |dom| %>
+				<div> <!-- class="divdomeniu"> -->
+					<span class="clickdomeniu glyphicon glyphicon-chevron-right"></span>
+					<b><%= link_to dom.nume, dom, style: "color:#7C7062; font-size:18px; font-family:Georgia, serif; font-style:italic" %></b>
+				
+					<div class="expanddomeniu">
+						<% if @current_user.rol == "Student" and dom.nume == "Alegerea studentului" %>
+							<div class="divtema"><%= link_to "Propune temă", root_path, style: "color: darkgreen" %></div>
+						<% end %>
+					
+						<% if Tema.where(domeniu_id: dom.id).where(este_libera: true).where(sesiune_id: @selected_sesiune.id).count > 0 %>
+							
+								<% Tema.where(domeniu_id: dom.id).where(este_libera: true).where(sesiune_id: @selected_sesiune.id).each do |tema| %>
+									<div class="divtema"> <%= link_to tema.nume, tema, style: "#428bca; font-family:Georgia, serif;"%></div>
+								<%end%>
+						<% else %>
+							<i>Acest domeniu nu are teme.</i>
+						<% end %> <!-- de la teme -->
+					</div>
+				</div>
+			<% end %> <!-- de la domenii -->
+
+		</div> <!-- end divprof -->
+		<br/><br/>
+	<% end %>
+<% end %>
+

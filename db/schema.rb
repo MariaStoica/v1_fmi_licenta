@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140807165926) do
+ActiveRecord::Schema.define(version: 20140809102934) do
 
   create_table "alegeri_user_temas", force: true do |t|
     t.integer  "user_id"
@@ -131,6 +131,7 @@ ActiveRecord::Schema.define(version: 20140807165926) do
     t.date     "data_end"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deadline"
   end
 
   create_table "temas", force: true do |t|

@@ -1,2 +1,11 @@
 <h1>Arhiva Home</h1>
 
+<% if @sesiuni.count == 0 %>
+	There are no previous sessions.
+<% else %>
+	<ul>
+	<% @sesiuni.each do |sesiune| %>
+		<li><%= link_to sesiune.data_start.strftime("%B %Y") + " - " + sesiune.data_start.strftime("%B") + " " + (sesiune.data_start.strftime("%Y").to_i + 1).to_s, browseHomeArhiva_path(sesiune_id: sesiune.id) %><li>
+	<% end %>
+	</ul>
+<% end %>

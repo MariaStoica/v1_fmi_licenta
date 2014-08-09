@@ -17,6 +17,7 @@ V1FmiLicenta::Application.routes.draw do
   get "admin_pagini/controlPanel" => "admin_pagini#controlPanel", as: "controlPanel"
   get "admin_pagini/userSpecializari" => "admin_pagini#userSpecializari", as: "userSpecializari"
   get "browse_pagini/browseHome" => "browse_pagini#browseHome"
+  get "browse_pagini/browseHomeArhiva" => "browse_pagini#browseHomeArhiva", as: "browseHomeArhiva"
   get "browse_pagini/alegerileMele" => "browse_pagini#alegerileMele", as: "alegerileMele"
   get "browse_pagini/studentiiMei" => "browse_pagini#studentiiMei", as: "studentiiMei"
   get "browse_pagini/temeleMele" => "browse_pagini#temeleMele", as: "temeleMele"

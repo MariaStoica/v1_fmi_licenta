@@ -1,2 +1,111 @@
-<h1>AdminPagini#userSpecializari</h1>
-<p>Find me in app/views/admin_pagini/userSpecializari.html.erb</p>
+<!-- sa afiseze profesori sau studenti -->
+<%= link_to "Profesori", userSpecializari_path(rol: "Profesor") %> | 
+<%= link_to "Studenti", userSpecializari_path(rol: "Student") %>
+<br/>
+
+<%if params[:rol] == "Profesor" %>
+	<%= link_to "Informatica", userSpecializari_path(rol: "Profesor", specializare: "Informatica") %> | 
+	<%= link_to "Matematica", userSpecializari_path(rol: "Profesor", specializare: "Matematica") %> |
+	<%= link_to "Ambele", userSpecializari_path(rol: "Profesor", specializare: "Ambele") %>
+<% elsif params[:rol] == "Student" %>
+	<%= link_to "Informatica", userSpecializari_path(rol: "Student", specializare: "Informatica") %> |
+	<%= link_to "Matematica", userSpecializari_path(rol: "Student", specializare: "Matematica") %> |
+	<%= link_to "Matematici Aplicate", userSpecializari_path(rol: "Student", specializare: "Matematici Aplicate") %> |
+	<%= link_to "Mate Info", userSpecializari_path(rol: "Student", specializare: "Mate Info") %> |
+	<%= link_to "CTI", userSpecializari_path(rol: "Student", specializare: "CTI") %>
+<% end %>
+<br/>
+
+<hr>
+
+<%if params[:rol] == "Profesor" %>
+	<em>
+	<% if @results.count == 0 %>
+		Nu sunt profesori.
+	<% elsif @results.count == 1 %>
+		Este 1 profesor.
+	<% else %>
+		<%= "Sunt " + @results.count.to_s + " profesori." %>
+	<% end %>
+	</em>
+<% elsif params[:rol] == "Student" %>
+	<em>
+	<% if @results.count == 0 %>
+		Nu sunt studenți.
+	<% elsif @results.count == 1 %>
+		Este 1 student.
+	<% else %>
+		<%= "Sunt " + @results.count.to_s + " studenți." %>
+	<% end %>
+	</em>
+<% end %>
+<br/><br/>
+
+<!-- search box -->
+<%= form_tag({controller: "admin_pagini", action:"userSpecializari" }, method: "get") do  %>
+    <div class="form-group search-form">
+    	<%= radio_button_tag(:rol, "Student", true) %> Student <br/>
+		<%= radio_button_tag(:rol, "Profesor", false) %> Profesor <br/><br/>
+		<%= text_field_tag(:search,nil, class: ' mysearchbox col-md-3 form-control search-input', :placeholder => "nume, prenume, grupa, grad") %>
+		<%= submit_tag("Caută", class: 'btn btn-primary', style: "position:relative; left:20px") %>
+    </div>
+<% end %>
+<br/>
+
+<!-- rezultatele -->
+<% if @results.count > 0 %>
+<table class="table table-striped table hover">
+  	<thead>
+		<tr>
+		  <% if params[:rol] == "Profesor" %>
+		  	<th>Grad</th>
+		  <% end %>
+		  	
+		  <th>Nume Prenume</th>
+		  
+		  <% if params[:rol] == "Student" %>
+		  	<th>Grupa</th>
+		  <% end %>
+
+		  <th>Specializare</th>
+		  <th>Eligibil Licenta</th>
+		  <th></th>
+		</tr>
+  	</thead>
+
+  	<tbody>
+
+		<% @results.each do |user| %>
+			<tr>
+				<% if params[:rol] == "Profesor" %>
+					<td><%= user.grad %></td>
+				<% end %>
+				<td><%= user.nume %> <%= user.prenume %></td>
+				<% if params[:rol] == "Student" %>
+				  	<td><%= user.grupa %></td>
+				<% end %>
+
+				<% if params[:rol] == "Profesor" or params[:rol] == "Student" %>
+					<td><%= user.specializare %></td>
+					<% if user.este_eligibil_licenta == true %>
+						<td style="color:green"><%= user.este_eligibil_licenta %></td>
+					<% elsif user.este_eligibil_licenta == false %>
+						<td style="color:red"><%= user.este_eligibil_licenta %></td>
+					<% end %>
+				  	<td><%= link_to 'Edit', edit_user_path(user) %></td>
+				<% end %>
+				
+				<% if params[:rol] == nil %>
+					<td></td>
+					<td></td>
+				<% end %>
+
+
+				
+			</tr>
+		<% end %>
+
+	</tbody>
+</table>
+<% end %>
+

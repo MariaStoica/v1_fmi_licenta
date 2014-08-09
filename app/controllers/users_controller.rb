@@ -21,6 +21,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    @u = current_user
   end
 
   # POST /users
@@ -42,13 +43,25 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+    if @user.rol == "Profesor"
+      respond_to do |format|
+        if @user.update(user_params)
+          format.html { redirect_to userSpecializari_path(rol: 'Profesor'), notice: 'User was successfully updated.' }
+          format.json { head :no_content }
+        else
+          format.html { render action: 'edit' }
+          format.json { render json: userSpecializari_path(), status: :unprocessable_entity }
+        end
+      end
+    elsif @user.rol == "Student"
+      respond_to do |format|
+        if @user.update(user_params)
+          format.html { redirect_to userSpecializari_path(rol: 'Student'), notice: 'User was successfully updated.' }
+          format.json { head :no_content }
+        else
+          format.html { render action: 'edit' }
+          format.json { render json: userSpecializari_path(), status: :unprocessable_entity }
+        end
       end
     end
   end

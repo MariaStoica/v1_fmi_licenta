@@ -17,16 +17,19 @@ class BrowsePaginiController < ApplicationController
     # resp = Net::HTTP.get_response(URI.parse(@url))
     # @info_curent = JSON.parse(resp.body)
 
-     #TODO: ia din controller @specializare_result @profi_results @domenii_result @teme_results si afiseaza ca sa fie cf searchului. dc nu e search, da-le pe toate
       # cauta cuvintele din search in teme: nume si descriere
       if params[:search] and params[:search] != ""
           # sparg in cuv dupa virgule
           cuvinte = params[:search].split(/,/)
           # iau fiecare cuvand din cuvinte si il bag pe rand in query
-          @results = Tema.all # TODO: vezi ca specializarea user_id a temei sa fie aceeasi cu current_user.specializare
-          cuvinte.each do |cuv|
-              @results = @results.where("lower(temas.descriere) LIKE lower(?) or lower(temas.nume) LIKE lower(?)","%#{cuv}%","%#{cuv}%")
+          @results = Tema.all
+          if current_user.rol == "Student"
+            @results = @results.where("user_id IN (SELECT id FROM users WHERE specializare LIKE 'Ambele' OR specializare LIKE ?)", "#{current_user.specializare}")
           end
+          cuvinte.each do |cuv|
+            @results = @results.where("lower(temas.descriere) LIKE lower(?) or lower(temas.nume) LIKE lower(?)","%#{cuv}%","%#{cuv}%")
+          end
+          # http://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-from
       end
       
       # profii care sunt eligibili pt licenta
@@ -45,6 +48,50 @@ class BrowsePaginiController < ApplicationController
           # Daca Studentul nu e logat 
           redirect_to sessions_new_path    
       end
+  end
+
+  def browseHomeArhiva
+    @u = current_user
+    @selected_sesiune = Sesiune.find(params[:sesiune_id])
+    # @current_sesiune = Sesiune.where("data_end is not null").first
+
+    # tabelele care au sesiune_id sunt:
+    # alegeri_user_temas - pt a stii ce lucrari s-au luat si de catre care studenti
+    # licenta_salvatas
+    # temas - pt a fi afisate in arhiva
+
+    # cauta cuvintele din search in teme: nume si descriere
+      if params[:search] and params[:search] != ""
+          # sparg in cuv dupa virgule
+          cuvinte = params[:search].split(/,/)
+          # iau fiecare cuvand din cuvinte si il bag pe rand in query
+          @results = Tema.all.where(sesiune_id: @selected_sesiune.id)
+          if current_user.rol == "Student"
+            @results = @results.where("user_id IN (SELECT id FROM users WHERE specializare LIKE 'Ambele' OR specializare LIKE ?)", "#{current_user.specializare}")
+          end
+          cuvinte.each do |cuv|
+            @results = @results.where("lower(temas.descriere) LIKE lower(?) or lower(temas.nume) LIKE lower(?)","%#{cuv}%","%#{cuv}%")
+          end
+          # http://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-from
+      end
+      
+      # profii care sunt eligibili pt licenta
+      if current_user and current_user.rol == "Student"
+        @useri_profesori = User.profesori_eligibili.where(specializare: current_user.specializare)
+      else
+        @useri_profesori = User.profesori_eligibili
+      end
+        
+      # dc studentul are deja licenta, nu mai are ce cauta pe pg de browse - este dus direct la licenta sa
+      if current_user
+          if Licenta.where(user_id: current_user.id).first
+              redirect_to licentaHome_path
+          end
+      else
+          # Daca Studentul nu e logat 
+          redirect_to sessions_new_path    
+      end
+
   end
 
   def alegerileMele
@@ -92,6 +139,7 @@ class BrowsePaginiController < ApplicationController
 
   def arhivaHome
     @u = current_user
+    @sesiuni = Sesiune.all.order("data_start ASC")
   end
 
   def intreabaPage

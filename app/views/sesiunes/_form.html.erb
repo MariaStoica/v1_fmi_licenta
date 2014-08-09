@@ -11,15 +11,19 @@
     </div>
   <% end %>
 
+  Azi: <%= Date.today.strftime("%A, %d %B %Y, %H:%M") %>
+  <br/><br/>
+
   <div class="field">
-    <%= f.label :data_start %><br>
+    <%= f.label "Dată începere" %><br>
     <%= f.date_select :data_start %>
   </div>
   <div class="field">
-    <%= f.label :data_end %><br>
-    <%= f.date_select :data_end %>
+    <%= f.label :deadline %><br>
+    <%= f.datetime_select :deadline %>
   </div>
+  <br/>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Start", :class => 'btn btn-success' %>
   </div>
 <% end %>

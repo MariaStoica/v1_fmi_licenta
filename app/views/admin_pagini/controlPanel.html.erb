@@ -1,2 +1,48 @@
-<h1>AdminPagini#controlPanel</h1>
-<p>Find me in app/views/admin_pagini/controlPanel.html.erb</p>
+<h1>Control Panel</h1>
+<br/>
+
+Azi: <%= Date.today %>
+<br/>
+<hr>
+
+<!-- sesiune oprita -->
+<b>Status: sesiune oprita</b>
+<br/>
+<em> Profii pot sa: <br/>
+	 1. vizualizeze arhiva - prima pagina va deveni ultima intrare in arhiva <br/>
+	 2. isi gestioneze temele si domeniile <br/> 
+	 3. pot sa raspunda pe forum la temele lor <br/> 
+	 4. pot sa isi vizualizeze studentii de la licenta in Studentii Mei - ceilalti doar in stare de raspuns dispar <br/> 
+	 5. au acces la lucrarile de licenta ale studentilor din sesiunea trecuta pana in momentul in care se porneste urm sesiune 
+	 <br/><br/>
+	 Studentii pot sa: <br/> 
+	 1. vizualizeze arhiva - prima pagina va deveni ultima intrare in arhiva <br/>
+	 2. pot sa puna intrebari pe forum la temele lor <br/>
+	 3. nu au acces la alegerile mele<br/>
+	 4. pot sa isi vada pagina de licenta pana la startul urm sesiuni - din momentul in care referatul e emis nu mai pot modifica sau uploada todos sau fisiere. doar comentarii
+</em>
+<br/><br/>
+<b>Data opririi ultimei sesiuni:</b> data - acum 5 saptamani
+<br/>
+<b>Data pornire urmatoarea sesiune:</b> data - peste 2 luni
+<br/><br/>
+<%= link_to "Start sesiune", "/sesiunes/new", :class => 'btn btn-success', data: { confirm: 'Are you sure?' } %>
+
+<hr>
+
+<!-- sesiune activa -->
+<b>Status: sesiune activa</b> 
+<br/>
+<em> Profii pot sa: <br/>
+	 1. tot
+	 <br/><br/>
+	 Studentii pot sa: <br/>
+	 1. tot
+</em>
+<br/><br/>
+<b>Sesiune pornita din data</b>: data
+<br/>
+<b>Deadline stabilit:</b> data si ora deadline // se va da mail cu 1 sapt inainte sa expire, apoi cu 1 zi inainte, apoi cu 1h
+<br/><br/>
+<%= link_to "Stop sesiune", root_path, :class => 'btn btn-danger', data: { confirm: 'Are you sure?' } %>
+
