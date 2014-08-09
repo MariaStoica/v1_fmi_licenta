@@ -9,28 +9,42 @@
    <hr>
 <% end %>
 
+<div class="progress">
+	<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: <%= @progres %>%;"><span style="color:black"><%= @progres %>%</span></div>
+</div>
 
-<div class="container-fluid">
-<div class="row-fluid">
+<div class="container">
+<div class="row row-offcanvas-right">
 
-<div class="span9">
-	<!-- titlu -->
+<!-- capitole si todos -->
+<div class="col-sm-8">	
 	
-	<div class="progress">
-  		<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: <%= @progres %>%;"><span style="color:black"><%= @progres %>%</span></div>
-	</div>
-	<!-- capitole -->
-	<!-- todo-uri pe capitole -->
-
 	<%if @capitole.count == 0%>
 		Nu sunt capitole.
 	<%else%>
-		Capitole:
-		<ul>
-			<% @capitole.order(:numar).each do |capitol| %>
-				Cap <%= capitol.numar %>. <%= link_to capitol.nume, capitol %>
-				<ul>
-					<% Todo.where(capitol_id: capitol.id).each do |todo| %>
+
+		<table class="table table-striped table hover">
+			<thead>
+			<tr>
+				<th class="col-sm-1">Nr.</th>
+				<th class="col-sm-9">Titlu Capitol</th>
+				<th class="col-sm-1">Mutare</th>
+			</tr>
+			</thead>
+			<tbody>
+				<% @capitole.order(:numar).each do |capitol| %>
+					<tr>
+						<td>Cap <%= capitol.numar %>.</td>
+						<td><%= link_to capitol.nume, capitol %></td>
+						<td>
+							<span class="glyphicon glyphicon-chevron-up"></span>
+							<span class="glyphicon glyphicon-chevron-down"></span>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<% Todo.where(capitol_id: capitol.id).each do |todo| %>
 						<%if current_user.rol == "Student"%>
 						<% if todo.este_gata %>
 							<li style="color:green"><strike><%= link_to todo.continut, edit_todo_path(todo, capitol_id: capitol.id), {:style => "color:green"} %></strike></li>
@@ -45,37 +59,63 @@
 							<%end%>
 						<%end%>
 					<%end%>
-				</ul>
-			<%end%>
-		</ul>
-	<%end%>
-	<br/>
+						</td>
+						<td></td>
+					</tr>
+				<% end %>	
+				<tr>
+					<td></td>
+					<td>
+						<!-- Daca user-ul curent logat este si cel care va lucra la aceasta licenta, avem si link pt a adauga un nou capitol--> 
+						<%if current_user.id == @licenta.user_id%> 
+							<%=link_to '+ Adauga capitol', new_capitol_path(:licenta => @licenta.id)%>
+						<%end%>
+					</td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
 
-	<!-- Daca user-ul curent logat este si cel care va lucra la aceasta licenta, avem si link pt a adauga un nou capitol--> 
-	<%if current_user.id == @licenta.user_id%> 
-		<%=link_to 'Adauga capitol', new_capitol_path(:licenta => @licenta.id)%>
 	<%end%>
 </div>
 
 
 <!-- comentarii pe dreapta -->
-<div class="span3">
+<div class="col-sm-3 sidebar-offcanvas" style="overflow:auto; height: 550px">
 	<%if @comentarii.count == 0%>
 		Nu sunt comentarii.
 	<%else%>
 		<%@comentarii.each do |comentariu|%>
 			<% if User.find(comentariu.user_id).rol == "Profesor" %>
-				<p style="color:green">
-					<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b> 
-					<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
-					<br/>
-					<%=comentariu.continut%></p>
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+				    	<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
+						<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
+				  </div>
+				  <div class="panel-body">
+				    <%= comentariu.continut %>
+				  </div>
+				</div>
+				<!-- <p style="color:green"> -->
+				<!-- <b><= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b>  -->
+				<!-- <em><= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em> -->
+				<!-- <br/> -->
+				<!-- <=comentariu.continut%></p> -->
 			<% else %>
-				<p style="color:blue">
-					<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b>
-					<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
-					<br/>
-					<%=comentariu.continut%></p>
+				<div class="panel panel-info">
+				  <div class="panel-heading">
+				    	<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
+						<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
+				  </div>
+				  <div class="panel-body">
+				    <%= comentariu.continut %>
+				  </div>
+				</div>
+				<!-- <p style="color:blue"> -->
+				<!-- <b><= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b> -->
+				<!-- <em><= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em> -->
+				<!-- <br/> -->
+				<!-- <=comentariu.continut%></p> -->
 			<% end %>
 		<%end%>
 	<%end%>

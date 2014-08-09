@@ -40,6 +40,16 @@ class CapitolsController < ApplicationController
 
     respond_to do |format|
       if @capitol.save
+
+        # actualizeaza numerele la restul capitolelor de dupa asta nou
+        if Capitol.where("numar = ?", "#{@capitol.numar}").count > 1
+          @capitole = Capitol.where("numar >= ? and id != ?", "#{@capitol.numar}", "#{@capitol.id}")
+          @capitole.each do |cap|
+            numar = cap.numar + 1
+            cap.update_attributes(numar: numar)
+          end
+        end
+
         format.html { redirect_to root_path, notice: 'Capitol was successfully created.' }
         format.json { render action: 'show', status: :created, location: @capitol }
       else

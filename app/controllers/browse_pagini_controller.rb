@@ -75,22 +75,24 @@ class BrowsePaginiController < ApplicationController
           # http://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-from
       end
       
-      # profii care sunt eligibili pt licenta
-      if current_user and current_user.rol == "Student"
-        @useri_profesori = User.profesori_eligibili.where(specializare: current_user.specializare)
-      else
-        @useri_profesori = User.profesori_eligibili
-      end
+      @useri_profesori = User.profesori_eligibili
+
+      # # profii care sunt eligibili pt licenta
+      # if current_user and current_user.rol == "Student"
+      #   @useri_profesori = User.profesori_eligibili.where(specializare: current_user.specializare)
+      # else
+      #   @useri_profesori = User.profesori_eligibili
+      # end
         
-      # dc studentul are deja licenta, nu mai are ce cauta pe pg de browse - este dus direct la licenta sa
-      if current_user
-          if Licenta.where(user_id: current_user.id).first
-              redirect_to licentaHome_path
-          end
-      else
-          # Daca Studentul nu e logat 
-          redirect_to sessions_new_path    
-      end
+      # # dc studentul are deja licenta, nu mai are ce cauta pe pg de browse - este dus direct la licenta sa
+      # if current_user
+      #     if Licenta.where(user_id: current_user.id).first
+      #         redirect_to licentaHome_path
+      #     end
+      # else
+      #     # Daca Studentul nu e logat 
+      #     redirect_to sessions_new_path    
+      # end
 
   end
 
