@@ -26,6 +26,8 @@ class CapitolsController < ApplicationController
   def new
     @u = current_user
     @capitol = Capitol.new
+    licenta_id = Licenta.where(user_id: @u.id)
+    @capitole = Capitol.where(licenta_id: licenta_id)
   end
 
   # GET /capitols/1/edit
@@ -76,7 +78,22 @@ class CapitolsController < ApplicationController
   # DELETE /capitols/1
   # DELETE /capitols/1.json
   def destroy
+    capitol_id = @capitol.id
+    licenta_id = @capitol.licenta_id
+    numar = @capitol.numar
     @capitol.destroy
+
+    # actualizeaza numerele la restul capitolelor de dupa asta distrus
+    @capitole = Capitol.where("licenta_id = ? and numar > ?", "#{licenta_id}", "#{numar}")
+    if @capitole.count > 0
+      @capitole.each do |cap|
+        cap.update_attributes(numar: cap.numar-1)
+      end
+    end
+
+    # sterge si todo-urile capitolului aluia din baza de date
+    Todo.where(capitol_id: capitol_id).delete_all
+
     respond_to do |format|
       format.html { redirect_to root_path }
       format.json { head :no_content }

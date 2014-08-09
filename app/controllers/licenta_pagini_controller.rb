@@ -17,6 +17,11 @@ class LicentaPaginiController < ApplicationController
       
       @progres = 0
       
+      if params[:capitol_id] and params[:numar_nou] and params[:numar_victima] and params[:capitol_victima_id] and params[:capitol_id] != "" and params[:numar_nou] != "" and params[:numar_victima] != "" and params[:capitol_victima_id] != ""
+        Capitol.find(params[:capitol_id]).update_attributes(numar: params[:numar_nou])
+        Capitol.find(params[:capitol_victima_id]).update_attributes(numar: params[:numar_victima])
+      end
+
       # cate todo gata / nr de todos
       # toate todourile din licenta asta
       @todos = Todo.find_by_sql("select * from todos where capitol_id in (select id from capitols where licenta_id=" + @licenta.id.to_s + ")")

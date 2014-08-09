@@ -17,11 +17,10 @@
     <%= f.label :nume %><br>
     <%= f.text_field :nume %>
   </div>
-  <div class="field">
-    <%= f.label :numar %><br>
-    <%= f.number_field :numar, :style => 'height:30px' %>
-  </div>
-
+  
+  <% if @capitol.new_record? == true %> <!-- asa se verifica dc e new sau edit :P --> 
+    <%= f.hidden_field :numar, :value => @capitole.count+1 %>
+  <% end %>
 
   <div class="actions">
     <%= f.submit 'Submit', :class => 'btn btn-primary' %>

@@ -1,7 +1,7 @@
 <% if current_user.rol == "Profesor"%>
 	<ol class="breadcrumb">
     	<li><a href="/licenta_pagini/licentaHome?student_id=<%= @studentid%>">Licenta Home</a></li>
-    	<li class="active"><%= @capitol.nume%></li>
+    	<li class="active"><%= "Cap" + @capitol.numar.to_s + ". " + @capitol.nume%></li>
 	</ol>
 <% end %>
 

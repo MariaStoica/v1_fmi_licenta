@@ -27,8 +27,12 @@
 			<thead>
 			<tr>
 				<th class="col-sm-1">Nr.</th>
+				<% if @current_user.rol == "Student" %>
 				<th class="col-sm-9">Titlu Capitol</th>
 				<th class="col-sm-1">Mutare</th>
+				<% elsif @current_user.rol == "Profesor" %>
+				<th>Titlu Capitol</th>
+				<% end %>
 			</tr>
 			</thead>
 			<tbody>
@@ -36,10 +40,16 @@
 					<tr>
 						<td>Cap <%= capitol.numar %>.</td>
 						<td><%= link_to capitol.nume, capitol %></td>
+						<% if @current_user.rol == "Student" %>
 						<td>
-							<span class="glyphicon glyphicon-chevron-up"></span>
-							<span class="glyphicon glyphicon-chevron-down"></span>
+							<% if capitol.numar > 1 %>
+								<%= link_to "", licentaHome_path(capitol_id: capitol.id, numar_nou: (capitol.numar-1), numar_victima: capitol.numar, capitol_victima_id: @capitole.find_by_numar(capitol.numar-1)), class: "glyphicon glyphicon-arrow-up" %>
+							<% end %>
+							<% if capitol.numar < @capitole.count %>
+								<%= link_to "", licentaHome_path(capitol_id: capitol.id, numar_nou: (capitol.numar+1), numar_victima: capitol.numar, capitol_victima_id: @capitole.find_by_numar(capitol.numar+1)), class: "glyphicon glyphicon-arrow-down" %>
+							<% end %>
 						</td>
+						<% end %>
 					</tr>
 					<tr>
 						<td></td>
@@ -60,9 +70,12 @@
 						<%end%>
 					<%end%>
 						</td>
+						<% if @current_user.rol == "Student" %>
 						<td></td>
+						<% end %>
 					</tr>
 				<% end %>	
+				<% if @current_user.rol == "Student" %>
 				<tr>
 					<td></td>
 					<td>
@@ -73,6 +86,7 @@
 					</td>
 					<td></td>
 				</tr>
+				<% end %>
 			</tbody>
 		</table>
 
