@@ -5,6 +5,7 @@
     <tr>
       <th>User</th>
       <th>Tema</th>
+      <th>Renuntat</th>
       <th></th>
       <th></th>
       <th></th>
@@ -16,6 +17,7 @@
       <tr>
         <td><%= licenta.user_id %></td>
         <td><%= licenta.tema_id %></td>
+        <td><%= licenta.renuntat %></td>
         <td><%= link_to 'Show', licenta %></td>
         <td><%= link_to 'Edit', edit_licenta_path(licenta) %></td>
         <td><%= link_to 'Destroy', licenta, method: :delete, data: { confirm: 'Are you sure?' } %></td>

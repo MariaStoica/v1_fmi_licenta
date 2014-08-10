@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140809102934) do
+ActiveRecord::Schema.define(version: 20140810074658) do
 
   create_table "alegeri_user_temas", force: true do |t|
     t.integer  "user_id"
@@ -121,6 +121,7 @@ ActiveRecord::Schema.define(version: 20140809102934) do
     t.integer  "tema_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "renuntat"
   end
 
   add_index "licentas", ["tema_id"], name: "index_licentas_on_tema_id"

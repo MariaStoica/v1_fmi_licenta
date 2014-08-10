@@ -1,0 +1,121 @@
+<h1>Lista Features</h1>
+<br/>
+
+<b>Browse</b>
+<table class="table table-striped table hover">
+	<thead>
+		<tr>
+			<th>Done</th>
+			<th>Feature</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><span class="glyphicon glyphicon-ok" style="color:green"/></td>
+			<td><b>Browse teme si domenii.</b> <p>Se afiseaza temele neluate ale profilor dupa specializarea studentului logat organizate dupa prof si domeniul din care fac parte. Profii logati vad toate temele si domeniile indiferent de specializarea lor. Au si ei pagina TemeleMele pt a-si gestiona temele si domeniile. Fiecare domeniu are pe pagina sa pe langa descriere si lista de teme din el. Iar pe pagina fiecarei teme, pt studenti, sunt 2 butoane: unul pt a alege tema pt licenta si celalalt pt a merge la pagina de discutii a temei.</p></td>
+		</tr>
+		<tr>
+			<td><span class="glyphicon glyphicon-ok" style="color:green"/></td>
+			<td><b>Search teme.</b> <p>Se folosesc cuvinte despartite de virgula si se cauta in numele temelor si descrierile lor. Se tine cont de specializarea studentului logat. Profii vad teme din toate specializarile.</p></td>
+		</tr>
+		<tr>
+			<td><span class="glyphicon glyphicon-ok" style="color:green"/></td>
+			<td><b>Teme propuse de studenti.</b> <p>Studentii pot propune teme numai sub domeniile "Propuneri Studenti". Unii profi nu au domeniul asta deci nu vor propuneri de la studenti. Nu se specifica ce student a propus-o.</p></td>
+		</tr>
+		<tr>
+			<td><span class="glyphicon glyphicon-time" style="color:blue"/></td>
+			<td><b>Discutii pe tema.</b> <p>Fiecare tema are propria ei pagina unde studentii si proful temei posteaza comentarii. Asa se pot afla mai multe despre tema respectiva si este vizibila conversatia oricui.</p></td>
+		</tr>
+		<tr>
+			<td><span class="glyphicon glyphicon-ok" style="color:green"/></td>
+			<td><b>Alegerea licentei.</b> <p>Studentul poate alege orice tema din AlegerileMele la care a primit Accept de la prof. Si atunci este directionat la LicentaHome fara a mai avea acces la browse (doar la Arhiva pt vizualizare).</p></td>
+		</tr>
+	</tbody>
+</table>
+<br/><br/>
+
+<b>Arhiva</b>
+<table class="table table-striped table hover">
+	<thead>
+		<tr>
+			<th>Done</th>
+			<th>Feature</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><span class="glyphicon glyphicon-ok" style="color:green"/></td>
+			<td><b>Arhiva Home.</b> <p>Lista de sesiuni de functionare. Eg: Oct 2013 - Iunie 2014.</p></td>
+		</tr>
+		<tr>
+			<td><span class="glyphicon glyphicon-ok" style="color:green"/></td>
+			<td><b>Browse Arhiva.</b> <p>Se pot vedea toate temele de la toate specializarile adaugate in sesiunea aceea in aceeasi forma ca la browse inclusiv cu pagina de discutii.</p></td>
+		</tr>
+	</tbody>
+</table>
+<br/><br/>
+
+<b>Licenta</b>
+<table class="table table-striped table hover">
+	<thead>
+		<tr>
+			<th>Done</th>
+			<th>Feature</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><span class="glyphicon glyphicon-ok" style="color:green"/></td>
+			<td><b>Dezvoltarea licentei.</b> <p>Studentul poate sa isi gestioneze capitolele, fisierele si todo-urile. Progresul i se calculeaza dupa nr de todo-uri gata. Comunicarea cu proful se face prin commenturi la nivel de licenta, capitol si fisier. Proful poate sa download fisierele uploaded, poate sa raspunda la comentarii si poate sa urce fisiere numai in bibliografie.</p></td>
+		</tr>
+		<tr>
+			<td><span class="glyphicon glyphicon-ok" style="color:green"/></td>
+			<td><b>Renuntarea la licenta.</b> <p>Studentul poate sa renunte la licenta sa. Daca nu se ocupa, poate sa revina la ea si sa isi reia munca. Daca i-o ia altul, se sterge munca lui.</p></td>
+		</tr>
+		<tr>
+			<td><span class="glyphicon glyphicon-remove" style="color:red"/></td>
+			<td><b>Creare referat licenta.</b><p>Cand progresul unei licente a ajuns la 100% apare butonul de generare referat pe pagina StudentiiMei. Lipseste functionalitatea.</p></td>
+		</tr>
+	</tbody>
+</table>
+<br/><br/>
+
+<b>Admin</b>
+<table class="table table-striped table hover">
+	<thead>
+		<tr>
+			<th>Done</th>
+			<th>Feature</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><span class="glyphicon glyphicon-ok" style="color:green"/></td>
+			<td><b>Specializari Profi si Eligibilitate Licenta Studenti.</b> <p>Adminul poate sa seteze "Ambele" ca specializare pt profii care pot fi luati si la info si la mate. Mai poate fi setata si eligibilitatea studentilor de a intra in licenta.</p></td>
+		</tr>
+		<tr>
+			<td><span class="glyphicon glyphicon-remove" style="color:red"/></td>
+			<td><b>Gestiune sesiuni de fucntionare a aplicatiei.</b> <p>In ControlPanel se da start si stop la aplicatie. Cand e pornita, se pot alege licente si este acces la pagina LicentaHome. Cand e oprita, este acces numai la arhiva si browse fara a vedea munca de la licenta.</p></td>
+		</tr>
+	</tbody>
+</table>
+<br/><br/>
+
+<b>Interactiunea cu FMI API</b>
+<table class="table table-striped table hover">
+	<thead>
+		<tr>
+			<th>Done</th>
+			<th>Feature</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><span class="glyphicon glyphicon-ok" style="color:green"/></td>
+			<td><b>Logare.</b> <p>Cand un user se logheaza, iau datele care ma intereseaza ca sa le adaug la baza proprie de date: nume, prenume, mail, rol, grad, grupa, specializare si este_eligibil_licenta (eg: studentii de anul 2 pot doar sa se uite si la fel si asistentii si preparatorii care nu pot lua studenti la licenta).</p></td>
+		</tr>
+	</tbody>
+</table>
+<br/><br/>
+
+

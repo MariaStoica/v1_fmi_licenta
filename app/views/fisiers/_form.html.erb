@@ -40,9 +40,9 @@
 
         <%= f.label :capitol %> : <%= Capitol.find(params[:capitol_id]).nume %>
         <%= f.hidden_field :capitol_id, :value => params[:capitol_id] %>
-     <% else %>
+     <% elsif current_user.rol == "Student" %>
         <%= f.label :capitol_id %><br>
-        <%= f.collection_select :capitol_id, Capitol.where(licenta_id: Licenta.where(user_id: current_user.id).first), :id, :nume, :selected => params[:capitol_id] %>
+        <%= f.collection_select :capitol_id, Capitol.where(licenta_id: Licenta.where(user_id: current_user.id).where(renuntat: false).first), :id, :nume, :selected => params[:capitol_id] %>
      <% end %>
   </div>
   <br/>

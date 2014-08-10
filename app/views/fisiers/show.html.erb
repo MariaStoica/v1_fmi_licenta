@@ -11,33 +11,52 @@
 
 
 <h1><%= @fisier.name %></h1>
-<hr>
+<br/>
 
 <!-- notificari -->
-<% if flash[:notice] %>
-   <div id="notice"><%= flash[:notice] %></div>
-   <hr>
-<% end %>
+<!-- < if flash[:notice] %> -->
+   <!-- <div id="notice"><= flash[:notice] %></div> -->
+   <!-- <hr> -->
+<!-- < end %> -->
 
 
-<div class="container-fluid">
-<div class="row-fluid">
+<div class="container">
+<div class="row row-offcanvas-right">
 
-	<div class="span9">
+	<div class="col-sm-8">
 		<!-- <= link_to "Download", action: "download", :path => @fisier.path %> -->
 		<%= link_to "Download", download_fisier_path(@fisier) %>
 	</div>
 
 	<!-- comentarii pe dreapta -->
-	<div class="span3">
+	<div class="col-sm-3 sidebar-offcanvas" style="overflow:auto; height: 550px">
 		<%if @comentarii.count == 0%>
-			Nu sunt comentarii.
+			<em>Nu sunt comentarii.</em>
+			<br/><br/>
 		<%else%>
 			<%@comentarii.each do |comentariu|%>
 				<% if User.find(comentariu.user_id).rol == "Profesor" %>
-					<p style="color:green"><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : <%=comentariu.continut%></p>
+					<div class="panel panel-default">
+					  <div class="panel-heading">
+					    	<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
+							<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
+					  </div>
+					  <div class="panel-body">
+					    <%= comentariu.continut %>
+					  </div>
+					</div>
+					<!-- <p style="color:green"><= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : <=comentariu.continut%></p> -->
 				<% else %>
-					<p style="color:blue"><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : <%=comentariu.continut%></p>
+					<div class="panel panel-info">
+					  <div class="panel-heading">
+					    	<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
+							<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
+					  </div>
+					  <div class="panel-body">
+					    <%= comentariu.continut %>
+					  </div>
+					</div>
+					<!-- <p style="color:blue"><= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : <=comentariu.continut%></p> -->
 				<% end %>
 			<%end%>
 		<%end%>

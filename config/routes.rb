@@ -14,6 +14,10 @@ V1FmiLicenta::Application.routes.draw do
   resources :users
   resources :sesiunes
 
+  get "browse_pagini/viewDataBase" => "browse_pagini#viewDataBase", as: "viewDataBase"
+  get "browse_pagini/listaFeatures" => "browse_pagini#listaFeatures", as: "listaFeatures"
+  
+
   get "admin_pagini/controlPanel" => "admin_pagini#controlPanel", as: "controlPanel"
   get "admin_pagini/userSpecializari" => "admin_pagini#userSpecializari", as: "userSpecializari"
   get "browse_pagini/browseHome" => "browse_pagini#browseHome"
@@ -30,6 +34,7 @@ V1FmiLicenta::Application.routes.draw do
   get "fisiers/:id/download" => "fisiers#download", as: "download_fisier"
 
   match "/accepta" => "browse_pagini#accepta", :as => :accepta , via: [:get, :post] # pt a accepta licenta (partea de browse)
+  match "/renunta" => "licenta_pagini#renuntaLaLicenta", :as => :renunta , via: [:get, :post]
   match "intreaba/send", to: "browse_pagini#sendmail", via: "post"
   match "licentaHome/adauga_comentariu", to: "licenta_pagini#adauga_comentariu", via: "post"
   match "fisiers/adauga_comentariu", to: "fisiers#adauga_comentariu", via: "post"
@@ -38,7 +43,7 @@ V1FmiLicenta::Application.routes.draw do
   # omniauth
   get '/auth/:provider/callback', :to => 'user_sessions#create'
   get '/auth/failure', :to => 'user_sessions#failure' 
-  get '/logout', :to => 'user_sessions#destroy'
+  match '/logout', :to => 'user_sessions#destroy', :as => :logout, via: [:get, :post]
 
   root to: "browse_pagini#browseHome"
 

@@ -1,25 +1,55 @@
-<h1>Fișierele mele</h1>
+<% if current_user.rol == "Profesor" %>
+	<ol class="breadcrumb">
+    	<li><a href="/licenta_pagini/licentaHome?student_id=<%= @studentid %>">Licenta Home</a></li>
+    	<li class="active">Fișierele lucrării</li>
+	</ol>
+	<h1>Fișierele lucrării</h1>
+<% elsif current_user.rol == "Student" %>
+	<h1>Fișierele mele</h1>
+<% end %>
 
 <!-- notificari -->
-<% if flash[:notice] %>
-   <div id="notice"><%= flash[:notice] %></div>
-   <hr>
-<% end %>
+<!-- < if flash[:notice] %> -->
+   <!-- <div id="notice"><= flash[:notice] %></div> -->
+   <!-- <hr> -->
+<!-- < end %> -->
 
 <!-- fisierele pe capitole -->
-<% nr = 1 %>
-<% @capitole.each do |capitol| %>
-	Cap <%= nr %>. <%= link_to capitol.nume, capitol %><br/>
-	<% nr = nr + 1 %>
-	
-	<ul>
-		<% Fisier.where(capitol_id: capitol.id).each do |fis| %>
-			<li>
-				<%= link_to fis.name, fis %> - uploaded by
-				<%= User.find(fis.user_id).prenume %>
-			<li/>
-		<% end %>
-	</ul>
+
+<% if @capitole.count == 0 %>
+	<em>Nu sunt fișiere.</em>
+<% else %>
+	<table class="table table-striped table hover">
+		<thead>
+			<tr>
+				<th class="col-sm-1">Nr.</th>
+				<th class="col-sm-12">Titlu Capitol</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @capitole.order(:numar).each do |capitol| %>
+				<tr>
+					<td>Cap <%= capitol.numar %>.</td>
+					<td><%= link_to capitol.nume, capitol %></td>
+				</tr>		
+				<tr>
+					<td></td>
+					<td>
+						<% if Fisier.where(capitol_id: capitol.id).count > 0 %>
+							<ul class="list-group">
+								<% Fisier.where(capitol_id: capitol.id).each do |fis| %>
+									<li class="list-group-item list-group-item-info">
+										<%= link_to "", download_fisier_path(fis), class: "glyphicon glyphicon-download-alt"%>
+										<%= link_to fis.name, fis%>
+										(urcat de <%= User.find(fis.user_id).prenume + " " + User.find(fis.user_id).nume %> acum 2 zile)
+										<%= fis.created_at.strftime("%d %b. %Y,  %H:%M") %>
+									</li>
+								<% end %>
+							</ul>
+						<% end %>
+					</td>
+				</tr>
+			<% end %> <!-- end de la capitole -->
+		</tbody>
+	</table>
 <% end %>
-
-

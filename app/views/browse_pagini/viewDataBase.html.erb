@@ -1,0 +1,260 @@
+<h1>View DataBase</h1>
+<br/><br/>
+
+
+<!-- sesiunes -->
+Sesiunes
+<br/>
+<table class="table table-striped table hover">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Start</th>
+			<th>Deadline</th>
+			<th>End</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% Sesiune.all.each do |user| %>
+			<tr>
+				<td><%= user.id %></td>
+				<td><%= user.data_start %></td>
+				<td><%= user.deadline %></td>
+				<td><%= user.data_end %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<br/><br/>
+
+<!-- users -->
+Users
+<br/>
+<table class="table table-striped table hover">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Nume</th>
+			<th>Prenume</th>
+			<th>Email</th>
+			<th>Rol</th>
+			<th>Grad</th>
+			<th>Grupa</th>
+			<th>Specializare</th>
+			<th>Este Eligibil Licenta</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% User.all.each do |user| %>
+			<tr>
+				<td><%= user.id %></td>
+				<td><%= user.nume %></td>
+				<td><%= user.prenume %></td>
+				<td><%= user.email %></td>
+				<td><%= user.rol %></td>
+				<td><%= user.grad %></td>
+				<td><%= user.grupa %></td>
+				<td><%= user.specializare %></td>
+				<td><%= user.este_eligibil_licenta %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<br/><br/>
+
+<!-- temas -->
+Temas
+<br/>
+<table class="table table-striped table hover">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Nume</th>
+			<th>User Id</th>
+			<th>Domeniu Id</th>
+			<th>Sesiune Id</th>
+			<th>Este Libera</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% Tema.all.each do |user| %>
+			<tr>
+				<td><%= user.id %></td>
+				<td><%= user.nume %></td>
+				<td><%= user.user_id %></td>
+				<td><%= user.domeniu_id %></td>
+				<td><%= user.sesiune_id %></td>
+				<td>
+					<% if user.este_libera == false %>
+						<span style="color:red"><%= user.este_libera %></span>
+					<% elsif user.este_libera == true %>
+						<span style="color:green"><%= user.este_libera %></span>
+					<% end %>
+				</td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<br/><br/>
+
+<!-- domenius -->
+Domenius
+<br/>
+<table class="table table-striped table hover">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Nume</th>
+			<th>User Id</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% Domeniu.all.each do |user| %>
+			<tr>
+				<td><%= user.id %></td>
+				<td><%= user.nume %></td>
+				<td><%= user.user_id %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<br/><br/>
+
+<!-- alegeriUserTemas -->
+AlegeriUserTemas
+<br/>
+<table class="table table-striped table hover">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Tema Id</th>
+			<th>User Id</th>
+			<th>Sesiune Id</th>
+			<th>Status Prof</th>
+			<th>Status Student</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% AlegeriUserTema.all.each do |user| %>
+			<tr>
+				<td><%= user.id %></td>
+				<td><%= user.tema_id %></td>
+				<td><%= user.user_id %></td>
+				<td><%= user.sesiune_id %></td>
+				<td><%= user.status_profesor %></td>
+				<td><%= user.status_student %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<br/><br/>
+
+<!-- licentas -->
+Licentas
+<br/>
+<table class="table table-striped table hover">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>User Id</th>
+			<th>Tema Id</th>
+			<th>Renuntat</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% Licenta.all.each do |user| %>
+			<tr>
+				<td><%= user.id %></td>
+				<td><%= user.user_id %></td>
+				<td><%= user.tema_id %></td>
+				<td><%= user.renuntat %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<br/><br/>
+
+
+<!-- capitols -->
+Capitols
+<br/>
+<table class="table table-striped table hover">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Nume</th>
+			<th>Licenta Id</th>
+			<th>Numar</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% Capitol.all.each do |user| %>
+			<tr>
+				<td><%= user.id %></td>
+				<td><%= user.nume %></td>
+				<td><%= user.licenta_id %></td>
+				<td><%= user.numar %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<br/><br/>
+
+<!-- todos -->
+Todos
+<br/>
+<table class="table table-striped table hover">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Capitol Id</th>
+			<th>Continut</th>
+			<th>Este Gata</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% Todo.all.each do |user| %>
+			<tr>
+				<td><%= user.id %></td>
+				<td><%= user.capitol_id %></td>
+				<td><%= user.continut %></td>
+				<td><%= user.este_gata %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<br/><br/>
+
+<!-- fisiers -->
+Fisiers
+<br/>
+<table class="table table-striped table hover">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Capitol Id</th>
+			<th>Name</th>
+			<th>User Id</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% Fisier.all.each do |user| %>
+			<tr>
+				<td><%= user.id %></td>
+				<td><%= user.capitol_id %></td>
+				<td><%= user.name %></td>
+				<td><%= user.user_id %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+<br/><br/>

@@ -11,15 +11,14 @@
 <!-- <br/> -->
 <!-- grupa: <= @info_curent['group_year'].to_s + @info_curent['group_series'].to_s + @info_curent['group_number'].to_s %> -->
 
+
 <h1>Toate temele</h1>
 <br/><br/>
 
-<!-- Daca userul este student si are licenta, ne ducem direct la licentaHome path -->
-
-<% if flash[:notice] && flash[:notice] != "Alegerea selectata deja exista" && flash[:notice] != "Alegere salvata cu succes"%>
-   <div id="notice"><%= flash[:notice] %></div>
-   <hr>
-<% end %>
+<!-- < if flash[:notice] && flash[:notice] != "Alegerea selectata deja exista" && flash[:notice] != "Alegere salvata cu succes"%> -->
+   <!-- <div id="notice"><= flash[:notice] %></div> -->
+   <!-- <hr> -->
+<!-- < end %> -->
 
 <!-- search box -->
 <%= form_tag({controller: "browse_pagini", action:"browseHome" }, method: "get") do  %>

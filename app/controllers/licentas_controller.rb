@@ -69,6 +69,6 @@ class LicentasController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def licenta_params
-      params.require(:licenta).permit(:user_id, :tema_id)
+      params.require(:licenta).permit(:user_id, :tema_id, :renuntat)
     end
 end

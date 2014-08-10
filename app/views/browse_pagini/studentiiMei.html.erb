@@ -1,11 +1,12 @@
 <h1>Studenții mei</h1>
+<br/><br/>
 
 <!-- notificari -->
-<% if flash[:notice] %>
-   <hr>
-   <div id="notice"><%= flash[:notice] %></div>
-   <hr>
-<% end %>
+<!-- < if flash[:notice] %> -->
+   <!-- <hr> -->
+   <!-- <div id="notice"><= flash[:notice] %></div> -->
+   <!-- <hr> -->
+<!-- < end %> -->
 
 
 <% if @alese > 0 %>
@@ -37,7 +38,14 @@
 							<tr>
 								<td><%= user.nume + " " + user.prenume %></td>
 								<td><%= user.grupa %></td>
-								<td><%=link_to tema.nume,licentaHome_path(:student_id => user.id)%></td>
+								<td>
+									<% if Licenta.find_by_tema_id(tema.id).renuntat == false %>
+										<%=link_to tema.nume,licentaHome_path(:student_id => user.id)%>
+									<% else %>
+										<span style="color:red"><%= tema.nume %></span>
+									<% end %>
+								</td>
+								
 								<td>
 									<!-- iau toate todo-urile din licenta asta -->
 									<% todos = Todo.find_by_sql("select * from todos where capitol_id in (select id from capitols where licenta_id=" + licenta.id.to_s + ")") %>

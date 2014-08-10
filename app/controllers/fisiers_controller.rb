@@ -4,21 +4,24 @@ class FisiersController < ApplicationController
   # GET /fisiers
   # GET /fisiers.json
   def index
+    @u = current_user
     @fisiers = Fisier.all
-    if(params[:student_id])
-          @licenta = Licenta.where(user_id: params[:student_id]).first
+    if params[:student_id] and params[:student_id] != ""
+          @licenta = Licenta.where(user_id: params[:student_id]).where(renuntat: false).first
+          @studentid = params[:student_id]
       else
-          @licenta = Licenta.where(user_id: current_user.id).first
+          @licenta = Licenta.where(user_id: current_user.id).where(renuntat: false).first
       end
-      @capitole = Capitol.where(licenta_id: @licenta.id)
+      @capitole = Capitol.where(licenta_id: @licenta.id).order(numar: :asc)
   end
 
   # GET /fisiers/1
   # GET /fisiers/1.json
   def show
-      @comentarii = ComentariuFisier.where(fisier_id: @fisier.id)
-      @capitol = Capitol.find(@fisier.capitol_id)
-      @studentid = Licenta.find(@capitol.licenta_id).user_id
+    @u = current_user
+    @comentarii = ComentariuFisier.where(fisier_id: @fisier.id)
+    @capitol = Capitol.find(@fisier.capitol_id)
+    @studentid = Licenta.find(@capitol.licenta_id).user_id
   end
 
   # GET /fisiers/new

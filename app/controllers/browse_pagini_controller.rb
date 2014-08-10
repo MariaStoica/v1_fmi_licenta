@@ -5,6 +5,18 @@ class BrowsePaginiController < ApplicationController
   def browseHome
 	  @u = current_user # dc nu pun asta nu recunoaste @current_user 
 
+    # dc studentul are deja licenta, nu mai are ce cauta pe pg de browse - este dus direct la licenta sa
+    if current_user
+        my_licentas = Licenta.where(user_id: current_user.id)
+        if my_licentas
+          my_licentas.each do |lic|
+            if lic.renuntat != true
+              redirect_to licentaHome_path
+            end
+          end  
+        end
+    end
+
     # @url_s = "http://fmi-api.herokuapp.com/students/" + session[:user_id]['uid'] + "?oauth_token=" + session[:user_id]['credentials']['token']
     # resp_s = Net::HTTP.get_response(URI.parse(@url_s))
     # @info_curent_s = JSON.parse(resp_s.body)
@@ -39,15 +51,6 @@ class BrowsePaginiController < ApplicationController
         @useri_profesori = User.profesori_eligibili
       end
         
-      # dc studentul are deja licenta, nu mai are ce cauta pe pg de browse - este dus direct la licenta sa
-      if current_user
-          if Licenta.where(user_id: current_user.id).first
-              redirect_to licentaHome_path
-          end
-      else
-          # Daca Studentul nu e logat 
-          redirect_to sessions_new_path    
-      end
   end
 
   def browseHomeArhiva
@@ -152,14 +155,63 @@ class BrowsePaginiController < ApplicationController
   def accepta
       # dau mail profesorului ca acest student a acceptat tema sa.
       #UserMailer.notification_email(User.find(current_user.id).email,User.find(Domeniu.find(Tema.find(params[:temaaleasa_id]).domeniu_id).user_id).email, "Acceptare licenta", "Studentul cu numele " + User.find(current_user.id).nume + " " + User.find(current_user.id).prenume + "este acum studentul dumneavoastra pentru licenta" ).deliver
+      
       # creez o intrare noua in licenta ca sa stiu ca acest student are aceasta tema la licenta si lucreaza la ea
-      licenta = Licenta.create(user_id: current_user.id , tema_id: params[:temaaleasa_id])
+      # renuntat == nil inseamna ca nu s-a renuntat la ea pana acum
+      # renuntat == true inseamna ca a fost luata de cnv si acum e iar libera - a renuntat la ea
+      # renuntat == false inseamna ca a fost renuntata si a luat-o inapoi proprietarul
+      
+      # caut tema asta 
+      previousLicenta = Licenta.find_by_tema_id(params[:temaaleasa_id]) # nu ai nevoie de first pt ca e find si tema_id in model e sa fie unic
+      licenta = previousLicenta
+
+      # dc nu e - o iau eu pt prima data
+      if previousLicenta == nil
+        licenta = Licenta.create(user_id: current_user.id , tema_id: params[:temaaleasa_id], renuntat: false)
+        # creez capitolele de inceput 
+        Capitol.create(nume: "Introducere", licenta_id: licenta.id, numar: 1)
+        Capitol.create(nume: "Concluzii", licenta_id: licenta.id, numar: 2)
+        Capitol.create(nume: "Bibliografie", licenta_id: licenta.id, numar: 3)
+
+      # dc e si are renuntat == true - inseamna ca a fost lasata de cineva (eu sau altul)
+      elsif previousLicenta and previousLicenta.renuntat == true
+        # dc sunt tot eu doar modific renuntat si nu mai creez alte capitole
+        if previousLicenta.user_id == current_user.id
+          previousLicenta.update_attributes(renuntat: false)
+        # dc nu sunt eu tre sa sterg toata munca celui dinaintea mea si inregistrarea asta de licenta si sa fac alta
+        else
+          # sterg comentarii_licenta
+          # if ComentariuLicenta.where(licenta_id: licenta.id).count > 0
+          ComentariuLicenta.where(licenta_id: licenta.id).delete_all
+          # end
+          # sterg capitole
+          Capitol.where(licenta_id: licenta.id).each do |cap|
+            # sterg comentarii capitole
+            ComentariuCapitol.where(capitol_id: cap.id).delete_all
+            # sterf todos
+            Todo.where(capitol_id: cap.id).delete_all
+            # sterg fisiere
+            Fisier.where(capitol_id: cap.id).each do |fis|
+              # sterg comentarii_fisiere
+              ComentariuFisier.where(fisier_id: fis.id).delete_all
+              fis.destroy
+            end
+            cap.destroy
+          end
+          previousLicenta.destroy
+          licenta = Licenta.create(user_id: current_user.id , tema_id: params[:temaaleasa_id], renuntat: false)
+          # creez capitolele de inceput
+          Capitol.create(nume: "Introducere", licenta_id: licenta.id, numar: 1)
+          Capitol.create(nume: "Concluzii", licenta_id: licenta.id, numar: 2)
+          Capitol.create(nume: "Bibliografie", licenta_id: licenta.id, numar: 3)
+        end
+      end
+
+      
+      
       # creez o intrare si in licenta_saved pt arhiva si in cazul in care studentul renunta si se intoarce mai tarziu la ea
-      LicentaSalvata.create(user_id: current_user.id , tema_id: params[:temaaleasa_id])
-      # creez capitolele de inceput
-      Capitol.create(nume: "Introducere", licenta_id: licenta.id, numar: 1)
-      Capitol.create(nume: "Concluzii", licenta_id: licenta.id, numar: 2)
-      Capitol.create(nume: "Bibliografie", licenta_id: licenta.id, numar: 3)
+      #LicentaSalvata.create(user_id: current_user.id , tema_id: params[:temaaleasa_id])
+      
       # setez ca acceptat in alegeri - tema aleasa
       AlegeriUserTema.where(user_id: current_user.id, tema_id: params[:temaaleasa_id]).first.update_attributes(status_student: "Accepted")
       # setez restul ca rejected o data ce mi-am ales licenta
@@ -167,8 +219,10 @@ class BrowsePaginiController < ApplicationController
       alegeri.each do |alegere|
           alegere.update_attributes(status_student: "Rejected")
       end
+      
       # tema aceasta nu mai este libera - deci nu mai apare in browse
       Tema.find(params[:temaaleasa_id]).update(este_libera: false)
+      
       # du-ma la pagina de licenta
       redirect_to licentaHome_path
   end

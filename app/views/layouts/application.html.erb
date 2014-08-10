@@ -56,27 +56,21 @@
 				<div class="col-sm-3 col-md-2 sidebar">
 					<ul class="nav nav-sidebar">
 						
-						<li>
-							<%= link_to "Arhivă", arhivaHome_path%>
-						</li>
+						<li><%= link_to "View DB", viewDataBase_path%></li>
+						<li><%= link_to "Features", listaFeatures_path%></li>
+						<hr>
+
+						<li><%= link_to "Arhivă", arhivaHome_path%></li>
 
 						<!-- pentru studenti -->
 						<% if @current_user.rol == "Student" %>
-						<% if Licenta.where(user_id: @current_user.id).first %>
-							<li>
-								<%= link_to "Acasă", licentaHome_path%>
-							</li>
-							<li>
-								<%= link_to "Fișierele mele", fisiers_path %>
-							</li>
+						<% if Licenta.where(user_id: @current_user.id).where(renuntat: false).first %>
+							<li><%= link_to "Acasă", licentaHome_path%></li>
+							<li><%= link_to "Fișierele mele", fisiers_path %></li>
 						<%else%>
-							<li>
-								<%= link_to "Acasă", root_path%>
-							</li>
+							<li><%= link_to "Acasă", root_path%></li>
 							<% if @current_user.este_eligibil_licenta == true %>
-								<li>
-									<%= link_to "Alegerile mele", alegerileMele_path %>
-								</li>
+								<li><%= link_to "Alegerile mele", alegerileMele_path %></li>
 							<% end %>
 						<%end%>
 						<%else%>
