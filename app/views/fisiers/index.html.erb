@@ -1,4 +1,7 @@
 <% if current_user.rol == "Profesor" %>
+	<%= User.find(params[:student_id]).nume + " " + User.find(params[:student_id]).prenume + " - " + User.find(params[:student_id]).grupa.to_s %>
+	<br/>
+	<%= Tema.find(Licenta.where(user_id: params[:student_id]).where(renuntat: false).first.tema_id).nume %>
 	<ol class="breadcrumb">
     	<li><a href="/licenta_pagini/licentaHome?student_id=<%= @studentid %>">Licenta Home</a></li>
     	<li class="active">Fișierele lucrării</li>

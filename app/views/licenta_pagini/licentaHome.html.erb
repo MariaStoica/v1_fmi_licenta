@@ -1,4 +1,5 @@
 <% if current_user.rol == "Profesor"%>
+<%= User.find(params[:student_id]).nume + " " + User.find(params[:student_id]).prenume + " - " + User.find(params[:student_id]).grupa.to_s %>
 <ol class="breadcrumb">
 	<li>Licență Home</li>	
 </ol>
@@ -48,10 +49,17 @@
 			</tr>
 			</thead>
 			<tbody>
+				<!-- Capitolele -->
 				<% @capitole.order(:numar).each do |capitol| %>
 					<tr>
 						<td>Cap <%= capitol.numar %>.</td>
-						<td><%= link_to capitol.nume, capitol %></td>
+						<td>
+							<% if capitol.este_licenta_finala == true %>
+								<%= link_to capitol.nume, capitol, style: "color: green" %>
+							<% else %>
+								<%= link_to capitol.nume, capitol %>
+							<% end %>
+						</td>
 						<% if @current_user.rol == "Student" %>
 						<td>
 							<% if capitol.numar > 1 %>
@@ -63,6 +71,7 @@
 						</td>
 						<% end %>
 					</tr>
+					<!-- ToDo-urile -->
 					<tr>
 						<td></td>
 						<td>
@@ -115,6 +124,9 @@
 				<% end %>
 			</tbody>
 		</table>
+
+		<br/>
+		<%= link_to "Submit licenta finala", submitLicentaFinala_path(licenta_id: @licenta.id), class: "btn btn-success" %>
 
 	<!-- <end%> -->
 </div>

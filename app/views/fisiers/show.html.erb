@@ -1,3 +1,9 @@
+<% if current_user.rol == "Profesor"%>
+	<%= @student.nume + " " + @student.prenume + " - " + @student.grupa.to_s %>
+	<br/>
+	<%= @tema.nume %>
+<% end %>
+
 <ol class="breadcrumb">
 	<% if current_user.rol == "Profesor"%>
     	<li><a href="/licenta_pagini/licentaHome?student_id=<%= @studentid%>">Licenta Home</a></li>

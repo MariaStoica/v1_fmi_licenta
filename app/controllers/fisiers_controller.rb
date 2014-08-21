@@ -22,6 +22,8 @@ class FisiersController < ApplicationController
     @comentarii = ComentariuFisier.where(fisier_id: @fisier.id)
     @capitol = Capitol.find(@fisier.capitol_id)
     @studentid = Licenta.find(@capitol.licenta_id).user_id
+    @student = User.find(@studentid)
+    @tema = Tema.find(Licenta.find(@capitol.licenta_id).tema_id)
   end
 
   # GET /fisiers/new

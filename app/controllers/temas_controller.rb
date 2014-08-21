@@ -20,6 +20,7 @@ class TemasController < ApplicationController
 
   # GET /temas/new
   def new
+    @u = current_user
     @tema = Tema.new
     @current_sesiune = Sesiune.where("data_end is null").first
     if @current_sesiune == nil
@@ -31,8 +32,8 @@ class TemasController < ApplicationController
   def edit
       @current_sesiune = Sesiune.where("data_end is null").first
       if @current_sesiune == nil
-      @current_sesiune = Sesiune.where("data_end is not null").last
-    end
+        @current_sesiune = Sesiune.where("data_end is not null").last
+      end
   end
 
   # POST /temas
@@ -42,8 +43,18 @@ class TemasController < ApplicationController
 
     respond_to do |format|
       if @tema.save
-        if current_user and current_user.rol == "Student"
-          format.html { redirect_to "/domenius/" + @tema.domeniu_id.to_s, notice: 'Tema a fost creată.' }
+
+        # dc tema a fost creata de un student, sa o adaug la alererile sale
+        if User.find(@tema.user_id).rol == "Student"
+          @current_sesiune = Sesiune.where("data_end is null").first
+          if @current_sesiune == nil
+            @current_sesiune = Sesiune.where("data_end is not null").last
+          end
+          AlegeriUserTema.create(tema_id: @tema.id, user_id: @tema.user_id, status_profesor: "Pending", status_student: "Pending", sesiune_id: @current_sesiune.id)
+        end
+
+        if current_user and current_user.rol == "Student" # "/domenius/" + @tema.domeniu_id.to_s
+          format.html { redirect_to alegerileMele_path, notice: 'Tema a fost creată.' }
           format.json { render action: 'show', status: :created, location: @tema }
         else
           format.html { redirect_to temeleMele_path, notice: 'Tema a fost creată.' }

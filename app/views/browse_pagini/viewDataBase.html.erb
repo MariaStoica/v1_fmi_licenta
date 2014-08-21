@@ -40,6 +40,7 @@ Users
 			<th>Email</th>
 			<th>Rol</th>
 			<th>Grad</th>
+			<th>Acc prop stud</th>
 			<th>Grupa</th>
 			<th>Specializare</th>
 			<th>Este Eligibil Licenta</th>
@@ -54,6 +55,7 @@ Users
 				<td><%= user.email %></td>
 				<td><%= user.rol %></td>
 				<td><%= user.grad %></td>
+				<td><%= user.are_domeniu_propuneri_studenti %></td>
 				<td><%= user.grupa %></td>
 				<td><%= user.specializare %></td>
 				<td><%= user.este_eligibil_licenta %></td>
@@ -109,6 +111,7 @@ Domenius
 			<th>Id</th>
 			<th>Nume</th>
 			<th>User Id</th>
+			<th>Sesiune Id</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -117,6 +120,7 @@ Domenius
 				<td><%= user.id %></td>
 				<td><%= user.nume %></td>
 				<td><%= user.user_id %></td>
+				<td><%= user.sesiune_id %></td>
 			</tr>
 		<% end %>
 	</tbody>

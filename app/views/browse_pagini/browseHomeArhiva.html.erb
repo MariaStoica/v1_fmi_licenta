@@ -1,10 +1,10 @@
 <h1>Toate temele din <%= @selected_sesiune.data_start.strftime("%Y") %> - <%= (@selected_sesiune.data_start.strftime("%Y").to_i + 1).to_s %></h1>
 <br/><br/>
 
-<% if flash[:notice] && flash[:notice] != "Alegerea selectata deja exista" && flash[:notice] != "Alegere salvata cu succes"%>
-   <div id="notice"><%= flash[:notice] %></div>
-   <hr>
-<% end %>
+<!-- < if flash[:notice] && flash[:notice] != "Alegerea selectata deja exista" && flash[:notice] != "Alegere salvata cu succes"%> -->
+   <!-- <div id="notice"><= flash[:notice] %></div> -->
+   <!-- <hr> -->
+<!-- < end %> -->
 
 <!-- search box -->
 <%= form_tag({controller: "browse_pagini", action:"browseHomeArhiva" }, method: "get") do %>
@@ -15,6 +15,130 @@
     </div>
 <% end %>
 <br/>
+
+<!-- temele din sesiunea curenta -->
+<% if params[:search] and params[:search] != "" %>
+	<% if @results.count > 0 %>
+		<table class="table table-striped table hover">
+			<thead>
+				<th>Nr.</th>
+				<th>Titlu temă</th>
+			</thead>
+			<tbody>
+				<% nr_tema_searc = 0 %>
+				<% @results.each do |r| %>
+					<% nr_tema_searc = nr_tema_searc + 1 %>
+					<tr>
+						<td><%= nr_tema_searc %></td>
+						<td><%= link_to r.nume, r %></td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+	<% elsif @results.count == 0 %>
+		Nicio tema.
+	<% end %>
+<% else %>
+	<% if @useri_profesori.count == 0 %>
+		<p> Nu sunt profesori eligibili pentru licență. </p>
+	<% end %>
+	<div class="css-treeview">
+		<ul> <!-- pt profi -->
+			<% @useri_profesori.each do |prof| %>
+				<li style="padding-bottom:10px; padding-top:10px;"><input type="checkbox" /><label><span style="font-size:22px;font-family:Georgia, serif;color:black"><%= link_to prof.grad + " " + prof.nume + " " + prof.prenume, prof %><span/></label>
+					<ul> <!-- pt domenii -->
+						<% if Domeniu.where(user_id: prof.id).where(sesiune_id: params[:sesiune_id]).count == 0 %>
+							Nu sunt domenii.
+						<% else %>
+						<% Domeniu.where(user_id: prof.id).where(sesiune_id: params[:sesiune_id]).each do |dom| %>
+							<li style="padding-top:10px;"><input type="checkbox" /><label style="font-size:18px;font-family:Georgia, serif; color:darkgreen" for="domeniu"><%= link_to dom.nume, dom %></label>
+							<br/>
+							<ul>
+							<% if @current_user.rol == "Student" %>
+								<% if Tema.where(domeniu_id: dom.id).where(sesiune_id: params[:sesiune_id]).count == 0 %>
+									<li style="padding-top:10px"><em>Nu sunt teme.</em></li>
+								<% else %>
+									<table class="table table-striped table hover">
+										<thead>
+											<th></th>
+										</thead>
+										<tbody>
+											<% Tema.where(domeniu_id: dom.id).where(sesiune_id: params[:sesiune_id]).each do |tema| %>
+												<tr>
+													<td><%= link_to tema.nume, tema(sesiune_id: params[:sesiune_id]) %></td>
+												</tr>
+												<!-- <li style="list-style-type: circle; padding-top:10px"> -->
+													<!-- <span style="font-size:18px;font-family:Georgia, serif;color:black"><= link_to tema.nume, tema %></span> -->
+												<!-- </li> end de la tema -->
+											<% end %>
+										</tbody>
+									</table>
+								<% end %>
+							<% else %>
+								<% if Tema.where(domeniu_id: dom.id).count == 0 %>
+									<li style="padding-top:10px"><em>Nu sunt teme.</em></li>
+								<% else %>
+									<table class="table table-striped table hover">
+										<thead>
+											<th></th>
+										</thead>
+										<tbody>
+											<% Tema.where(domeniu_id: dom.id).each do |tema| %>
+												<tr>
+													<td><%= link_to tema.nume, tema %></td>
+												</tr>
+											<% end %>
+										</tbody>
+									</table>
+								<% end %>
+							<% end %>
+							</ul>
+
+							</li> <!-- end de la domeniu -->
+						<% end %>
+						<% end %>
+					</ul>
+				</li> <!-- end de la prof -->
+				<hr>
+			<% end %>
+		</ul>
+	</div> <!-- end of div css treeview -->
+	<br/><br/>
+<% end %>
+<hr><br/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <% if params[:search] and params[:search] != "" %>
 	<%= @results.count %> teme gasite.

@@ -60,8 +60,6 @@
 						<li><%= link_to "Features", listaFeatures_path%></li>
 						<hr>
 
-						<li><%= link_to "Arhivă", arhivaHome_path%></li>
-
 						<!-- pentru studenti -->
 						<% if @current_user.rol == "Student" %>
 						<% if Licenta.where(user_id: @current_user.id).where(renuntat: false).first %>
@@ -95,9 +93,11 @@
 							<%= link_to "Control Panel", controlPanel_path %>
 						</li>
 						<li>
-							<%= link_to "Specializari", userSpecializari_path(rol: "Profesor") %>
+							<%= link_to "Users", userSpecializari_path(rol: "Profesor") %>
 						</li>
 						<% end %>
+
+						<li><%= link_to "Arhivă", arhivaHome_path%></li>
 
 					</ul>
 				</div>

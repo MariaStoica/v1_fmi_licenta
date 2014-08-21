@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nume: MyString
+  numar: 1
+  descriere: MyText
+  data_start: 2014-08-18 12:15:20
+  data_end: 2014-08-18 12:15:20
+
+two:
+  nume: MyString
+  numar: 1
+  descriere: MyText
+  data_start: 2014-08-18 12:15:20
+  data_end: 2014-08-18 12:15:20

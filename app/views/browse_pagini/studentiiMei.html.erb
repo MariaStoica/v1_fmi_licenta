@@ -62,7 +62,8 @@
 									</div>
 								</td>
 								<td>
-									<% if progres == 100 %>
+									<% licentaFinala = Capitol.where(licenta_id: licenta.id).where(este_licenta_finala: true) %>
+									<% if licentaFinala.count > 0 and licentaFinala.first.fisiers.count > 0 %>
 										<%= link_to "Referat licență", root_path, class: "btn btn-primary", style: "color:white" %>
 									<% end %>
 								</td>

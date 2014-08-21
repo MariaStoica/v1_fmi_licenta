@@ -29,15 +29,23 @@
     </div>
     <br/><br/><br/><br/><br/><br/><br/><br/>
 
-    <% if params[:domeniu_id] %>
-      <%= f.hidden_field :domeniu_id, :value => params[:domeniu_id] %>
+    <% if params[:domeniu_id] and @current_user.rol == "Student" %> 
+        <%= f.hidden_field :domeniu_id, :value => params[:domeniu_id] %>
+    <% elsif params[:domeniu_id] %>
+      <div class="field">
+      <%= f.label :domeniu_id %><br>
+      <%= f.radio_button :domeniu_id, params[:domeniu_id], :checked => true %><%= " " + Domeniu.find(params[:domeniu_id]).nume %><br/>
+      <%= f.collection_radio_buttons(:domeniu_id, Domeniu.where(user_id: current_user.id).where(sesiune_id: @current_sesiune.id).where.not(id: params[:domeniu_id]), :id, :nume) do |b| %>
+          <%= b.radio_button + " " + b.text %></br>
+      <% end %>
+      </div>
     <% else %>
       <div class="field">
       <%= f.label :domeniu_id %><br>
-      <%= f.collection_radio_buttons(:domeniu_id, Domeniu.where(user_id: current_user.id), :id, :nume) do |b| %>
-        <%= b.label(:"data-value" => b.value) { b.radio_button + b.text } %></br>
+      <%= f.collection_radio_buttons(:domeniu_id, Domeniu.where(user_id: current_user.id).where(sesiune_id: @current_sesiune.id), :id, :nume) do |b| %>
+          <%= b.label(:"data-value" => b.value) { b.radio_button + " " + b.text } %></br>
       <% end %>
-    </div>
+      </div>
     <% end %>
     
 

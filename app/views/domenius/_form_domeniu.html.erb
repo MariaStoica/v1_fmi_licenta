@@ -11,6 +11,9 @@
     <hr>
   <% end %>
 
+
+  <%= f.hidden_field :sesiune_id, :value => @current_sesiune.id %>
+
   <div class="field">
     <%= f.label :nume %><br>
     <%= f.text_field :nume, class: 'col-sm-10' %>

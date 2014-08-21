@@ -8,6 +8,8 @@ class Domeniu < ActiveRecord::Base
         #SELECT * FROM foo WHERE bar LIKE "%query%" LIMIT 10;
     end
 
-    validates :nume,  presence: true
+    validates :nume, presence: true
+    validates :user_id, presence: true
+	validates :sesiune_id, presence: true
 
 end

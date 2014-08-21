@@ -69,6 +69,15 @@
 
 		  <th>Specializare</th>
 		  <th>Eligibil Licenta</th>
+
+		  <% if params[:rol] == "Profesor" %>
+		  	<th>Acc Stud</th>
+		  	<th>Teme</th>
+		  	<th>Domenii</th>
+		  	<th>Pending-uri</th>
+		  	<th>Studenti</th>
+		  <% end %>
+
 		  <th></th>
 		</tr>
   	</thead>
@@ -92,8 +101,36 @@
 					<% elsif user.este_eligibil_licenta == false %>
 						<td style="color:red"><%= user.este_eligibil_licenta %></td>
 					<% end %>
+				<% end %>
+
+				<% if params[:rol] == "Profesor" %>
+					<% pending = AlegeriUserTema.where(sesiune_id: get_current_sesiune.id).where(status_profesor: "Pending") %>
+					<% domeniile = Domeniu.where(sesiune_id: get_current_sesiune.id).where(user_id: user.id) %>
+					<% temeleNr = 0 %>
+					<% pendinguriNr = 0 %>
+					<% studentiNr = 0 %>
+
+					<% domeniile.each do |d| %>
+						<% temeleNr = temeleNr + d.temas.count %>
+						<% d.temas.each do |t| %>
+							<% pendinguriNr = pendinguriNr + pending.where(tema_id: t.id).count %>
+							<% Licenta.where(tema_id: t.id).each do |licenta| %>
+				            	<% studentiNr = studentiNr + 1 %>
+				            <% end %>
+						<% end %>
+					<% end %>
+
+				    <td><%= user.are_domeniu_propuneri_studenti %></td>
+					<td><%= temeleNr %></td>
+					<td><%= domeniile.count %></td>
+					<td><%= pendinguriNr %></td>
+					<td><%= studentiNr %></td>
+				<% end %>
+
+				<% if params[:rol] == "Profesor" or params[:rol] == "Student" %>
 				  	<td><%= link_to 'Edit', edit_user_path(user) %></td>
 				<% end %>
+
 				
 				<% if params[:rol] == nil %>
 					<td></td>

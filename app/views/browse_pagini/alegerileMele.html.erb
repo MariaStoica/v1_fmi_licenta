@@ -46,7 +46,7 @@
 				<% end %>
 
 				<% if alegere.status_profesor == "Accepted" %>
-					<td><%= link_to "Alege ca lucrare de licență", accepta_path(:temaaleasa_id => tema.id), :class => 'btn btn-success'  %></td>
+					<td><%= link_to "Alege ca lucrare de licență", acceptaCaLicenta_path(:temaaleasa_id => tema.id), :class => 'btn btn-success'  %></td>
 				<% else %>
 					<td></td>
 				<% end %>

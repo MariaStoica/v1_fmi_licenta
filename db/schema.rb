@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140810074658) do
+ActiveRecord::Schema.define(version: 20140818100042) do
 
   create_table "alegeri_user_temas", force: true do |t|
     t.integer  "user_id"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 20140810074658) do
     t.integer  "numar"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "este_licenta_finala"
   end
 
   add_index "capitols", ["licenta_id"], name: "index_capitols_on_licenta_id"
@@ -81,12 +82,23 @@ ActiveRecord::Schema.define(version: 20140810074658) do
   add_index "comentariu_temas", ["tema_id"], name: "index_comentariu_temas_on_tema_id"
   add_index "comentariu_temas", ["user_id"], name: "index_comentariu_temas_on_user_id"
 
+  create_table "deadlines", force: true do |t|
+    t.string   "nume"
+    t.integer  "numar"
+    t.text     "descriere"
+    t.date     "data_start"
+    t.date     "data_end"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "domenius", force: true do |t|
     t.string   "nume"
     t.text     "descriere"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sesiune_id"
   end
 
   add_index "domenius", ["user_id"], name: "index_domenius_on_user_id"
@@ -132,7 +144,7 @@ ActiveRecord::Schema.define(version: 20140810074658) do
     t.date     "data_end"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deadline"
+    t.date     "deadline"
   end
 
   create_table "temas", force: true do |t|
@@ -172,6 +184,7 @@ ActiveRecord::Schema.define(version: 20140810074658) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "specializare"
+    t.boolean  "are_domeniu_propuneri_studenti"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

@@ -21,10 +21,19 @@ class DomeniusController < ApplicationController
   def new
     @u = current_user
     @domeniu = Domeniu.new
+    @current_sesiune = Sesiune.where("data_end is null").first
+    if @current_sesiune == nil
+      @current_sesiune = Sesiune.where("data_end is not null").last
+    end
+
   end
 
   # GET /domenius/1/edit
   def edit
+    @current_sesiune = Sesiune.where("data_end is null").first
+    if @current_sesiune == nil
+      @current_sesiune = Sesiune.where("data_end is not null").last
+    end
   end
 
   # POST /domenius
@@ -79,7 +88,7 @@ class DomeniusController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def domeniu_params
-      params.require(:domeniu).permit(:nume, :descriere, :user_id)
+      params.require(:domeniu).permit(:nume, :descriere, :user_id, :sesiune_id)
     end
     
     

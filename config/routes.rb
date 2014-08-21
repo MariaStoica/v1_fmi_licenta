@@ -1,4 +1,6 @@
 V1FmiLicenta::Application.routes.draw do
+  resources :deadlines
+
   resources :comentariu_temas
   resources :comentariu_fisiers
   resources :comentariu_capitols
@@ -33,17 +35,22 @@ V1FmiLicenta::Application.routes.draw do
   get "temas/new" => "temas#new", as: "temaNew"
   get "fisiers/:id/download" => "fisiers#download", as: "download_fisier"
 
-  match "/accepta" => "browse_pagini#accepta", :as => :accepta , via: [:get, :post] # pt a accepta licenta (partea de browse)
+  match "/acceptaCaLicenta" => "browse_pagini#acceptaCaLicenta", :as => :acceptaCaLicenta , via: [:get, :post] # pt a accepta licenta (partea de browse)
+  match "/acceptStudenti" => "browse_pagini#acceptStudenti", :as => :acceptStudenti , via: [:get, :post]
+  match "/refuzStudenti" => "browse_pagini#refuzStudenti", :as => :refuzStudenti , via: [:get, :post]
   match "/renunta" => "licenta_pagini#renuntaLaLicenta", :as => :renunta , via: [:get, :post]
+  match "/submitLicentaFinala" => "licenta_pagini#submitLicentaFinala", :as => :submitLicentaFinala , via: [:get, :post]
   match "intreaba/send", to: "browse_pagini#sendmail", via: "post"
   match "licentaHome/adauga_comentariu", to: "licenta_pagini#adauga_comentariu", via: "post"
   match "fisiers/adauga_comentariu", to: "fisiers#adauga_comentariu", via: "post"
   match "capitols/adauga_comentariu", to: "capitols#adauga_comentariu", via: "post"
+  match "intreaba/adauga_comentariu", to: "browse_pagini#adauga_comentariu", via: "post"
 
   # omniauth
   get '/auth/:provider/callback', :to => 'user_sessions#create'
   get '/auth/failure', :to => 'user_sessions#failure' 
-  match '/logout', :to => 'user_sessions#destroy', :as => :logout, via: [:get, :post]
+  get '/logout', :to => 'user_sessions#destroy'
+  # match '/logout', :to => 'user_sessions#destroy', :as => :logout, via: [:get, :post]
 
   root to: "browse_pagini#browseHome"
 

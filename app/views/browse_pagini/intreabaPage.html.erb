@@ -1,1 +1,56 @@
-<h1>Discutii "<%= Tema.find(params[:tema_id]).nume %>"</h1>
+<% tema = Tema.find(params[:tema_id]) %>
+<h1>Discutii "<%= tema.nume %>"</h1>
+
+<!-- comentariile temei -->
+
+<%if @comentarii.count == 0%>
+		<em>Nu sunt comentarii.</em>
+		<br/><br/>
+	<%else%>
+		<%@comentarii.each do |comentariu|%>
+			<% if User.find(comentariu.user_id).rol == "Profesor" %>
+				<div class="panel panel-default">
+				  <div class="panel-heading">
+				    	<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
+						<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
+				  </div>
+				  <div class="panel-body">
+				    <%= comentariu.continut %>
+				  </div>
+				</div>
+				<!-- <p style="color:green"> -->
+				<!-- <b><= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b>  -->
+				<!-- <em><= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em> -->
+				<!-- <br/> -->
+				<!-- <=comentariu.continut%></p> -->
+			<% else %>
+				<div class="panel panel-info">
+				  <div class="panel-heading">
+				    	<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
+						<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
+				  </div>
+				  <div class="panel-body">
+				    <%= comentariu.continut %>
+				  </div>
+				</div>
+				<!-- <p style="color:blue"> -->
+				<!-- <b><= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b> -->
+				<!-- <em><= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em> -->
+				<!-- <br/> -->
+				<!-- <=comentariu.continut%></p> -->
+			<% end %>
+		<%end%>
+	<%end%>
+		
+	<%= form_tag(intreaba_adauga_comentariu_path(user_id: current_user.id), method: "post") do%>
+			<%= hidden_field_tag(:tema_id, params[:tema_id] , class: "form-control") %>
+		<div class="field">
+			<%= text_area_tag(:comentariu, nil , :required => true, class: "form-control",rows:5) %>
+		</div>
+		<br/>
+
+		<%= submit_tag "Adaugă comentariu", class: "btn btn-primary" %>
+		<br/>
+		<%= link_to 'Înapoi', tema_path(tema) %>
+	
+	<%end%>

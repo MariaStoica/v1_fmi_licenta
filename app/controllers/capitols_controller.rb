@@ -15,6 +15,8 @@ class CapitolsController < ApplicationController
       @todouri = Todo.where(capitol_id: @capitol.id)
       @comentarii = ComentariuCapitol.where(capitol_id: @capitol.id)
       @studentid = Licenta.find(@capitol.licenta_id).user_id
+      @student = User.find(@studentid)
+      @tema = Tema.find(Licenta.find(@capitol.licenta_id).tema_id)
   end
   
   def adauga_comentariu

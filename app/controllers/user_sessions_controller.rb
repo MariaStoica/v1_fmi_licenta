@@ -47,6 +47,7 @@ class UserSessionsController < ApplicationController
       if grad == nil 
         grad = "smth"
       end
+      user.are_domeniu_propuneri_studenti = true
       user.grad = grad
       if grad == "Asistent" or grad == "Preparator"
         user.este_eligibil_licenta = false

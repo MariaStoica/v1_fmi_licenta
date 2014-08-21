@@ -22,11 +22,11 @@ class ApplicationController < ActionController::Base
   end
 
   def get_current_sesiune
-    return @current_sesiune
-  end
-
-  def set_current_sesiune(sesiune)
-    @current_sesiune = sesiune
+    @current_s = Sesiune.where("data_end is null").first
+    if @current_s == nil
+      @current_s = Sesiune.where("data_end is not null").last
+    end
+    return @current_s
   end
 
 end

@@ -1,6 +1,7 @@
 class AdminPaginiController < ApplicationController
   def controlPanel
   	@u = current_user
+    @azi = Date.today
     if params[:data_end] and params[:data_end] != ""
       stopSesiuneCurenta
     end

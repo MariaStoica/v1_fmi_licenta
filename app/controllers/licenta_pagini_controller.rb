@@ -11,13 +11,6 @@ class LicentaPaginiController < ApplicationController
     # dc e studentul
     else
         @licenta = Licenta.where(user_id: current_user.id).where(renuntat: false).first
-        # if licentas
-        #   licentas.each do |lic|
-        #     if lic.renuntat != true
-        #       @licenta = lic
-        #     end
-        #   end
-        # end
         @capitole = @licenta.capitols
         @comentarii = ComentariuLicenta.where(licenta_id: @licenta.id)
     end
@@ -69,6 +62,16 @@ class LicentaPaginiController < ApplicationController
     redirect_to root_path
   end
 
+  def submitLicentaFinala
+    # create capitolul de Licenta Finala daca nu exista deja
+    if Capitol.where(licenta_id: params[:licenta_id]).where(este_licenta_finala: true).count == 0
+      numar = Capitol.where(licenta_id: params[:licenta_id]).count + 1
+      capitol = Capitol.create(nume: "Licenta finala", licenta_id: params[:licenta_id], este_licenta_finala: true, numar: numar)
+    else
+      capitol = Capitol.where(licenta_id: params[:licenta_id]).where(este_licenta_finala: true).first
+    end
+    redirect_to new_fisier_path(capitol_id: capitol.id)
+  end
 
 
   

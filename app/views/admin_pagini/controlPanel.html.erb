@@ -1,60 +1,111 @@
 <h1>Control Panel</h1>
 <br/>
 
-Azi: <%= Date.today %>
+<!-- azi, calendar si deadlines summary -->
+<b>Azi:</b><br/><%= @azi.strftime("%A, %d %B %Y") %> <!-- calendar goes here showing today and the deadlines to come -->
+<hr>
+Lista cu toate deadlineurile<br/> 
+- cele trecute mai obscure,<br/> 
+- cea curenta bold si<br/> 
+- restul to come normale<br/><br/>
+
+	<!-- deadlines -->
+	<table class="table table-striped table hover">
+		<thead>
+			<th>Nr</th>
+			<th>Deadline</th>
+			<th>Start</th>
+			<th>Stop</th>
+			<!-- <th>Descriere</th> -->
+			<th></th> <!-- edit -->
+		</thead>
+		<tbody>
+			<% Deadline.all.each do |deadline| %>
+				<tr>
+					<td><%= deadline.numar %></td>
+					<td><%= deadline.nume %></td>
+					<td><%= deadline.data_start.strftime("%d %B %Y") %></td>
+					<% if @azi > deadline.data_start %>
+						<td><%= deadline.data_end.strftime("%d %B %Y") + " ( " + distance_of_time_in_words(@azi, deadline.data_end) + " ago )" %></td>
+					<% else %>
+						<td><%= deadline.data_end.strftime("%d %B %Y") + " ( " + distance_of_time_in_words(@azi, deadline.data_end) + " left )" %></td>
+					<% end %>
+					<!-- <td><= deadline.descriere %></td> -->
+					<td><%= link_to "Edit", edit_deadline_path(deadline) %></td>
+				</tr>
+			<% end %>
+			<tr>
+				<td></td>
+				<td><%= link_to "+ Adauga deadline", new_deadline_path %></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+
 <br/>
+// cand se insereaza un deadline nou in tabel, numarul se updateaza singur in fctie de data_start si data_end al sau si al celorlalte deadlineuri din tabel<br/>
 <hr>
 
+<!-- alte setari -->
+<b>Nr max studenti / prof: </b> 25 <%= link_to "Edit", controlPanel_path %>
+<hr>
+
+<!-- start / stop sesiune -->
 <% if Sesiune.where("data_end is null").count == 0 %>
 
-<!-- sesiune oprita -->
-<b>Status: sesiune oprita</b>
-<br/>
-<em> Profii pot sa: <br/>
-	 1. vizualizeze arhiva - prima pagina va deveni ultima intrare in arhiva <br/>
-	 2. isi gestioneze temele si domeniile <br/> 
-	 3. pot sa raspunda pe forum la temele lor <br/> 
-	 4. pot sa isi vizualizeze studentii de la licenta in Studentii Mei - ceilalti doar in stare de raspuns dispar <br/> 
-	 5. au acces la lucrarile de licenta ale studentilor din sesiunea trecuta pana in momentul in care se porneste urm sesiune 
-	 <br/><br/>
-	 Studentii pot sa: <br/> 
-	 1. vizualizeze arhiva - prima pagina va deveni ultima intrare in arhiva <br/>
-	 2. pot sa puna intrebari pe forum la temele lor <br/>
-	 3. nu au acces la alegerile mele<br/>
-	 4. pot sa isi vada pagina de licenta pana la startul urm sesiuni - din momentul in care referatul e emis nu mai pot modifica sau uploada todos sau fisiere. doar comentarii
-</em>
-<br/><br/>
-<b>Data opririi ultimei sesiuni:</b> data - acum 5 saptamani
-<br/>
-<b>Data pornire urmatoarea sesiune:</b> data - peste 2 luni
-<br/><br/>
-<%= link_to "Start sesiune", "/sesiunes/new", :class => 'btn btn-success', data: { confirm: 'Are you sure?' } %>
+	<!-- sesiune oprita -->
+	<b>Status: sesiune oprita</b>
+	<br/>
+	<em> Profii pot sa: <br/>
+		 1. vizualizeze arhiva - prima pagina va deveni ultima intrare in arhiva <br/>
+		 2. isi gestioneze temele si domeniile <br/> 
+		 3. pot sa raspunda pe forum la temele lor <br/> 
+		 4. pot sa isi vizualizeze studentii de la licenta in Studentii Mei - ceilalti doar in stare de raspuns dispar <br/> 
+		 5. au acces la lucrarile de licenta ale studentilor din sesiunea trecuta pana in momentul in care se porneste urm sesiune 
+		 <br/><br/>
+		 Studentii pot sa: <br/> 
+		 1. vizualizeze arhiva - prima pagina va deveni ultima intrare in arhiva <br/>
+		 2. pot sa puna intrebari pe forum la temele lor <br/>
+		 3. nu au acces la alegerile mele<br/>
+		 4. pot sa isi vada pagina de licenta pana la startul urm sesiuni - din momentul in care referatul e emis nu mai pot modifica sau uploada todos sau fisiere. doar comentarii
+	</em>
+	<br/><br/>
+	<b>Data opririi ultimei sesiuni:</b> data - acum 5 saptamani
+	<br/>
+	<b>Data pornire urmatoarea sesiune:</b> data - peste 2 luni
+	<br/><br/>
+	<%= link_to "Start sesiune", "/sesiunes/new", :class => 'btn btn-success', data: { confirm: 'Are you sure?' } %>
 
 <% elsif Sesiune.where("data_end is null").count == 1 %>
 
-<!-- sesiune activa -->
-<b>Status: sesiune activa</b> 
-<br/>
-<em> Profii pot sa: <br/>
-	 1. tot
-	 <br/><br/>
-	 Studentii pot sa: <br/>
-	 1. tot
-</em>
-<br/><br/>
-<b>Sesiune pornita din data</b>: data
-<br/>
-<b>Deadline stabilit:</b> data si ora deadline // se va da mail cu 1 sapt inainte sa expire, apoi cu 1 zi inainte, apoi cu 1h
-<br/><br/>
+	<!-- sesiune activa -->
+	<b>Status:</b> sesiune activa 
+	<br/>
+	<b>Sesiune pornita din data:</b> 
+	<% if @azi > get_current_sesiune.data_start %>
+		<%= get_current_sesiune.data_start.strftime("%A, %d %B %Y") + " ~ " + distance_of_time_in_words(@azi, get_current_sesiune.data_start) + " ago" %>
+	<% else %>
+		<%= get_current_sesiune.data_start.strftime("%A, %d %B %Y") + " ~ " + distance_of_time_in_words(@azi, get_current_sesiune.data_start) + " left" %>
+	<% end %>
+	<br/>
 
-<!-- <= link_to "Stop sesiune", {controller: "admin_pagini", action: "stopSesiuneCurenta"}, :class => 'btn btn-danger', data: { confirm: 'Are you sure?' } %> -->
-
-<%= form_tag({controller: "admin_pagini", action:"controlPanel" }, method: "get") do  %>
-    <div class="form-group search-form">
-    	<%= hidden_field_tag(:data_end, Date.today) %>
-		<%= submit_tag("Stop sesiune", class: 'btn btn-danger', data: { confirm: 'Are you sure?' } ) %>
-    </div>
-<% end %>
+	<b>Sfarsit sesiune indicat:</b> 
+	<% if @azi > get_current_sesiune.deadline %>
+		<%= get_current_sesiune.deadline.strftime("%A, %d %B %Y") + " ~ " + distance_of_time_in_words(@azi, get_current_sesiune.deadline) + " ago"%>
+	<% else %>
+		<%= get_current_sesiune.deadline.strftime("%A, %d %B %Y") + " ~ " + distance_of_time_in_words(@azi, get_current_sesiune.deadline) + " left"%>
+	<% end %>
+	
+	<br/>//data si ora deadline // se va da mail cu 1 sapt inainte sa expire, apoi cu 1 zi inainte, apoi cu 1h
+	<br/><br/>
+	<%= form_tag({controller: "admin_pagini", action:"controlPanel" }, method: "get") do  %>
+	    <div class="form-group search-form">
+	    	<%= hidden_field_tag(:data_end, Date.today) %>
+			<%= submit_tag("Stop sesiune", class: 'btn btn-danger', data: { confirm: 'Are you sure?' } ) %>
+	    </div>
+	<% end %>
 
 <% elsif Sesiune.where("data_end is null").count > 1 %>
 

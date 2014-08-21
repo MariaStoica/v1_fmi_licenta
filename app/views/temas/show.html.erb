@@ -15,9 +15,109 @@
 
 <% if @current_user != nil %>
 	<% if @current_user.rol == "Student" and @current_user.este_eligibil_licenta == true %>
-		<%= link_to "Cere detalii", intreaba_path(:tema_id => @tema.id, :to => User.find(Domeniu.find(Tema.find(params[:id]).domeniu_id).user_id).email), :class => 'btn btn-info' %>
+		<%= link_to "Discuții", intreaba_path(:tema_id => @tema.id, :to => User.find(Domeniu.find(Tema.find(params[:id]).domeniu_id).user_id).email), :class => 'btn btn-info' %>
 		<%= link_to "Alege tema", alegerileMele_path(:tema_id => @tema.id), :class => 'btn btn-success' %>
+	<% elsif @current_user.rol == "Profesor" and @current_user.este_eligibil_licenta == true and Domeniu.find(@tema.domeniu_id).user_id == @current_user.id %>
+		<%= link_to "Discuții", intreaba_path(tema_id: @tema.id), :class => 'btn btn-info' %>
+		<hr>
+		<% if Licenta.where(tema_id: @tema.id).count > 0 %>
+		<table class="table table-striped table hover">
+			<thead>
+				<tr>
+				  <th class="col-sm-2">Nume</th>
+				  <th class="col-sm-1">Grupa</th>
+				  <th class="col-sm-5">Tema</th>
+				  <th class="col-sm-2"></th>
+				  <th class="col-sm-1"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<% if params[:sesiune_id] %>
+				<%LicentaSalvata.where(tema_id: @tema.id).where(sesiune_id: params[:sesiune_id]).each do |licenta| %>
+	     			<%User.where(id: licenta.user_id).each do |user|%>
+						<tr>
+							<td><%= user.nume + " " + user.prenume %></td>
+							<td><%= user.grupa %></td>
+							<td>
+								<!-- < if Licenta.find_by_tema_id(@tema.id).renuntat == false %> -->
+									<%=link_to @tema.nume,licentaHome_path(:student_id => user.id)%>
+								<!-- < else %> -->
+									<!-- <span style="color:red"><= @tema.nume %></span> -->
+								<!-- < end %> -->
+							</td>
+							
+							<td>
+								View final version
+								<!-- iau toate todo-urile din licenta asta -->
+								<!-- < todos = Todo.find_by_sql("select * from todos where capitol_id in (select id from capitols where licenta_id=" + licenta.id.to_s + ")") %> -->
+								<!-- acum iau doar todo-urile care sunt complete -->
+								<!-- < gata = todos.select{|t| t.este_gata == true} %> -->
+								<!-- calculez progresul -->
+								<!-- <if todos.count == 0 %> -->
+									<!-- < progres = 0 %> -->
+								<!-- < else %> -->
+									<!-- < progres = (gata.count * 100) / todos.count %> -->
+								<!-- < end %> -->
+								<!-- <div class="progress"> -->
+										<!-- <div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: <= progres %>%;" ><span style="color:black"><= progres %>%</span></div> -->
+								<!-- </div> -->
+							</td>
+							<td>
+								<!-- < if progres == 100 %> -->
+									<!-- <= link_to "Referat licență", root_path, class: "btn btn-primary", style: "color:white" %> -->
+								<!-- < end %> -->
+							</td>
+						</tr>
+					<%end%>
+				<%end%>
+				<% else %>
+				<%Licenta.where(tema_id: @tema.id).each do |licenta| %>
+	     			<%User.where(id: licenta.user_id).each do |user|%>
+						<tr>
+							<td><%= user.nume + " " + user.prenume %></td>
+							<td><%= user.grupa %></td>
+							<td>
+								<% if Licenta.find_by_tema_id(@tema.id).renuntat == false %>
+									<%=link_to @tema.nume,licentaHome_path(:student_id => user.id)%>
+								<% else %>
+									<span style="color:red"><%= @tema.nume %></span>
+								<% end %>
+							</td>
+							
+							<td>
+								<!-- iau toate todo-urile din licenta asta -->
+								<% todos = Todo.find_by_sql("select * from todos where capitol_id in (select id from capitols where licenta_id=" + licenta.id.to_s + ")") %>
+								<!-- acum iau doar todo-urile care sunt complete -->
+								<% gata = todos.select{|t| t.este_gata == true} %>
+								<!-- calculez progresul -->
+								<%if todos.count == 0 %>
+									<% progres = 0 %>
+								<% else %>
+									<% progres = (gata.count * 100) / todos.count %>
+								<% end %>
+								<div class="progress">
+										<div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: <%= progres %>%;" ><span style="color:black"><%= progres %>%</span></div>
+								</div>
+							</td>
+							<td>
+								<% if progres == 100 %>
+									<%= link_to "Referat licență", root_path, class: "btn btn-primary", style: "color:white" %>
+								<% end %>
+							</td>
+						</tr>
+					<%end%>
+				<%end%> <!-- end of Licenta -->
+				<% end %> <!-- if params[:sesiune_id] -->
+			</tbody>
+		</table>
+		<% else %>
+			<em>Tema nu a fost luată.</em>
+		<% end %>
 	<% end %>
 <% end %>
 
+
 <!-- intreaba_path(:to => User.find(Domeniu.find(Tema.find(params[:id]).domeniu_id).user_id).email) -->
+
+<hr>
+<%= link_to 'Înapoi', "javascript:history.back()" %>
