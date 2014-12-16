@@ -27,16 +27,18 @@ Cum functioneaza aplicatia de licenta:
 ### 1. Sesiunile de functionare ale aplicatiei de licenta
 
 Aplicatia de licenta este disponibila tot anul si se poate gasi in una din urmatoarele 2 stari:
+
 1. **inchisa**
+
 2. **deschisa**
 
-Cand este inchisa (in vacanta de vara), userii sunt limitati doar la vizionare in mare parte.
+Cand este **inchisa** (in vacanta de vara), userii sunt limitati doar la vizionare in mare parte.
 Mai exact:
 * Administratorul are aceleasi acces ca si atunci cand aplicatia e deschisa.
 * Profesorii pot doar sa vada arhiva de teme din anii trecuti pana in prezent (inclusiv sesiunea care tocmai s-a inchieat) si lucrarile de licenta ale studentilor pe care i-a avut.
 * Studentii pot doar sa vizualizeze arhiva de teme. Cei care si-au dat licenta anul curent mai au acces la pagina lor de licenta (ca vizualizare) pana cand incepe urmatoarea sesiune (licenta le este pastrat in baza de date).
 
-Cand este deschisa (in timpul anului) se intampla mai multe lucruri (care sunt detaliate in punctele urmatoare):
+Cand este **deschisa** (in timpul anului) se intampla mai multe lucruri (care sunt detaliate in punctele urmatoare):
 - alerte, deadlineuri, reminders si hartii de completat
 - domeniile si temele propuse de profesori
 - discutarea temelor
