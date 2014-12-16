@@ -1,5 +1,4 @@
-Licență FMI
-==============
+== Licență FMI
 
 Aplicatia web pentru gestionarea dezvoltarii lucrarii de licenta de la alegerea profesorului coordonator si tema lucrarii pana la predarea lucrarii finale si generarea referatului de licenta. 
 
@@ -25,8 +24,7 @@ Password: foobar
 Cum functioneaza aplicatia de licenta:
 
 
-1. Sesiunile de functionare ale aplicatiei de licenta
-===
+= 1. Sesiunile de functionare ale aplicatiei de licenta
 
 Aplicatia de licenta este disponibila tot anul si se poate gasi in una din urmatoarele 2 stari:
 1. inchisa
@@ -48,8 +46,7 @@ Cand este deschisa (in timpul anului) se intampla mai multe lucruri (care sunt d
 - generarea referatului de licenta
 
 
-2. Autentificarea
-===
+= 2. Autentificarea
 
 Pentru a accesa orice resursa a aplicatiei de licenta, userul trebuie sa fie logat. Asta se face cu ajutorul site-ului de autentificare (auth). Adica: te duci la linkul aplicatiei de licenta, esti redirectionat pe site-ul de auth (http://fmi-api.herokuapp.com) unde introduci credentials si apoi esti redirectionat inapoi la pagina de home a aplicatiei de licenta.
 
