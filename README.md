@@ -56,27 +56,5 @@ Pentru a accesa orice resursa a aplicatiei de licenta, userul trebuie sa fie log
 
 ------
 
-
-
-Sunt 3 tipuri de useri:
-
-1. Admin
-
-2. Student
-
-3. Profesor
-
-Mod de functionare:
-
-1. Profesorii isi adauga domeniile si temele de licenta pentru a fi alese de catre studenti.
-
-2. Pentru ca o tema sa devina lucrare de licenta, are nevoie de accordul profesorului si al studentului.
-
-3. Comunicarea dintre student si profesorul coordonator se face prin comentarii la nivelul lucrarii, al capitolelor si al fisierelor incarcate.
-
-4. Progresul lucrarii se masoara in functie de todo-urile completate de student.
-
-5. La orice moment, profesorul isi poate vedea studentii si progresul lor in pagina "Studentii mei" 
-
-6. Adminul gestioneaza sesiunile de functionare ale aplicatiei de licenta. Oricine se poate uita pe arhiva de teme de licenta si pe lista curenta de teme, dar nu pot interactiona cu ele (eg: studentii nu pot sa isi aleaga o tema de licenta in afara perioadei de functionare). In momentul in care adminul opreste sesiunea curenta a aplicatiei, temele curente se arhiveaza.
+to be continued . . .
 
