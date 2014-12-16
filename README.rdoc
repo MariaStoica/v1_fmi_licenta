@@ -1,5 +1,4 @@
 # Licență FMI
-
 Aplicatia web pentru gestionarea dezvoltarii lucrarii de licenta de la alegerea profesorului coordonator si tema lucrarii pana la predarea lucrarii finale si generarea referatului de licenta. 
 
 Useri pentru development si test:
