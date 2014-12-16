@@ -47,7 +47,8 @@ Cel mai bine e sa incepi cu baza de date din seeds.rb (prin rularea comenzii `$ 
 
 #### 3.0. Baza de date (sau cine-i cine si care ce vrea)
 
-poza LicentaFMI_ERD_simplu.png
+![alt text](https://github.com/RoR-FMI/licenta/blob/master/LicentaFMI_ERD_simplu.png "Aplicatia de licenta FMI baza de date siplificata")
+
 
 ###### Povestea pe scurt:
 
