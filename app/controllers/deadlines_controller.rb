@@ -1,4 +1,4 @@
-class DeadlinesController < ApplicationController
+fclass DeadlinesController < ApplicationController
   before_action :set_deadline, only: [:show, :edit, :update, :destroy]
 
   # GET /deadlines
