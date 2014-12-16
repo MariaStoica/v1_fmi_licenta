@@ -64,34 +64,63 @@ Capurile taiate cu rosu nu exista in schema (au fost adaugate de Ponyorm (http:/
 ###### Toate Tabelele:
 
 * **User**
+
 > Fiecare User care se logheaza prin api-ul fmi poate fi *Administrator*, *Student* sau *Profesor*. Cand se logheaza, daca nu este in baza de date a aplicatiei de licenta atunci este adaugat. Cand aplicatia este deschisa, doar studentii si profesorii eligibili pentru licenta pot folosi toate resursele aplicatiei. Adica **studentii din an terminal care s-au inscris la licenta** si **profesorii cu un grad >= Lector**.
+
 * **Tema**
+
 > Temele sunt in mare parte propuse de profesori si fiecare tema face parte dintr-un domeniu. Insa si studentii pot propune teme in domeniile **Propuneri Studenti** care figureaza la profesorii care accepta propuneri de la studenti.
+
 * **Domeniu**
+
 > Temele sunt clasificate pe domenii (arii mai mari de materie care au multiple implementari si aplicatii (potentiale teme)). Domeniul **Propuneri Studenti** este un titlu rezervat pentru a anunta ca profesorul domeniului accepta propuneri de la studenti. Studentii pot sa adauge teme aici fie din pagina BrowserHome fie de pe pagina Domeniului. 
+
 * **AlegeriUserTema**
+
 > Un student poate sa aleaga mai multe teme pana primeste acceptul unui profesor pentru ca acea tema sa devina licenta in progres. AlegeriUserTema este o combinatie de user si tema cu atribute pentru raspunsul studentului si al profesorului. La inceput ambele sunt **Pending**. Profesorul poate sa dea **Reject** si atunci s-a terminat sau **Accept**, caz in care daca studentul da si el accept atunci lucrarea devine licenta in progres si se adauga in tabelul Licenta.
+
 * **Licenta**
+
 > Reprezinta o combinatie de user si tema sa.
+
 * **LicentaSalvata**
+
 > Tabelul Licenta e folosit in sesiunea curenta pentru a tine cont de ce studenti renunta la licenta sau isi schimba tema. LicentaSalvata este o copie de backup a licentlor (a combinatiilor de user si tema) pentru cazul in care studentii revin la prima tema si sa nu isi piarda munca. Daca altcineva le ia tema la care au renuntat, atunci progresul lor se pierde din baza de date. (se sterg capitolele, fisierele si todo-urile)
+
 * **Capitol**
+
 > Fiecare capitol apartine unei Licente. La crearea licentei se genereaza automat 3 capitole obligatorii din orice lucrare: Introducere, Concluzii si Bibliografie. Fiecare capitol poate avea todo-uri si fisiere.
+
 * **Fisier**
+
 > Fiecare fisier apartine unui capitol. Studentul poate sa urce fisiere in toate capitolele, profesorul coordonator, numai in capitolul Bibliografie. Fisierele urcate pot fi materiale ajutatoare din partea profesorului sau pot fi schite de capitol din partea studentului care cere feedback.
+
 * **Todo**
+
 > Fiecare todo apartine unui capitol. Sunt folosite pentru a ajuta studentul sa isi organizeze pasii implementarii licentei. Pe baza todo-urilor rezolvate se calculeaza progresul licentei. Cand atinge 100% poate sa urce versiunea finala de licenta si apoi se poate genera referatul de licenta.
+
 * **Sesiune**
+
 > Reprezinta anul universitar pe parcursul caruia functioneaza aplicatia. Este folosit in vizualizarea arhivei si separarea temelor, domeniilor, alegelilor facut de studenti si a licentelor pe fiecare an. Sesiunile sunt pornite si oprite de catre administrator.
+
 * **Deadline**
+
 > Alerte, anunturi, mesaje si deadline-uri create de administrator. Unele sunt numai pentru profesori, altele sunt pentru studenti, altele sunt de interes general.
+
 * **ComentariuTema**
+
 > Comentariile acestea sunt afisate pe IntreabaPage si reprezinta discutia publica a studentilor cu profesorul temei. Daca autorul temei este un student atunci profesorul din discutie va fi posesorul domeniului temei.
+
 * **ComentariuLicenta**
+
 > Acestea sunt pe pagina LicentaHome si reprezinta discutia dintre profesor si studentul sau.
+
 * **ComentariuCapitol**
+
 > La fel la nivel de capitol ca sa fie structurat schimbul de informatii. Pot fi intrebari sau feedback etc.
+
 * **ComentariuFisier**
+
 > Disctuie la nivelul unui fisier uploadat. Intrebari, feedback, nelamurir, imbunatatiri etc. 
 
 

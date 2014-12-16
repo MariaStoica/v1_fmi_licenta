@@ -186,7 +186,7 @@ ActiveRecord::Schema.define(version: 20141214125725) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "specializare"
-    t.boolean  "are_domeniu_propuneri_studenti"
+    t.boolean  "c"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
