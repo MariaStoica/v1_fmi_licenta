@@ -21,6 +21,20 @@ Useri pentru development si test:
 
 ------
 
+Get it to work locally:
+
+```
+$ git clone https://github.com/RoR-FMI/licenta.git
+$ cd licenta
+$ bundle install
+$ rake db:migrate
+$ rake db:seed
+```
+
+Cel mai bine e sa incepi cu baza de date din seeds.rb (prin rularea comenzii `$ rake db:seed`) si apoi sa te joci cu aplicatia. Daca vrei sa resetezi baza de date (sa stearga datele din prezent si sa puna datele din seeds.rb) ruleaza `$ rake db:reset`.
+
+------
+
 Cum functioneaza aplicatia de licenta:
 
 
@@ -50,7 +64,7 @@ Cand este **deschisa** (in timpul anului) se intampla mai multe lucruri (care su
 
 ### 2. Autentificarea
 
-Pentru a accesa orice resursa a aplicatiei de licenta, userul trebuie sa fie logat. Asta se face cu ajutorul site-ului de autentificare (auth). Adica: te duci la linkul aplicatiei de licenta, esti redirectionat pe site-ul de auth (http://fmi-api.herokuapp.com) unde introduci credentials si apoi esti redirectionat inapoi la pagina de home a aplicatiei de licenta.
+Pentru a accesa orice resursa a aplicatiei de licenta, userul trebuie sa fie logat. Asta se face cu ajutorul site-ului de autentificare (http://fmi-api.herokuapp.com). Daca nu esti logat si te duci pe un link din aplicatia de licenta, esti redirectionat pe site-ul de auth unde introduci e-mailul si parola. Primesti un token de autentificare si apoi esti redirectionat inapoi la pagina de home a aplicatiei de licenta.
 
 
 
