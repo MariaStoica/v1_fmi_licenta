@@ -1,22 +1,23 @@
-Licență FMI
-==============
+# Licență FMI
 
 Aplicatia web pentru gestionarea dezvoltarii lucrarii de licenta de la alegerea profesorului coordonator si tema lucrarii pana la predarea lucrarii finale si generarea referatului de licenta. 
 
 Useri pentru development si test:
-Rol: Admin
-	admin@admin.com
-Rol: Prof
-	vader@prof.com
-	solo@prof.com
-	albus@prof.com
-Rol: Student
-	maria@student.com
-	stef@student.com
-	marius@student.com
 
-Password:
-foobar
+Rol: Admin
+* admin@admin.com
+
+Rol: Prof
+* vader@prof.com
+* solo@prof.com
+* albus@prof.com
+
+Rol: Student
+* maria@student.com
+* stef@student.com
+* marius@student.com
+
+Password: foobar
 
 ------
 
