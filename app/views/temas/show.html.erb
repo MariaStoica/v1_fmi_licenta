@@ -16,7 +16,7 @@
 		
 		<%= link_to "Discuții", intreaba_path(tema_id: @tema.id), :class => 'btn btn-info' %>
 		<hr>
-		<% if Licenta.where(tema_id: @tema.id).count > 0 %>
+		<% if Licenta.where(tema_id: @tema.id, renuntat: false).count > 0 %>
 			<table class="table table-striped table hover">
 				<thead>
 					<tr>
@@ -29,7 +29,7 @@
 				</thead>
 				<tbody>
 					<% if params[:sesiune_id] %>
-						<%LicentaSalvata.where(tema_id: @tema.id).where(sesiune_id: params[:sesiune_id]).each do |licenta| %>
+						<%LicentaSalvata.where(tema_id: @tema.id, renuntat: false).where(sesiune_id: params[:sesiune_id]).each do |licenta| %>
 			     			<%User.where(id: licenta.user_id).each do |user|%>
 								<tr>
 									<td><%= user.nume + " " + user.prenume %></td>
@@ -43,7 +43,7 @@
 							<% end %>
 						<% end %>
 					<% else %>
-						<% Licenta.where(tema_id: @tema.id).each do |licenta| %>
+						<% Licenta.where(tema_id: @tema.id, renuntat: false).each do |licenta| %>
 			     			<% User.where(id: licenta.user_id).each do |user| %>
 								<tr>
 									
@@ -89,7 +89,7 @@
 			</table>
 
 		<% else %>
-			<em>Tema nu a fost luată.</em>
+			<em>Tema este liberă.</em>
 		<% end %>
 
 	<% end %>

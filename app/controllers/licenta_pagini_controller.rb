@@ -46,20 +46,13 @@ class LicentaPaginiController < ApplicationController
 
   def renuntaLaLicenta
     # gasesc licenta mea - a studentului - ca doar eu pot sa renunt la ea - nu va fi logat un prof sau admin sau secretariat
-    puts "!!!! current user id = " + get_current_user.id.to_s
     @licenta = Licenta.where(user_id: get_current_user.id, renuntat: false).first
-    puts "!!!! licenta = " + @licenta.id.to_s
-    # if licentas
-    #   licentas.each do |lic|
-    #     if lic.renuntat != true
-    #       @licenta = lic
-    #     end
-    #   end
-    # end
-    # ramane in bd cum ca a apartinut mie si acum i-am dat drumul - in caz ca vreau sa ma intorc la ea
-    @licenta.update_attributes(renuntat: true)
-    # eliberez tema
-    Tema.find(@licenta.tema_id).update_attributes(este_libera: true)
+    if @licenta
+      # eliberez tema
+      Tema.find(@licenta.tema_id).update_attributes(este_libera: true)
+      # ramane in bd cum ca a apartinut mie si acum i-am dat drumul - in caz ca vreau sa ma intorc la ea
+      @licenta.update_attributes(renuntat: true)
+    end
     # hai sa imi aleg alta tema
     redirect_to root_path
   end

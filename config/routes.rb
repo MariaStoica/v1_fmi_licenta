@@ -1,6 +1,6 @@
 V1FmiLicenta::Application.routes.draw do
+  
   resources :deadlines
-
   resources :comentariu_temas
   resources :comentariu_fisiers
   resources :comentariu_capitols
@@ -20,7 +20,6 @@ V1FmiLicenta::Application.routes.draw do
   get "browse_pagini/listaFeatures" => "browse_pagini#listaFeatures", as: "listaFeatures"
   get "browse_pagini/neutralPage" => "browse_pagini#neutralPage", as: "neutralPage"
   
-
   get "admin_pagini/controlPanel" => "admin_pagini#controlPanel", as: "controlPanel"
   get "admin_pagini/userSpecializari" => "admin_pagini#userSpecializari", as: "userSpecializari"
   get "browse_pagini/browseHome" => "browse_pagini#browseHome", as: "browseHome"
@@ -49,8 +48,7 @@ V1FmiLicenta::Application.routes.draw do
 
   # omniauth
   get '/auth/:provider/callback', :to => 'user_sessions#create'
-  get '/auth/failure', :to => 'user_sessions#failure' 
-  # get '/logout' => 'user_sessions#destroy'
+  get '/auth/failure', :to => 'user_sessions#failure'
   match '/logout', :to => 'user_sessions#destroy', :as => :logout, via: [:get, :post]
 
   root to: "browse_pagini#neutralPage"

@@ -132,7 +132,8 @@ class BrowsePaginiController < ApplicationController
       end
     end
 
-    @alegeri = AlegeriUserTema.where(sesiune_id: get_current_sesiune.id).where(user_id: get_current_user.id)
+    temeLibereIds = Tema.where(sesiune_id: get_current_sesiune.id, este_libera: true).pluck(:id)
+    @alegeri = AlegeriUserTema.where(sesiune_id: get_current_sesiune.id).where(user_id: get_current_user.id).where(tema_id: temeLibereIds)
   
   end # end of alegerileMele
 
@@ -163,7 +164,7 @@ class BrowsePaginiController < ApplicationController
     @nrStudentiCuLicenta = 0
     @domenii.each do |domeniu|
         domeniu.temas.each do |tema|
-            Licenta.where(tema_id: tema.id).each do |licenta|
+            Licenta.where(tema_id: tema.id, renuntat: false).each do |licenta|
                 @nrStudentiCuLicenta = @nrStudentiCuLicenta + 1
             end
         end
@@ -244,9 +245,10 @@ class BrowsePaginiController < ApplicationController
       end
 
       # indiferent de situatie, scot tema asta din alegerile celorlalti studenti
-      AlegeriUserTema.where(sesiune_id: get_current_sesiune.id).where(tema_id: params[:temaaleasa_id]).each do |ales|
-        ales.update_attributes(status_profesor: "Chosen by Another")
-      end
+      # ba nu - ca dc renunta la ea se va intoarce - las-o aici in alegeri ca dc e ocupata nu va fi afisata si dc se elibereaza va fi din nou acolo
+      # AlegeriUserTema.where(sesiune_id: get_current_sesiune.id).where(tema_id: params[:temaaleasa_id]).each do |ales|
+      #   ales.update_attributes(status_profesor: "Chosen by Another")
+      # end
       
       # creez o intrare si in licenta_saved pt arhiva si in cazul in care studentul renunta si se intoarce mai tarziu la ea
       #LicentaSalvata.create(user_id: get_current_user.id , tema_id: params[:temaaleasa_id])
