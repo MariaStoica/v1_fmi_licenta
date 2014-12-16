@@ -38,7 +38,7 @@
 						</li>
 						<li class="divider"></li>
 						<li>
-							<%= link_to "Delogare", "/logout", method: "delete", style: "font-family: Book Antiqua, serif; font-size: 18px" %>
+							<%= link_to "Delogare", root_url + 'logout', style: "font-family: Book Antiqua, serif; font-size: 18px" %>
 						</li>
 						<% else %>
 						<li>
@@ -75,26 +75,18 @@
 
 						<!-- pentru profesori -->
 						<% if get_current_user.rol == "Profesor" %>
-							<%= link_to "Acasă", root_path%>
+							<li><%= link_to "Acasă", root_path%></li>
 
 							<% if get_current_user.este_eligibil_licenta == true %>
-								<li>
-									<%= link_to "Temele mele", temeleMele_path %>
-								</li>
-								<li>
-									<%= link_to "Studenții mei", studentiiMei_path %>
-								</li>
+								<li><%= link_to "Temele mele", temeleMele_path %></li>
+								<li><%= link_to "Studenții mei", studentiiMei_path %></li>
 							<% end %>
 						<% end %>
 
 						<!-- pentru administratori -->
 						<% if get_current_user.rol == "Administrator" %>
-						<li>
-							<%= link_to "Control Panel", controlPanel_path %>
-						</li>
-						<li>
-							<%= link_to "Users", userSpecializari_path(rol: "Profesor") %>
-						</li>
+						<li><%= link_to "Control Panel", controlPanel_path %></li>
+						<li><%= link_to "Users", userSpecializari_path(rol: "Profesor") %></li>
 						<% end %>
 
 						<hr/>

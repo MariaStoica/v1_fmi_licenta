@@ -1,4 +1,5 @@
 class DomeniusController < ApplicationController
+  before_filter :login_required
   before_action :set_domeniu, only: [:show, :edit, :update, :destroy]
 
   # GET /domenius

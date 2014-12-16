@@ -46,7 +46,9 @@ class LicentaPaginiController < ApplicationController
 
   def renuntaLaLicenta
     # gasesc licenta mea - a studentului - ca doar eu pot sa renunt la ea - nu va fi logat un prof sau admin sau secretariat
-    @licenta = Licenta.where(user_id: get_current_user.id).where(renuntat: false).first
+    puts "!!!! current user id = " + get_current_user.id.to_s
+    @licenta = Licenta.where(user_id: get_current_user.id, renuntat: false).first
+    puts "!!!! licenta = " + @licenta.id.to_s
     # if licentas
     #   licentas.each do |lic|
     #     if lic.renuntat != true
@@ -74,6 +76,8 @@ class LicentaPaginiController < ApplicationController
   end
 
 
+  protected
+  
   def check_if_owner_or_prof_of_owner
     # dc prof - vezi sa fie cel coordonator (vezi in alegeri si statusuri)
     if(params[:student_id])

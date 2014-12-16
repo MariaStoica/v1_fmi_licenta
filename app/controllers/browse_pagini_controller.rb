@@ -1,6 +1,12 @@
 class BrowsePaginiController < ApplicationController
   
-  before_filter :login_required
+  before_filter :login_required, except: :neutralPage
+
+  def neutralPage
+    if get_current_user
+      redirect_to browseHome_path
+    end
+  end
 
 
   def browseHome

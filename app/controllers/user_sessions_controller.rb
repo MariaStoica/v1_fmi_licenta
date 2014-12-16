@@ -81,7 +81,8 @@ class UserSessionsController < ApplicationController
   def destroy
     reset_session
     flash[:notice] = 'You have successfully signed out!'
-    redirect_to root_path
-    # redirect_to "#{CUSTOM_PROVIDER_URL}/users/sign_out?oauth_token=" + get_current_user.token
+    redirect_to "#{CUSTOM_PROVIDER_URL}/users/sign_out" #?oauth_token=" + get_current_user.token
+    # si acum ramane pe pagina principala a aplicatiei centrale - portalul catre toate aplicatiile fmi  
+
   end
 end

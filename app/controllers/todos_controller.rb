@@ -1,10 +1,11 @@
 class TodosController < ApplicationController
+  before_filter :login_required
   before_action :set_todo, only: [:show, :edit, :update, :destroy]
 
   # GET /todos
   # GET /todos.json
   def index
-    @todos = Todo.all
+    # @todos = Todo.all
   end
 
   # GET /todos/1

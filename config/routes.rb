@@ -18,11 +18,12 @@ V1FmiLicenta::Application.routes.draw do
 
   get "browse_pagini/viewDataBase" => "browse_pagini#viewDataBase", as: "viewDataBase"
   get "browse_pagini/listaFeatures" => "browse_pagini#listaFeatures", as: "listaFeatures"
+  get "browse_pagini/neutralPage" => "browse_pagini#neutralPage", as: "neutralPage"
   
 
   get "admin_pagini/controlPanel" => "admin_pagini#controlPanel", as: "controlPanel"
   get "admin_pagini/userSpecializari" => "admin_pagini#userSpecializari", as: "userSpecializari"
-  get "browse_pagini/browseHome" => "browse_pagini#browseHome"
+  get "browse_pagini/browseHome" => "browse_pagini#browseHome", as: "browseHome"
   get "browse_pagini/browseHomeArhiva" => "browse_pagini#browseHomeArhiva", as: "browseHomeArhiva"
   get "browse_pagini/alegerileMele" => "browse_pagini#alegerileMele", as: "alegerileMele"
   get "browse_pagini/studentiiMei" => "browse_pagini#studentiiMei", as: "studentiiMei"
@@ -49,9 +50,9 @@ V1FmiLicenta::Application.routes.draw do
   # omniauth
   get '/auth/:provider/callback', :to => 'user_sessions#create'
   get '/auth/failure', :to => 'user_sessions#failure' 
-  delete '/logout', :to => 'user_sessions#destroy'
-  # match '/logout', :to => 'user_sessions#destroy', :as => :logout, via: [:get, :post]
+  # get '/logout' => 'user_sessions#destroy'
+  match '/logout', :to => 'user_sessions#destroy', :as => :logout, via: [:get, :post]
 
-  root to: "browse_pagini#browseHome"
+  root to: "browse_pagini#neutralPage"
 
 end

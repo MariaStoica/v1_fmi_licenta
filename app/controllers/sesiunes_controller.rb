@@ -1,10 +1,11 @@
 class SesiunesController < ApplicationController
+  before_filter :login_required
   before_action :set_sesiune, only: [:show, :edit, :update, :destroy]
 
   # GET /sesiunes
   # GET /sesiunes.json
   def index
-    @sesiunes = Sesiune.all
+    # @sesiunes = Sesiune.all
   end
 
   # GET /sesiunes/1

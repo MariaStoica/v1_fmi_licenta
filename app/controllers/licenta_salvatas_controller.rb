@@ -1,4 +1,5 @@
 class LicentaSalvatasController < ApplicationController
+  before_filter :login_required
   before_action :set_licenta_salvata, only: [:show, :edit, :update, :destroy]
 
   # GET /licenta_salvatas

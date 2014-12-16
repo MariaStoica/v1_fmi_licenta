@@ -1,4 +1,5 @@
 class ComentariuLicentasController < ApplicationController
+  before_filter :login_required
   before_action :set_comentariu_licenta, only: [:show, :edit, :update, :destroy]
 
   # GET /comentariu_licentas

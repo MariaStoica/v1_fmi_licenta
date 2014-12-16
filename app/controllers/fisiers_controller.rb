@@ -1,4 +1,5 @@
 class FisiersController < ApplicationController
+  before_filter :login_required
   before_action :set_fisier, only: [:show, :edit, :update, :destroy, :download]              
                    
   # GET /fisiers

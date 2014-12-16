@@ -1,4 +1,5 @@
 class ComentariuCapitolsController < ApplicationController
+  before_filter :login_required
   before_action :set_comentariu_capitol, only: [:show, :edit, :update, :destroy]
 
   # GET /comentariu_capitols

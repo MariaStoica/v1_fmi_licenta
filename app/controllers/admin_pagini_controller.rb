@@ -1,5 +1,7 @@
 class AdminPaginiController < ApplicationController
 
+  before_filter :login_required
+
   def controlPanel
     @azi = Date.today
     if params[:data_end] and params[:data_end] != ""

@@ -1,10 +1,11 @@
 class AlegeriUserTemasController < ApplicationController
+  before_filter :login_required
   before_action :set_alegeri_user_tema, only: [:show, :edit, :update, :destroy]
 
   # GET /alegeri_user_temas
   # GET /alegeri_user_temas.json
   def index
-    @alegeri_user_temas = AlegeriUserTema.all
+    # @alegeri_user_temas = AlegeriUserTema.all
   end
 
   # GET /alegeri_user_temas/1

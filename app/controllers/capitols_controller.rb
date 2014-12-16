@@ -1,4 +1,5 @@
 class CapitolsController < ApplicationController
+  before_filter :login_required
   before_action :set_capitol, only: [:show, :edit, :update, :destroy]
 
   # GET /capitols

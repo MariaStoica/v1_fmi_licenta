@@ -1,10 +1,11 @@
 class LicentasController < ApplicationController
+  before_filter :login_required
   before_action :set_licenta, only: [:show, :edit, :update, :destroy]
 
   # GET /licentas
   # GET /licentas.json
   def index
-    @licentas = Licenta.all
+    # @licentas = Licenta.all
   end
 
   # GET /licentas/1

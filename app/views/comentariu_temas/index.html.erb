@@ -1,4 +1,4 @@
-<h1>Listing comentariu_temas</h1>
+<!-- <h1>Listing comentariu_temas</h1>
 
 <table>
   <thead>
@@ -13,19 +13,20 @@
   </thead>
 
   <tbody>
-    <% @comentariu_temas.each do |comentariu_tema| %>
+    < @comentariu_temas.each do |comentariu_tema| %>
       <tr>
-        <td><%= comentariu_tema.user_id %></td>
-        <td><%= comentariu_tema.tema_id %></td>
-        <td><%= comentariu_tema.continut %></td>
-        <td><%= link_to 'Show', comentariu_tema %></td>
-        <td><%= link_to 'Edit', edit_comentariu_tema_path(comentariu_tema) %></td>
-        <td><%= link_to 'Destroy', comentariu_tema, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><= comentariu_tema.user_id %></td>
+        <td><= comentariu_tema.tema_id %></td>
+        <td><= comentariu_tema.continut %></td>
+        <td><= link_to 'Show', comentariu_tema %></td>
+        <td><= link_to 'Edit', edit_comentariu_tema_path(comentariu_tema) %></td>
+        <td><= link_to 'Destroy', comentariu_tema, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
-    <% end %>
+    < end %>
   </tbody>
 </table>
 
 <br>
 
-<%= link_to 'New Comentariu tema', new_comentariu_tema_path %>
+<= link_to 'New Comentariu tema', new_comentariu_tema_path %>
+ -->

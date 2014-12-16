@@ -192,13 +192,13 @@ Controllerele
 au fost generate de catre scaffold cand am creat modelele. Nu contin nimic in plus fata de codul generat.
 
 
-#### 3.4. Alte observatii
+### 4. Alte observatii
 * infelctions ca sa fie cuvantul in Romana si un s - pentru usurinta
 * Codul care da mailuri a fost comentat pentru ca nu functioneaza pe heroku daca nu configurezi un serviciu de mail. Dar local, merge sa dai mail daca decomentezi codul. (vezi ror cheat sheet la Mail pentru modul de implementare al mailului)
 
 
 
-#### 3.5. Ce-a mai ramas de implementat (vezi si issues)
+### 5. Ce-a mai ramas de implementat (vezi si issues)
 
 
 ------

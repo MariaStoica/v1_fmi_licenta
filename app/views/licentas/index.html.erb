@@ -1,4 +1,4 @@
-<h1>Listing licentas</h1>
+<!-- <h1>Listing licentas</h1>
 
 <table>
   <thead>
@@ -13,19 +13,20 @@
   </thead>
 
   <tbody>
-    <% @licentas.each do |licenta| %>
+    < @licentas.each do |licenta| %>
       <tr>
-        <td><%= licenta.user_id %></td>
-        <td><%= licenta.tema_id %></td>
-        <td><%= licenta.renuntat %></td>
-        <td><%= link_to 'Show', licenta %></td>
-        <td><%= link_to 'Edit', edit_licenta_path(licenta) %></td>
-        <td><%= link_to 'Destroy', licenta, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><= licenta.user_id %></td>
+        <td><= licenta.tema_id %></td>
+        <td><= licenta.renuntat %></td>
+        <td><= link_to 'Show', licenta %></td>
+        <td><= link_to 'Edit', edit_licenta_path(licenta) %></td>
+        <td><= link_to 'Destroy', licenta, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
-    <% end %>
+    < end %>
   </tbody>
 </table>
 
 <br>
 
-<%= link_to 'New Licenta', new_licenta_path %>
+<= link_to 'New Licenta', new_licenta_path %>
+ -->
