@@ -155,9 +155,12 @@ Pentru a accesa orice resursa a aplicatiei de licenta, userul trebuie sa fie log
 #### 3.3. Despre paginile si controllerele din aplicatie
 
 * **admin_pagini**_controller.rb
+
 > * **ControlPanel** - locul de unde administratorul porneste o sesiune noua sau o inchide pe cea curenta si gestioneaza alertele si deadline-urile
 > * **UserSpecializari** - aici poate vedea toti userii (profesori si studenti) care s-au logat in aplicatia de licenta macar o data - poate vedea cati studenti are fiecare profesor si daca mai are cereri de licenta la care nu a raspuns
+
 * **browse_pagini**_controller.rb
+
 > * **BrowseHome** - cu toate domeniile si temele din sesiunea curenta atunci cand aplicatia e deschisa
 > * **IntreabaPage** - pagina cu discutia legata de o tema. diferenta dintre temele afisate se face prin parametrii in link
 > * **AlegerileMele** - pagina pentru studenti in care vad la ce teme au dat Alege Tema si care profesori nu le-au raspuns (Pending) sau le-au raspuns fie cu Accept fie cu Reject
@@ -166,9 +169,13 @@ Pentru a accesa orice resursa a aplicatiei de licenta, userul trebuie sa fie log
 > * **BrowseHomeArhiva** - pagina cu toate sesiunile anterioare
 > * **ListaFeatures** - o pagina in care am enumerat toate functionalitatile aplicatiei
 > * **ViewDataBase** - o pagina pe care am afisat toata baza de date - ca sa nu fie nevoie sa stai in consola rails pentru vizualizare. Dar trebuie sa intri in consola daca vrei sa faci vreo modificare. `$ rails c` (vezi cheat sheet la Data Base pentru diverse comenzi)
+
 * **licenta_pagini**_controller.rb
+
 > * **LicentaHome** - pagina de home a studentilor care si-au ales deja licenta. Aici sunt afisate: progresul total, lista de todo-uri pe capitol, alerte si alte deadline-uri de actualitate si discutia la nivel de licenta cu profesorul coordonator
+
 * **user_sessions**_controller.rb
+
 > Aici, in metoda *create*, verific daca userul logat exista deja in baza de date a aplicatiei de licenta. Daca da, ii updatez tokenul de autentificare. Daca nu, fac un GET ca sa iau toate datele despre user si il adaug in baza mea de date.
 
 Controllerele
