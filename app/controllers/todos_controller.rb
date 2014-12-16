@@ -14,13 +14,11 @@ class TodosController < ApplicationController
 
   # GET /todos/new
   def new
-    @u = current_user
     @todo = Todo.new
   end
 
   # GET /todos/1/edit
   def edit
-    @u = current_user
   end
 
   # POST /todos

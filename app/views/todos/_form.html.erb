@@ -1,4 +1,6 @@
 <%= form_for(@todo) do |f| %>
+
+  <!-- afisare erori -->
   <% if @todo.errors.any? %>
     <div id="error_explanation">
       <ul>
@@ -11,11 +13,14 @@
   <% end %>
 
   <%= f.hidden_field :capitol_id, :value => params[:capitol_id] %>
+  
   <div class="field">
     <%= f.label "Conținut" %><br>
     <%= f.text_area :continut, rows: 1, class: 'col-sm-10' %>
   </div>
+  
   <br/><br/>
+  
   <div class="field">
     <%= f.label :este_gata %><br>
     <%= f.check_box :este_gata %>
@@ -23,7 +28,9 @@
   </div>
 
   <br/>
+  
   <div class="actions">
     <%= f.submit 'Submit', :class => 'btn btn-primary' %>
   </div>
+
 <% end %>

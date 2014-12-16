@@ -15,7 +15,6 @@ class DeadlinesController < ApplicationController
   # GET /deadlines/new
   def new
     @deadline = Deadline.new
-    @u = current_user
   end
 
   # GET /deadlines/1/edit
@@ -33,7 +32,7 @@ class DeadlinesController < ApplicationController
         format.json { render action: 'show', status: :created, location: @deadline }
       else
         format.html { render action: 'new' }
-        format.json { render json: controlPanel_path.errors, status: :unprocessable_entity }
+        format.json { render json: @deadline.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -43,11 +42,11 @@ class DeadlinesController < ApplicationController
   def update
     respond_to do |format|
       if @deadline.update(deadline_params)
-        format.html { redirect_to @deadline, notice: 'Deadline was successfully updated.' }
+        format.html { redirect_to controlPanel_path, notice: 'Deadline was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
-        format.json { render json: @deadline.errors, status: :unprocessable_entity }
+        format.json { render json: controlPanel_path.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -70,6 +69,6 @@ class DeadlinesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def deadline_params
-      params.require(:deadline).permit(:nume, :numar, :descriere, :data_start, :data_end)
+      params.require(:deadline).permit(:nume, :numar, :descriere, :data_start, :data_end, :public_tinta)
     end
 end

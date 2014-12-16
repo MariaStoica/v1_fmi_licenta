@@ -2,17 +2,21 @@ class BrowsePaginiController < ApplicationController
   
   before_filter :login_required
 
+
   def browseHome
 
-	  @u = current_user # dc nu pun asta nu recunoaste @current_user 
-    @current_sesiune = Sesiune.where("data_end is null").first
-    if @current_sesiune == nil
-      @current_sesiune = Sesiune.where("data_end is not null").last
-    end
+    if get_current_user.rol == "Administrator"
+      redirect_to controlPanel_path
+    else
 
-    # dc studentul are deja licenta, nu mai are ce cauta pe pg de browse - este dus direct la licenta sa
-    if current_user
-        my_licentas = Licenta.where(user_id: current_user.id)
+      @current_sesiune = Sesiune.where("data_end is null").first
+      if @current_sesiune == nil
+        @current_sesiune = Sesiune.where("data_end is not null").last
+      end
+
+      # dc studentul are deja licenta, nu mai are ce cauta pe pg de browse - este dus direct la licenta sa
+      if get_current_user
+        my_licentas = Licenta.where(user_id: get_current_user.id)
         if my_licentas
           my_licentas.each do |lic|
             if lic.renuntat != true
@@ -20,46 +24,49 @@ class BrowsePaginiController < ApplicationController
             end
           end  
         end
-    end
-
-    # @url_s = "http://fmi-api.herokuapp.com/students/" + session[:user_id]['uid'] + "?oauth_token=" + session[:user_id]['credentials']['token']
-    # resp_s = Net::HTTP.get_response(URI.parse(@url_s))
-    # @info_curent_s = JSON.parse(resp_s.body)
-
-    # @url_t = "http://fmi-api.herokuapp.com/teachers/" + session[:user_id]['uid'] + "?oauth_token=" + session[:user_id]['credentials']['token']
-    # resp_t = Net::HTTP.get_response(URI.parse(@url_t))
-    # @info_curent_t = JSON.parse(resp_t.body)
-      
-    # @url = "http://fmi-api.herokuapp.com/teachers/13?oauth_token=" + session[:user_id]['credentials']['token']
-    # resp = Net::HTTP.get_response(URI.parse(@url))
-    # @info_curent = JSON.parse(resp.body)
-
-      # cauta cuvintele din search in teme: nume si descriere
-      if params[:search] and params[:search] != ""
-          # sparg in cuv dupa virgule
-          cuvinte = params[:search].split(/,/)
-          # iau fiecare cuvand din cuvinte si il bag pe rand in query
-          @results = Tema.all
-          if current_user.rol == "Student"
-            @results = @results.where(este_libera: true).where("user_id IN (SELECT id FROM users WHERE specializare LIKE 'Ambele' OR specializare LIKE ?)", "#{current_user.specializare}")
-          end
-          cuvinte.each do |cuv|
-            @results = @results.where("lower(temas.descriere) LIKE lower(?) or lower(temas.nume) LIKE lower(?)","%#{cuv}%","%#{cuv}%")
-          end
-          # http://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-from
       end
-      
-      # profii care sunt eligibili pt licenta
-      if current_user and current_user.rol == "Student"
-        @useri_profesori = User.profesori_eligibili.where(specializare: current_user.specializare)
+
+      # @url_s = "http://fmi-api.herokuapp.com/students/" + session[:user_id]['uid'] + "?oauth_token=" + session[:user_id]['credentials']['token']
+      # resp_s = Net::HTTP.get_response(URI.parse(@url_s))
+      # @info_curent_s = JSON.parse(resp_s.body)
+
+      # @url_t = "http://fmi-api.herokuapp.com/teachers/" + session[:user_id]['uid'] + "?oauth_token=" + session[:user_id]['credentials']['token']
+      # resp_t = Net::HTTP.get_response(URI.parse(@url_t))
+      # @info_curent_t = JSON.parse(resp_t.body)
+        
+      # @url = "http://fmi-api.herokuapp.com/teachers/13?oauth_token=" + session[:user_id]['credentials']['token']
+      # resp = Net::HTTP.get_response(URI.parse(@url))
+      # @info_curent = JSON.parse(resp.body)
+
+      # cauta cuvintele din search in campurile temelor: nume si descriere
+      if params[:search] and params[:search] != ""
+        # sparg in cuv dupa virgule
+        cuvinte = params[:search].split(/,/)
+        @results = Tema.all
+        # dc e student, ma uit doar in temele profilor de aceeasi specializare sau ambele specializari
+        if get_current_user.rol == "Student"
+          @results = @results.where(este_libera: true).where("user_id IN (SELECT id FROM users WHERE specializare LIKE 'Ambele' OR specializare LIKE ?)", "#{get_current_user.specializare}")
+        end
+        # iau fiecare cuvand din cuvinte si il bag pe rand in query
+        cuvinte.each do |cuv|
+          @results = @results.where("lower(temas.descriere) LIKE lower(?) or lower(temas.nume) LIKE lower(?)","%#{cuv}%","%#{cuv}%")
+        end
+        # http://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-from
+      end
+        
+      # profii care sunt eligibili pt licenta (si au aceeasi specializare ca studentul logat)
+      if get_current_user and get_current_user.rol == "Student"
+        @useri_profesori = User.profesori_eligibili.where("specializare LIKE ? OR 'Ambele'", "#{get_current_user.specializare}")
       else
         @useri_profesori = User.profesori_eligibili
       end
+
+    end # end of if admin
         
-  end
+  end # end of browseHomec
+
 
   def browseHomeArhiva
-    @u = current_user
     @selected_sesiune = Sesiune.find(params[:sesiune_id])
     # @current_sesiune = Sesiune.where("data_end is not null").first
 
@@ -69,112 +76,115 @@ class BrowsePaginiController < ApplicationController
     # temas - pt a fi afisate in arhiva
 
     # cauta cuvintele din search in teme: nume si descriere
-      if params[:search] and params[:search] != ""
-          # sparg in cuv dupa virgule
-          cuvinte = params[:search].split(/,/)
-          # iau fiecare cuvand din cuvinte si il bag pe rand in query
-          @results = Tema.all.where(sesiune_id: @selected_sesiune.id)
-          # if current_user.rol == "Student"
-            # @results = @results.where("user_id IN (SELECT id FROM users WHERE specializare LIKE 'Ambele' OR specializare LIKE ?)", "#{current_user.specializare}")
-          # end
-          cuvinte.each do |cuv|
-            @results = @results.where("lower(temas.descriere) LIKE lower(?) or lower(temas.nume) LIKE lower(?)","%#{cuv}%","%#{cuv}%")
-          end
-          # http://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-from
+    if params[:search] and params[:search] != ""
+      # sparg in cuv dupa virgule
+      cuvinte = params[:search].split(/,/)
+      # iau fiecare cuvand din cuvinte si il bag pe rand in query
+      @results = Tema.all.where(sesiune_id: @selected_sesiune.id)
+      # if get_current_user.rol == "Student"
+        # @results = @results.where("user_id IN (SELECT id FROM users WHERE specializare LIKE 'Ambele' OR specializare LIKE ?)", "#{get_current_user.specializare}")
+      # end
+      cuvinte.each do |cuv|
+        @results = @results.where("lower(temas.descriere) LIKE lower(?) or lower(temas.nume) LIKE lower(?)","%#{cuv}%","%#{cuv}%")
       end
+      # http://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html#method-i-from
+    end
       
-      @useri_profesori = User.profesori_eligibili
+    @useri_profesori = User.profesori_eligibili
 
-      # # profii care sunt eligibili pt licenta
-      # if current_user and current_user.rol == "Student"
-      #   @useri_profesori = User.profesori_eligibili.where(specializare: current_user.specializare)
-      # else
-      #   @useri_profesori = User.profesori_eligibili
-      # end
-        
-      # # dc studentul are deja licenta, nu mai are ce cauta pe pg de browse - este dus direct la licenta sa
-      # if current_user
-      #     if Licenta.where(user_id: current_user.id).first
-      #         redirect_to licentaHome_path
-      #     end
-      # else
-      #     # Daca Studentul nu e logat 
-      #     redirect_to sessions_new_path    
-      # end
+    # # profii care sunt eligibili pt licenta
+    # if get_current_user and get_current_user.rol == "Student"
+    #   @useri_profesori = User.profesori_eligibili.where(specializare: get_current_user.specializare)
+    # else
+    #   @useri_profesori = User.profesori_eligibili
+    # end
+      
+    # # dc studentul are deja licenta, nu mai are ce cauta pe pg de browse - este dus direct la licenta sa
+    # if get_current_user
+    #     if Licenta.where(user_id: get_current_user.id).first
+    #         redirect_to licentaHome_path
+    #     end
+    # else
+    #     # Daca Studentul nu e logat 
+    #     redirect_to sessions_new_path    
+    # end
 
-  end
+  end # end of browseHomeArhiva
+
 
   def alegerileMele
-  	@u = current_user
     if params[:tema_id]
-          if AlegeriUserTema.where(tema_id: params[:tema_id]).where(user_id: current_user.id).count == 0
-              @current_sesiune = Sesiune.where("data_end is null").first
-              if @current_sesiune == nil
-                @current_sesiune = Sesiune.where("data_end is not null").last
-              end
-              AlegeriUserTema.create(user_id: current_user.id, tema_id: params[:tema_id], status_profesor: "Pending", status_student: "Pending", sesiune_id: @current_sesiune.id)
-              flash[:notice] = "Alegere salvata cu succes"
-              else
-              flash[:notice] = "Alegerea selectata deja exista"
-          end
+      if AlegeriUserTema.where(sesiune_id: get_current_sesiune.id).where(tema_id: params[:tema_id]).where(user_id: get_current_user.id).count == 0
+        # @current_sesiune = Sesiune.where("data_end is null").first
+        # if @current_sesiune == nil
+        #   @current_sesiune = Sesiune.where("data_end is not null").last
+        # end
+        AlegeriUserTema.create(user_id: get_current_user.id, tema_id: params[:tema_id], status_profesor: "Pending", status_student: "Pending", sesiune_id: get_current_sesiune.id)
+        flash[:notice] = "Alegere salvata cu succes"
+      else
+        flash[:notice] = "Alegerea selectata deja exista"
       end
-      @alegeri = AlegeriUserTema.where(user_id: current_user.id)
-      @teme = Tema.all
-  end
+    end
+
+    @alegeri = AlegeriUserTema.where(sesiune_id: get_current_sesiune.id).where(user_id: get_current_user.id)
+  
+  end # end of alegerileMele
+
 
   def temeleMele
-  	@u = current_user
     @current_sesiune = Sesiune.where("data_end is null").first
     if @current_sesiune == nil
       @current_sesiune = Sesiune.where("data_end is not null").last
     end
+
     # afiseaza toate domeniile profului curent, in view se afiseaza si toate temele domeniilor astora
-    @domenii = Domeniu.where(user_id: current_user.id).where(sesiune_id: @current_sesiune.id)
-  end
+    @domenii = Domeniu.where(user_id: get_current_user.id).where(sesiune_id: @current_sesiune.id)
+
+  end # end of temeleMele
+
 
   def studentiiMei
-  	@u = current_user
-    @users = User.all
-      @domenii = Domeniu.where(user_id: current_user.id)    #toate domeniile userului curent logat
-      @alegeri = AlegeriUserTema.all
-      @alese = 0
-      
-      @domenii.each do |dom|
-          dom.temas.each do |t|
-              @alese = @alese + @alegeri.where(tema_id: t.id).count
-          end
-      end
-      
-      @nrStudenti = 0
-      @domenii.each do |domeniu|
-          domeniu.temas.each do |tema|
-              Licenta.where(tema_id: tema.id).each do |licenta|
-                  @nrStudenti = @nrStudenti + 1
-              end
-          end
-      end
-  end
+    #toate domeniile din sesiunea curenta ale userului curent logat
+    @domenii = Domeniu.where(sesiune_id: get_current_sesiune).where(user_id: get_current_user.id)
+    
+    @temeAleseDeStudenti = 0
+    @domenii.each do |dom|
+        dom.temas.each do |t|
+            @temeAleseDeStudenti = @temeAleseDeStudenti + AlegeriUserTema.where(sesiune_id: get_current_sesiune).where(tema_id: t.id).count
+        end
+    end
+    
+    @nrStudentiCuLicenta = 0
+    @domenii.each do |domeniu|
+        domeniu.temas.each do |tema|
+            Licenta.where(tema_id: tema.id).each do |licenta|
+                @nrStudentiCuLicenta = @nrStudentiCuLicenta + 1
+            end
+        end
+    end
+
+  end # end of studentiiMei
+
 
   def arhivaHome
-    @u = current_user
     @sesiuni = Sesiune.all.order("data_start ASC")
   end
+
 
   def intreabaPage
     @comentarii = ComentariuTema.where(tema_id: params[:tema_id])
   end
 
+
   def adauga_comentariu
-    ComentariuTema.create(continut: params[:comentariu], user_id: current_user.id, tema_id: params[:tema_id])
+    ComentariuTema.create(continut: params[:comentariu], user_id: get_current_user.id, tema_id: params[:tema_id])
     redirect_to intreaba_path(tema_id: params[:tema_id])
   end
 
 
-
-
   def acceptaCaLicenta
       # dau mail profesorului ca acest student a acceptat tema sa.
-      #UserMailer.notification_email(User.find(current_user.id).email,User.find(Domeniu.find(Tema.find(params[:temaaleasa_id]).domeniu_id).user_id).email, "Acceptare licenta", "Studentul cu numele " + User.find(current_user.id).nume + " " + User.find(current_user.id).prenume + "este acum studentul dumneavoastra pentru licenta" ).deliver
+      #UserMailer.notification_email(User.find(get_current_user.id).email,User.find(Domeniu.find(Tema.find(params[:temaaleasa_id]).domeniu_id).user_id).email, "Acceptare licenta", "Studentul cu numele " + User.find(get_current_user.id).nume + " " + User.find(get_current_user.id).prenume + "este acum studentul dumneavoastra pentru licenta" ).deliver
       
       # creez o intrare noua in licenta ca sa stiu ca acest student are aceasta tema la licenta si lucreaza la ea
       # renuntat == nil inseamna ca nu s-a renuntat la ea pana acum
@@ -187,7 +197,7 @@ class BrowsePaginiController < ApplicationController
 
       # dc nu e - o iau eu pt prima data
       if previousLicenta == nil
-        licenta = Licenta.create(user_id: current_user.id , tema_id: params[:temaaleasa_id], renuntat: false)
+        licenta = Licenta.create(user_id: get_current_user.id , tema_id: params[:temaaleasa_id], renuntat: false)
         # creez capitolele de inceput 
         Capitol.create(nume: "Introducere", licenta_id: licenta.id, numar: 1)
         Capitol.create(nume: "Concluzii", licenta_id: licenta.id, numar: 2)
@@ -196,7 +206,7 @@ class BrowsePaginiController < ApplicationController
       # dc e si are renuntat == true - inseamna ca a fost lasata de cineva (eu sau altul)
       elsif previousLicenta and previousLicenta.renuntat == true
         # dc sunt tot eu doar modific renuntat si nu mai creez alte capitole
-        if previousLicenta.user_id == current_user.id
+        if previousLicenta.user_id == get_current_user.id
           previousLicenta.update_attributes(renuntat: false)
         # dc nu sunt eu tre sa sterg toata munca celui dinaintea mea si inregistrarea asta de licenta si sa fac alta
         else
@@ -219,7 +229,7 @@ class BrowsePaginiController < ApplicationController
             cap.destroy
           end
           previousLicenta.destroy
-          licenta = Licenta.create(user_id: current_user.id , tema_id: params[:temaaleasa_id], renuntat: false)
+          licenta = Licenta.create(user_id: get_current_user.id , tema_id: params[:temaaleasa_id], renuntat: false)
           # creez capitolele de inceput
           Capitol.create(nume: "Introducere", licenta_id: licenta.id, numar: 1)
           Capitol.create(nume: "Concluzii", licenta_id: licenta.id, numar: 2)
@@ -233,12 +243,12 @@ class BrowsePaginiController < ApplicationController
       end
       
       # creez o intrare si in licenta_saved pt arhiva si in cazul in care studentul renunta si se intoarce mai tarziu la ea
-      #LicentaSalvata.create(user_id: current_user.id , tema_id: params[:temaaleasa_id])
+      #LicentaSalvata.create(user_id: get_current_user.id , tema_id: params[:temaaleasa_id])
       
       # setez ca acceptat in alegeri - tema aleasa
-      AlegeriUserTema.where(sesiune_id: get_current_sesiune.id).where(user_id: current_user.id, tema_id: params[:temaaleasa_id]).first.update_attributes(status_student: "Accepted")
+      AlegeriUserTema.where(sesiune_id: get_current_sesiune.id).where(user_id: get_current_user.id, tema_id: params[:temaaleasa_id]).first.update_attributes(status_student: "Accepted")
       # setez restul ca rejected o data ce mi-am ales licenta
-      alegeri = AlegeriUserTema.where(user_id: current_user.id, status_student: "Pending")
+      alegeri = AlegeriUserTema.where(user_id: get_current_user.id, status_student: "Pending")
       alegeri.each do |alegere|
           alegere.update_attributes(status_student: "Rejected")
       end
@@ -250,29 +260,37 @@ class BrowsePaginiController < ApplicationController
       redirect_to licentaHome_path
   end
 
+
   def sendmail
-      #UserMailer.notification_email(User.find(current_user.id).email,params[:to], params[:title], params[:text]).deliver
+      #UserMailer.notification_email(User.find(get_current_user.id).email,params[:to], params[:title], params[:text]).deliver
       redirect_to licentaHome_path
   end
 
+
   def acceptStudenti
-    current_user.update_attributes(are_domeniu_propuneri_studenti: true)
+    get_current_user.update_attributes(are_domeniu_propuneri_studenti: true)
+
     # creez domeniul "Propuneri Studenti" dc nu exista deja
-    if Domeniu.where(user_id: current_user.id).where(sesiune_id: get_current_sesiune.id).where(nume: "Propuneri Studenti").count == 0
-      Domeniu.create(user_id: current_user.id, nume: "Propuneri Studenti", sesiune_id: get_current_sesiune.id, descriere: "Studentii pot propune teme de licenta numai sub acest domeniu, urmand ca apoi sa fie mutate in domeniul potrivit subiectului ales.")
+    if Domeniu.where(user_id: get_current_user.id).where(sesiune_id: get_current_sesiune.id).where(nume: "Propuneri Studenti").count == 0
+      Domeniu.create(user_id: get_current_user.id, nume: "Propuneri Studenti", sesiune_id: get_current_sesiune.id, descriere: "Studentii pot propune teme de licenta numai sub acest domeniu, urmand ca apoi sa fie mutate in domeniul potrivit subiectului ales.")
     end
+
     redirect_to temeleMele_path
   end
 
+
   def refuzStudenti
-    current_user.update_attributes(are_domeniu_propuneri_studenti: false)
+    get_current_user.update_attributes(are_domeniu_propuneri_studenti: false)
+    
     # dc exista domeniul "Propuneri Studenti" il redenumesc in "Neclasificate"
-    domStudQuerry = Domeniu.where(user_id: current_user.id).where(sesiune_id: get_current_sesiune.id).where(nume: "Propuneri Studenti")
+    domStudQuerry = Domeniu.where(user_id: get_current_user.id).where(sesiune_id: get_current_sesiune.id).where(nume: "Propuneri Studenti")
     if domStudQuerry.count == 1
       domStud = domStudQuerry.first
       domStud.update_attributes(nume: "Neclasificate", descriere: "")
     end
-    
+
     redirect_to temeleMele_path
   end
+
+
 end

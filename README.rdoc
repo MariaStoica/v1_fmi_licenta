@@ -1,28 +1,44 @@
-== README
+Licență FMI
+==============
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Aplicatia web pentru gestionarea dezvoltarii lucrarii de licenta de la alegerea profesorului coordonator si tema lucrarii pana la predarea lucrarii finale si generarea referatului de licenta. 
 
-Things you may want to cover:
+Useri pentru development si test:
+Rol: Admin
+	admin@admin.com
+Rol: Prof
+	vader@prof.com
+	solo@prof.com
+	albus@prof.com
+Rol: Student
+	maria@student.com
+	stef@student.com
+	marius@student.com
 
-* Ruby version
+Password:
+foobar
 
-* System dependencies
+------
 
-* Configuration
+Sunt 3 tipuri de useri:
 
-* Database creation
+1. Admin
 
-* Database initialization
+2. Student
 
-* How to run the test suite
+3. Profesor
 
-* Services (job queues, cache servers, search engines, etc.)
+Mod de functionare:
 
-* Deployment instructions
+1. Profesorii isi adauga domeniile si temele de licenta pentru a fi alese de catre studenti.
 
-* ...
+2. Pentru ca o tema sa devina lucrare de licenta, are nevoie de accordul profesorului si al studentului.
 
+3. Comunicarea dintre student si profesorul coordonator se face prin comentarii la nivelul lucrarii, al capitolelor si al fisierelor incarcate.
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+4. Progresul lucrarii se masoara in functie de todo-urile completate de student.
+
+5. La orice moment, profesorul isi poate vedea studentii si progresul lor in pagina "Studentii mei" 
+
+6. Adminul gestioneaza sesiunile de functionare ale aplicatiei de licenta. Oricine se poate uita pe arhiva de teme de licenta si pe lista curenta de teme, dar nu pot interactiona cu ele (eg: studentii nu pot sa isi aleaga o tema de licenta in afara perioadei de functionare). In momentul in care adminul opreste sesiunea curenta a aplicatiei, temele curente se arhiveaza.
+

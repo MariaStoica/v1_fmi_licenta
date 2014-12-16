@@ -1,34 +1,37 @@
 <h1><%= @domeniu.nume %></h1>
 <hr>
 
-<p>
-	Profesor: <%= link_to @prof.grad + " " + @prof.nume + " " + @prof.prenume, @prof %>
-</p>
-
-<p>
-	Descriere: <%= @domeniu.descriere %>
-</p>
+<p>Profesor: <%= link_to @prof.grad + " " + @prof.nume + " " + @prof.prenume, @prof %></p>
+<p>Descriere: <%= @domeniu.descriere %></p>
 
 <hr>
 
-<% if @teme.count == 0%>
+<% if @teme.count == 0 %>
+
 	Nu sunt teme în acest domeniu.
+
 <% else %>
+
 	<p>Teme în acest domeniu:</p>
 	<ul>
 		<% @teme.each do |tema| %>
 			<li><%= link_to tema.nume, tema %></li>
 		<% end %>
 	</ul>
+
 <% end %>
 
-<% if @current_user != nil and @current_user.rol == "Student" and @domeniu.nume == "Propuneri Studenti" and @current_user.este_eligibil_licenta == true %>
+<% if get_current_user != nil and get_current_user.rol == "Student" and @domeniu.nume == "Propuneri Studenti" and get_current_user.este_eligibil_licenta == true %>
 	<br/><br/>
 	<%= link_to "Propune temă", temaNew_path(:domeniu_id => @domeniu.id), :class => 'btn btn-success' %>
 <% end %>
 
 <hr>
-<%= link_to 'Înapoi', "javascript:history.back()" %>
+
+<%= link_to 'Înapoi', root_path %>
+<!-- <= link_to 'Înapoi', "javascript:history.back()" %> -->
+
+<!-- go back snippet -->
 <!-- <script type="text/javascript">
   window.location.href="/"
 </script> -->

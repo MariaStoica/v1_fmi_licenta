@@ -4,36 +4,32 @@ class TemasController < ApplicationController
   # GET /temas
   # GET /temas.json
   def index
-      #@temas = Tema.all
-      #@domenii = Domeniu.where(user_id: current_user.id)
+    #@temas = Tema.all
+    #@domenii = Domeniu.where(user_id: get_current_user.id)
   end
   
   # GET /temas/1
   # GET /temas/1.json
   def show
-      # cand alege tema sa faca insert in tabelul alegeri
-      #AlegeriUserTema.create(user_id: current_user.id, tema_id: @tema.id, status_profesor: "Pending", status_student: "Pending")
-      @domeniu = Domeniu.find(@tema.domeniu_id)
-      @prof = User.find(@domeniu.user_id)
-      @u = current_user
+    @domeniu = Domeniu.find(@tema.domeniu_id)
+    @prof = User.find(@domeniu.user_id)
   end
 
   # GET /temas/new
   def new
-    @u = current_user
     @tema = Tema.new
-    @current_sesiune = Sesiune.where("data_end is null").first
-    if @current_sesiune == nil
-      @current_sesiune = Sesiune.where("data_end is not null").last
-    end
+    # @current_sesiune = Sesiune.where("data_end is null").first
+    # if @current_sesiune == nil
+    #   @current_sesiune = Sesiune.where("data_end is not null").last
+    # end
   end
 
   # GET /temas/1/edit
   def edit
-      @current_sesiune = Sesiune.where("data_end is null").first
-      if @current_sesiune == nil
-        @current_sesiune = Sesiune.where("data_end is not null").last
-      end
+    # @current_sesiune = Sesiune.where("data_end is null").first
+    # if @current_sesiune == nil
+    #   @current_sesiune = Sesiune.where("data_end is not null").last
+    # end
   end
 
   # POST /temas
@@ -46,14 +42,14 @@ class TemasController < ApplicationController
 
         # dc tema a fost creata de un student, sa o adaug la alererile sale
         if User.find(@tema.user_id).rol == "Student"
-          @current_sesiune = Sesiune.where("data_end is null").first
-          if @current_sesiune == nil
-            @current_sesiune = Sesiune.where("data_end is not null").last
-          end
-          AlegeriUserTema.create(tema_id: @tema.id, user_id: @tema.user_id, status_profesor: "Pending", status_student: "Pending", sesiune_id: @current_sesiune.id)
+          # @current_sesiune = Sesiune.where("data_end is null").first
+          # if @current_sesiune == nil
+          #   @current_sesiune = Sesiune.where("data_end is not null").last
+          # end
+          AlegeriUserTema.create(tema_id: @tema.id, user_id: @tema.user_id, status_profesor: "Pending", status_student: "Pending", sesiune_id: get_current_sesiune.id)
         end
 
-        if current_user and current_user.rol == "Student" # "/domenius/" + @tema.domeniu_id.to_s
+        if get_current_user and get_current_user.rol == "Student" # "/domenius/" + @tema.domeniu_id.to_s
           format.html { redirect_to alegerileMele_path, notice: 'Tema a fost creată.' }
           format.json { render action: 'show', status: :created, location: @tema }
         else

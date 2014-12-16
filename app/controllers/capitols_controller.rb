@@ -10,23 +10,21 @@ class CapitolsController < ApplicationController
   # GET /capitols/1
   # GET /capitols/1.json
   def show
-      @u = current_user
-      @fisierele = Fisier.where(capitol_id: @capitol.id)
-      @todouri = Todo.where(capitol_id: @capitol.id)
-      @comentarii = ComentariuCapitol.where(capitol_id: @capitol.id)
-      @studentid = Licenta.find(@capitol.licenta_id).user_id
-      @student = User.find(@studentid)
-      @tema = Tema.find(Licenta.find(@capitol.licenta_id).tema_id)
+    @fisierele = Fisier.where(capitol_id: @capitol.id)
+    @todouri = Todo.where(capitol_id: @capitol.id)
+    @comentarii = ComentariuCapitol.where(capitol_id: @capitol.id)
+    @studentid = Licenta.find(@capitol.licenta_id).user_id
+    @student = User.find(@studentid)
+    @tema = Tema.find(Licenta.find(@capitol.licenta_id).tema_id)
   end
   
   def adauga_comentariu
-      ComentariuCapitol.create(continut: params[:comentariu], user_id: current_user.id, capitol_id: params[:capitol])
-      redirect_to Capitol.find(params[:capitol])
+    ComentariuCapitol.create(continut: params[:comentariu], user_id: get_current_user.id, capitol_id: params[:capitol])
+    redirect_to Capitol.find(params[:capitol])
   end
 
   # GET /capitols/new
   def new
-    @u = current_user
     @capitol = Capitol.new
     licenta_id = Licenta.where(user_id: @u.id)
     @capitole = Capitol.where(licenta_id: licenta_id)
@@ -34,7 +32,6 @@ class CapitolsController < ApplicationController
 
   # GET /capitols/1/edit
   def edit
-    @u = current_user
   end
 
   # POST /capitols

@@ -4,15 +4,15 @@ class LicentaPaginiController < ApplicationController
   def licentaHome
     # dc e prof tre sa dea prin parametru id-ul studentului
     if(params[:student_id])
-        @licenta = Licenta.where(user_id: params[:student_id]).where(renuntat: false).first
-        @capitole = @licenta.capitols
-        @comentarii = ComentariuLicenta.where(licenta_id: @licenta.id)
-        @student_id = params[:student_id]
+      @licenta = Licenta.where(user_id: params[:student_id]).where(renuntat: false).first
+      @capitole = @licenta.capitols
+      @comentarii = ComentariuLicenta.where(licenta_id: @licenta.id)
+      @student_id = params[:student_id]
     # dc e studentul
     else
-        @licenta = Licenta.where(user_id: current_user.id).where(renuntat: false).first
-        @capitole = @licenta.capitols
-        @comentarii = ComentariuLicenta.where(licenta_id: @licenta.id)
+      @licenta = Licenta.where(user_id: get_current_user.id).where(renuntat: false).first
+      @capitole = @licenta.capitols
+      @comentarii = ComentariuLicenta.where(licenta_id: @licenta.id)
     end
     
     @progres = 0
@@ -35,18 +35,18 @@ class LicentaPaginiController < ApplicationController
   end
   
   def adauga_comentariu
-    ComentariuLicenta.create(continut: params[:comentariu], user_id: current_user.id, licenta_id: params[:licenta])
+    ComentariuLicenta.create(continut: params[:comentariu], user_id: get_current_user.id, licenta_id: params[:licenta])
     # dc prof
     if(params[:student_id])
-        redirect_to licentaHome_path(student_id: params[:student_id])
-        else # dc stuedntul
-        redirect_to licentaHome_path
+      redirect_to licentaHome_path(student_id: params[:student_id])
+      else # dc stuedntul
+      redirect_to licentaHome_path
     end
   end
 
   def renuntaLaLicenta
     # gasesc licenta mea - a studentului - ca doar eu pot sa renunt la ea - nu va fi logat un prof sau admin sau secretariat
-    @licenta = Licenta.where(user_id: current_user.id).where(renuntat: false).first
+    @licenta = Licenta.where(user_id: get_current_user.id).where(renuntat: false).first
     # if licentas
     #   licentas.each do |lic|
     #     if lic.renuntat != true
@@ -74,26 +74,22 @@ class LicentaPaginiController < ApplicationController
   end
 
 
-  
   def check_if_owner_or_prof_of_owner
-      # dc prof - vezi sa fie cel coordonator (vezi in alegeri si statusuri)
-      if(params[:student_id])
-          licenta = Licenta.where(user_id: params[:student_id]).first
-          temaid = AlegeriUserTema.where(user_id: params[:student_id]).first.tema_id
-          tema = Tema.find(temaid)
-          if current_user.id != Domeniu.find(tema.domeniu_id).user_id
-              redirect_to(root_path, :notice =>"Nu ai voie aici.")
-          end
-      # dc student - vezi sa fie cel mentionat in licenta
-      else
-          licenta = Licenta.where(user_id: current_user.id).first
-          if licenta.user_id != current_user.id
-              redirect_to(root_path, :notice =>"Nu ai voie aici.")
-          end
-      end
-
-
-
+    # dc prof - vezi sa fie cel coordonator (vezi in alegeri si statusuri)
+    if(params[:student_id])
+        licenta = Licenta.where(user_id: params[:student_id]).first
+        temaid = AlegeriUserTema.where(user_id: params[:student_id]).first.tema_id
+        tema = Tema.find(temaid)
+        if get_current_user.id != Domeniu.find(tema.domeniu_id).user_id
+            redirect_to(root_path, :notice =>"Nu ai voie aici.")
+        end
+    # dc student - vezi sa fie cel mentionat in licenta
+    else
+        licenta = Licenta.where(user_id: get_current_user.id).first
+        if licenta.user_id != get_current_user.id
+            redirect_to(root_path, :notice =>"Nu ai voie aici.")
+        end
+    end
   end
   
 end

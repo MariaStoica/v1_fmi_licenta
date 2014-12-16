@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140818100042) do
+ActiveRecord::Schema.define(version: 20141214125725) do
 
   create_table "alegeri_user_temas", force: true do |t|
     t.integer  "user_id"
@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20140818100042) do
     t.date     "data_end"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "public_tinta"
   end
 
   create_table "domenius", force: true do |t|
@@ -145,6 +146,7 @@ ActiveRecord::Schema.define(version: 20140818100042) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date     "deadline"
+    t.boolean  "este_deschisa"
   end
 
   create_table "temas", force: true do |t|
@@ -152,7 +154,7 @@ ActiveRecord::Schema.define(version: 20140818100042) do
     t.text     "descriere"
     t.integer  "domeniu_id"
     t.boolean  "este_libera"
-    t.integer  "user_id"
+    t.integer  "user_id"     # si studentii pot sa adauge teme, nu doar profesorii
     t.integer  "sesiune_id"
     t.datetime "created_at"
     t.datetime "updated_at"

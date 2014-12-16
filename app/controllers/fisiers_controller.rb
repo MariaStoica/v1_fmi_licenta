@@ -4,13 +4,12 @@ class FisiersController < ApplicationController
   # GET /fisiers
   # GET /fisiers.json
   def index
-    @u = current_user
     @fisiers = Fisier.all
     if params[:student_id] and params[:student_id] != ""
           @licenta = Licenta.where(user_id: params[:student_id]).where(renuntat: false).first
           @studentid = params[:student_id]
       else
-          @licenta = Licenta.where(user_id: current_user.id).where(renuntat: false).first
+          @licenta = Licenta.where(user_id: get_current_user.id).where(renuntat: false).first
       end
       @capitole = Capitol.where(licenta_id: @licenta.id).order(numar: :asc)
   end
@@ -18,7 +17,6 @@ class FisiersController < ApplicationController
   # GET /fisiers/1
   # GET /fisiers/1.json
   def show
-    @u = current_user
     @comentarii = ComentariuFisier.where(fisier_id: @fisier.id)
     @capitol = Capitol.find(@fisier.capitol_id)
     @studentid = Licenta.find(@capitol.licenta_id).user_id
@@ -31,9 +29,9 @@ class FisiersController < ApplicationController
     @fisier = Fisier.new
     # proful n-are voie sa bage fisiere in alte capitole in afara de bibliografie
     # dc schimba parametrii de mana, o sa poata adauga numai in cap bibliografie al licentelor la care este prof coordonator - dc a iesit din raza o sa il trimit inapoi la root. oricum, nu e moral sa umblii cu parametrii de mana - asa ca macar nu se baga peste licenta unuia la care nu e prof coord - doar in licentele la care e si cap alea sa fie doar bibliografia.
-    if current_user.rol == "Profesor"
+    if get_current_user.rol == "Profesor"
         # domeniile profului
-        @domenii = Domeniu.where(user_id: current_user.id)
+        @domenii = Domeniu.where(user_id: get_current_user.id)
         @domenii.each do |domeniu|
             domeniu.temas.each do |tema|
                 @licente = Licenta.where(tema_id: tema.id)
@@ -95,7 +93,7 @@ class FisiersController < ApplicationController
   end
 
   def adauga_comentariu
-	ComentariuFisier.create(continut: params[:continut], user_id: current_user.id, fisier_id: params[:fisier])
+	ComentariuFisier.create(continut: params[:continut], user_id: get_current_user.id, fisier_id: params[:fisier])
     #redirect_to licentaHome_path(:student_id => params[:student_id])
     redirect_to Fisier.find(params[:fisier])
   end

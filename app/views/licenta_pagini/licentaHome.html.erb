@@ -1,14 +1,13 @@
-<% if current_user.rol == "Profesor"%>
-<%= User.find(params[:student_id]).nume + " " + User.find(params[:student_id]).prenume + " - " + User.find(params[:student_id]).grupa.to_s %>
-<ol class="breadcrumb">
-	<li>Licență Home</li>	
-</ol>
+<% if get_current_user.rol == "Profesor"%>
+	<%= User.find(params[:student_id]).nume + " " + User.find(params[:student_id]).prenume + " - " + User.find(params[:student_id]).grupa.to_s %>
+	<ol class="breadcrumb">
+		<li>Licență Home</li>	
+	</ol>
 <% end %>
 
 <% tema = Tema.find(@licenta.tema_id) %>
 <h1><%= tema.nume%></h1>
 <br/><br/>
-<!-- <hr> -->
 
 <!-- notificari -->
 <!-- < if flash[:notice] %> -->
@@ -21,177 +20,177 @@
 </div>
 
 <div class="container">
-<div class="row row-offcanvas-right">
+	<div class="row row-offcanvas-right">
 
-<!-- capitole si todos -->
-<div class="col-sm-8">	
-	
-	<% if @current_user.rol == "Profesor" %>
-	<div class="well well-sm">
-		<span style="font-size:16px; position:relative; left:5px"><b><%= link_to "Fișierele lucrării", fisiers_path(student_id: params[:student_id]) %></b></span>
-	</div>
-	<% end %>
-
-	<!-- <if @capitole.count == 0%> -->
-		<!-- Nu sunt capitole. -->
-	<!-- <else%> -->
-
-		<table class="table table-striped table hover">
-			<thead>
-			<tr>
-				<th class="col-sm-1">Nr.</th>
-				<% if @current_user.rol == "Student" %>
-					<th class="col-sm-9">Titlu Capitol</th>
-					<th class="col-sm-1">Mutare</th>
-				<% elsif @current_user.rol == "Profesor" %>
-					<th>Titlu Capitol</th>
-				<% end %>
-			</tr>
-			</thead>
-			<tbody>
-				<!-- Capitolele -->
-				<% @capitole.order(:numar).each do |capitol| %>
-					<tr>
-						<td>Cap <%= capitol.numar %>.</td>
-						<td>
-							<% if capitol.este_licenta_finala == true %>
-								<%= link_to capitol.nume, capitol, style: "color: green" %>
-							<% else %>
-								<%= link_to capitol.nume, capitol %>
-							<% end %>
-						</td>
-						<% if @current_user.rol == "Student" %>
-						<td>
-							<% if capitol.numar > 1 %>
-								<%= link_to "", licentaHome_path(capitol_id: capitol.id, numar_nou: (capitol.numar-1), numar_victima: capitol.numar, capitol_victima_id: @capitole.find_by_numar(capitol.numar-1)), class: "glyphicon glyphicon-arrow-up" %>
-							<% end %>
-							<% if capitol.numar < @capitole.count %>
-								<%= link_to "", licentaHome_path(capitol_id: capitol.id, numar_nou: (capitol.numar+1), numar_victima: capitol.numar, capitol_victima_id: @capitole.find_by_numar(capitol.numar+1)), class: "glyphicon glyphicon-arrow-down" %>
-							<% end %>
-						</td>
-						<% end %>
-					</tr>
-					<!-- ToDo-urile -->
-					<tr>
-						<td></td>
-						<td>
-							<% if Todo.where(capitol_id: capitol.id).count > 0 %>
-							<ul class="list-group">
-							<% Todo.where(capitol_id: capitol.id).each do |todo| %>
-									<%if current_user.rol == "Student"%>
-										<% if todo.este_gata == true %>
-											<li class="list-group-item list-group-item-success"><%= link_to "DONE: " + todo.continut, edit_todo_path(todo, capitol_id: capitol.id), {:style => "color:green"} %></li>
-										<% elsif todo.este_gata == false %>
-											<li class="list-group-item list-group-item-danger"><%= link_to "TODO: " + todo.continut, edit_todo_path(todo, capitol_id: capitol.id), {:style => "color:red"} %></li>
-										<% end %>
-										<!-- < if todo.este_gata %> -->
-											<!-- <li style="color:green"><strike><= link_to "DONE: " + todo.continut, edit_todo_path(todo, capitol_id: capitol.id), {:style => "color:green"} %></strike></li> -->
-										<!-- <else%> -->
-											<!-- <li style="color:red"><= link_to "TODO: " + todo.continut, edit_todo_path(todo, capitol_id: capitol.id), {:style => "color:red"} %></li> -->
-										<!-- <end%> -->
-									<%elsif current_user.rol == "Profesor" %>
-										<% if todo.este_gata == true %>
-											<li class="list-group-item list-group-item-success"><%= "DONE: " + todo.continut %></li>
-										<% elsif todo.este_gata == false %>
-											<li class="list-group-item list-group-item-danger"><%= "TODO: " + todo.continut %></li>
-										<% end %>
-										<!-- < if todo.este_gata %> -->
-											<!-- <li style="color:green"><= "DONE: " + todo.continut %></li> -->
-										<!-- <else%> -->
-											<!-- <li style="color:red"><= "TODO: " + todo.continut %></li> -->
-										<!-- <end%> -->
-									<%end%>
-							<%end%>
-							</ul>
-							<% end %> <!-- end if todos count > 0-->
-						</td>
-						<% if @current_user.rol == "Student" %>
-						<td></td>
-						<% end %>
-					</tr>
-				<% end %>	
-				<% if @current_user.rol == "Student" %>
-				<tr>
-					<td></td>
-					<td>
-						<!-- Daca user-ul curent logat este si cel care va lucra la aceasta licenta, avem si link pt a adauga un nou capitol--> 
-						<%if current_user.id == @licenta.user_id%> 
-							<%=link_to '+ Adauga capitol', new_capitol_path(:licenta => @licenta.id)%>
-						<%end%>
-					</td>
-					<td></td>
-				</tr>
-				<% end %>
-			</tbody>
-		</table>
-
-		<br/>
-		<%= link_to "Submit licenta finala", submitLicentaFinala_path(licenta_id: @licenta.id), class: "btn btn-success" %>
-
-	<!-- <end%> -->
-</div>
-
-
-<!-- comentarii pe dreapta -->
-<div class="col-sm-3 sidebar-offcanvas" style="overflow:auto; height: 550px">
-	<%if @comentarii.count == 0%>
-		<em>Nu sunt comentarii.</em>
-		<br/><br/>
-	<%else%>
-		<%@comentarii.each do |comentariu|%>
-			<% if User.find(comentariu.user_id).rol == "Profesor" %>
-				<div class="panel panel-default">
-				  <div class="panel-heading">
-				    	<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
-						<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
-				  </div>
-				  <div class="panel-body">
-				    <%= comentariu.continut %>
-				  </div>
+		<!-- capitole si todos -->
+		<div class="col-sm-8">	
+			
+			<% if get_current_user.rol == "Profesor" %>
+				<div class="well well-sm">
+					<span style="font-size:16px; position:relative; left:5px"><b><%= link_to "Fișierele lucrării", fisiers_path(student_id: params[:student_id]) %></b></span>
 				</div>
-				<!-- <p style="color:green"> -->
-				<!-- <b><= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b>  -->
-				<!-- <em><= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em> -->
-				<!-- <br/> -->
-				<!-- <=comentariu.continut%></p> -->
-			<% else %>
-				<div class="panel panel-info">
-				  <div class="panel-heading">
-				    	<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
-						<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
-				  </div>
-				  <div class="panel-body">
-				    <%= comentariu.continut %>
-				  </div>
-				</div>
-				<!-- <p style="color:blue"> -->
-				<!-- <b><= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b> -->
-				<!-- <em><= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em> -->
-				<!-- <br/> -->
-				<!-- <=comentariu.continut%></p> -->
 			<% end %>
-		<%end%>
-	<%end%>
-		
-	<%= form_tag(licentaHome_adauga_comentariu_path(:student_id => @student_id), method: "post") do%>
-			<%= hidden_field_tag(:licenta, @licenta.id , class: "form-control") %>
-		<div class="field">
-			<%= text_area_tag(:comentariu, nil , :required => true, class: "form-control",rows:5) %>
+
+			<!-- <if @capitole.count == 0%> -->
+				<!-- Nu sunt capitole. -->
+			<!-- <else%> -->
+
+			<table class="table table-striped table hover">
+				<thead>
+				<tr>
+					<th class="col-sm-1">Nr.</th>
+					<% if get_current_user.rol == "Student" %>
+						<th class="col-sm-9">Titlu Capitol</th>
+						<th class="col-sm-1">Mutare</th>
+					<% elsif get_current_user.rol == "Profesor" %>
+						<th>Titlu Capitol</th>
+					<% end %>
+				</tr>
+				</thead>
+				<tbody>
+					<!-- Capitolele -->
+					<% @capitole.order(:numar).each do |capitol| %>
+						<tr>
+							<td>Cap <%= capitol.numar %>.</td>
+							<td>
+								<% if capitol.este_licenta_finala == true %>
+									<%= link_to capitol.nume, capitol, style: "color: green" %>
+								<% else %>
+									<%= link_to capitol.nume, capitol %>
+								<% end %>
+							</td>
+							<% if get_current_user.rol == "Student" %>
+							<td>
+								<% if capitol.numar > 1 %>
+									<%= link_to "", licentaHome_path(capitol_id: capitol.id, numar_nou: (capitol.numar-1), numar_victima: capitol.numar, capitol_victima_id: @capitole.find_by_numar(capitol.numar-1)), class: "glyphicon glyphicon-arrow-up" %>
+								<% end %>
+								<% if capitol.numar < @capitole.count %>
+									<%= link_to "", licentaHome_path(capitol_id: capitol.id, numar_nou: (capitol.numar+1), numar_victima: capitol.numar, capitol_victima_id: @capitole.find_by_numar(capitol.numar+1)), class: "glyphicon glyphicon-arrow-down" %>
+								<% end %>
+							</td>
+							<% end %>
+						</tr>
+
+						<!-- ToDo-urile -->
+						<tr>
+							<td></td>
+							<td>
+								<% if Todo.where(capitol_id: capitol.id).count > 0 %>
+								<ul class="list-group">
+								<% Todo.where(capitol_id: capitol.id).each do |todo| %>
+										<%if get_current_user.rol == "Student"%>
+											<% if todo.este_gata == true %>
+												<li class="list-group-item list-group-item-success"><%= link_to "DONE: " + todo.continut, edit_todo_path(todo, capitol_id: capitol.id), {:style => "color:green"} %></li>
+											<% elsif todo.este_gata == false %>
+												<li class="list-group-item list-group-item-danger"><%= link_to "TODO: " + todo.continut, edit_todo_path(todo, capitol_id: capitol.id), {:style => "color:red"} %></li>
+											<% end %>
+											<!-- < if todo.este_gata %> -->
+												<!-- <li style="color:green"><strike><= link_to "DONE: " + todo.continut, edit_todo_path(todo, capitol_id: capitol.id), {:style => "color:green"} %></strike></li> -->
+											<!-- <else%> -->
+												<!-- <li style="color:red"><= link_to "TODO: " + todo.continut, edit_todo_path(todo, capitol_id: capitol.id), {:style => "color:red"} %></li> -->
+											<!-- <end%> -->
+										<%elsif get_current_user.rol == "Profesor" %>
+											<% if todo.este_gata == true %>
+												<li class="list-group-item list-group-item-success"><%= "DONE: " + todo.continut %></li>
+											<% elsif todo.este_gata == false %>
+												<li class="list-group-item list-group-item-danger"><%= "TODO: " + todo.continut %></li>
+											<% end %>
+											<!-- < if todo.este_gata %> -->
+												<!-- <li style="color:green"><= "DONE: " + todo.continut %></li> -->
+											<!-- <else%> -->
+												<!-- <li style="color:red"><= "TODO: " + todo.continut %></li> -->
+											<!-- <end%> -->
+										<%end%>
+								<%end%>
+								</ul>
+								<% end %> <!-- end if todos count > 0-->
+							</td>
+							<% if get_current_user.rol == "Student" %>
+							<td></td>
+							<% end %>
+						</tr>
+					<% end %> <!-- end of capitole...each -->	
+
+					<% if get_current_user.rol == "Student" %>
+						<tr>
+							<td></td>
+							<td>
+								<!-- Daca user-ul curent logat este si cel care va lucra la aceasta licenta, avem si link pt a adauga un nou capitol--> 
+								<% if get_current_user.id == @licenta.user_id %> 
+									<%= link_to '+ Adauga capitol', new_capitol_path(:licenta => @licenta.id) %>
+								<% end %>
+							</td>
+							<td></td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+
+			<br/>
+			<%= link_to "Submit licenta finala", submitLicentaFinala_path(licenta_id: @licenta.id), class: "btn btn-success" %>
+
+			<!-- <end%> -->
 		</div>
-		<br/>
 
-		<%= submit_tag "Adaugă comentariu", class: "btn btn-primary" %>
-	
-	<%end%>
 
-	<% if @current_user.rol == "Student" %>
-		<br/>
-		<%= link_to "Renunta la licenta asta", renunta_path, data: {confirm: "Sigur renunti la licenta asta? O data luata de altcineva toata munca va fi pierduta."} %>
-	<% end %>
+		<!-- comentarii pe dreapta -->
+		<div class="col-sm-3 sidebar-offcanvas" style="overflow:auto; height: 550px">
+			<%if @comentarii.count == 0%>
+				<em>Nu sunt comentarii.</em>
+				<br/><br/>
+			<%else%>
+				<%@comentarii.each do |comentariu|%>
+					<% if User.find(comentariu.user_id).rol == "Profesor" %>
+						<div class="panel panel-default">
+						  <div class="panel-heading">
+						    	<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
+								<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
+						  </div>
+						  <div class="panel-body">
+						    <%= comentariu.continut %>
+						  </div>
+						</div>
+						<!-- <p style="color:green"> -->
+						<!-- <b><= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b>  -->
+						<!-- <em><= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em> -->
+						<!-- <br/> -->
+						<!-- <=comentariu.continut%></p> -->
+					<% else %>
+						<div class="panel panel-info">
+						  <div class="panel-heading">
+						    	<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
+								<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
+						  </div>
+						  <div class="panel-body">
+						    <%= comentariu.continut %>
+						  </div>
+						</div>
+						<!-- <p style="color:blue"> -->
+						<!-- <b><= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b> -->
+						<!-- <em><= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em> -->
+						<!-- <br/> -->
+						<!-- <=comentariu.continut%></p> -->
+					<% end %>
+				<%end%>
+			<%end%>
+				
+			<%= form_tag(licentaHome_adauga_comentariu_path(:student_id => @student_id), method: "post") do%>
+					<%= hidden_field_tag(:licenta, @licenta.id , class: "form-control") %>
+				<div class="field">
+					<%= text_area_tag(:comentariu, nil , :required => true, class: "form-control",rows:5) %>
+				</div>
+				<br/>
+				<%= submit_tag "Adaugă comentariu", class: "btn btn-primary" %>
+			<%end%>
 
-</div>
+			<% if get_current_user.rol == "Student" %>
+				<br/>
+				<%= link_to "Renunta la licenta asta", renunta_path, data: {confirm: "Sigur renunti la licenta asta? O data luata de altcineva toata munca va fi pierduta."} %>
+			<% end %>
 
-</div>
+		</div>
+
+	</div>
 </div>
 
 

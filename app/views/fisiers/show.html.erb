@@ -1,11 +1,13 @@
-<% if current_user.rol == "Profesor"%>
+<% if get_current_user.rol == "Profesor"%>
+
 	<%= @student.nume + " " + @student.prenume + " - " + @student.grupa.to_s %>
 	<br/>
 	<%= @tema.nume %>
+
 <% end %>
 
 <ol class="breadcrumb">
-	<% if current_user.rol == "Profesor"%>
+	<% if get_current_user.rol == "Profesor"%>
     	<li><a href="/licenta_pagini/licentaHome?student_id=<%= @studentid%>">Licenta Home</a></li>
     	<li><a href="/capitols/<%= @fisier.capitol_id %>"><%= Capitol.find(@fisier.capitol_id).nume%></a></li>
     	<li class="active"><%= @fisier.name %></li>
@@ -27,59 +29,60 @@
 
 
 <div class="container">
-<div class="row row-offcanvas-right">
+	<div class="row row-offcanvas-right">
 
-	<div class="col-sm-8">
-		<!-- <= link_to "Download", action: "download", :path => @fisier.path %> -->
-		<%= link_to "Download", download_fisier_path(@fisier) %>
-	</div>
+		<!-- contentul principal, download link -->
+		<div class="col-sm-8">
+			<%= "Urcat de " + User.find(@fisier.user_id).prenume + " " + User.find(@fisier.user_id).nume %><br/>
+			<%= "Descriere: " %><br/>
+			<%= link_to "Download", download_fisier_path(@fisier) %>
+		</div>
 
-	<!-- comentarii pe dreapta -->
-	<div class="col-sm-3 sidebar-offcanvas" style="overflow:auto; height: 550px">
-		<%if @comentarii.count == 0%>
-			<em>Nu sunt comentarii.</em>
-			<br/><br/>
-		<%else%>
-			<%@comentarii.each do |comentariu|%>
-				<% if User.find(comentariu.user_id).rol == "Profesor" %>
-					<div class="panel panel-default">
-					  <div class="panel-heading">
-					    	<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
-							<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
-					  </div>
-					  <div class="panel-body">
-					    <%= comentariu.continut %>
-					  </div>
-					</div>
-					<!-- <p style="color:green"><= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : <=comentariu.continut%></p> -->
-				<% else %>
-					<div class="panel panel-info">
-					  <div class="panel-heading">
-					    	<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
-							<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
-					  </div>
-					  <div class="panel-body">
-					    <%= comentariu.continut %>
-					  </div>
-					</div>
-					<!-- <p style="color:blue"><= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : <=comentariu.continut%></p> -->
+		<!-- comentarii pe dreapta -->
+		<div class="col-sm-3 sidebar-offcanvas" style="overflow:auto; height: 550px">
+			
+			<% if @comentarii.count == 0 %>
+				<em>Nu sunt comentarii.</em>
+				<br/><br/>
+			<% else %>
+				<% @comentarii.each do |comentariu| %>
+					<% if User.find(comentariu.user_id).rol == "Profesor" %>
+						<div class="panel panel-default">
+						  <div class="panel-heading">
+						    	<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
+								<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
+						  </div>
+						  <div class="panel-body">
+						    <%= comentariu.continut %>
+						  </div>
+						</div>
+						<!-- <p style="color:green"><= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : <=comentariu.continut%></p> -->
+					<% else %>
+						<div class="panel panel-info">
+						  	<div class="panel-heading">
+						    	<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
+								<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
+						  	</div>
+						  	<div class="panel-body">
+						    	<%= comentariu.continut %>
+						  	</div>
+						</div>
+						<!-- <p style="color:blue"><= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : <=comentariu.continut%></p> -->
+					<% end %>
 				<% end %>
-			<%end%>
-		<%end%>
+			<% end %>
 
-		<%= form_tag(fisiers_adauga_comentariu_path(:student_id => @student_id), method: "post") do%>
-			<%= hidden_field_tag(:fisier, @fisier.id , class: "form-control") %>
-			<div class="field">
-				<%= text_area_tag(:continut, nil , :required => true, class: "form-control",rows:5) %>
-			</div>
-			<br/>
+			<%= form_tag(fisiers_adauga_comentariu_path(:student_id => @student_id), method: "post") do%>
+				<%= hidden_field_tag(:fisier, @fisier.id , class: "form-control") %>
+				<div class="field">
+					<%= text_area_tag(:continut, nil , :required => true, class: "form-control",rows:5) %>
+				</div>
+				<br/>
+				<%= submit_tag "Adaugă comentariu", class: "btn btn-primary" %>
+			<% end %>
 
-			<%= submit_tag "Adaugă comentariu", class: "btn btn-primary" %>
-	
-		<%end%>
+		</div>
+
 	</div>
-
-
-</div>
 </div>
 

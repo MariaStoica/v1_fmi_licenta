@@ -54,95 +54,97 @@
 
 <!-- rezultatele -->
 <% if @results.count > 0 %>
-<table class="table table-striped table hover">
-  	<thead>
-		<tr>
-		  <% if params[:rol] == "Profesor" %>
-		  	<th>Grad</th>
-		  <% end %>
-		  	
-		  <th>Nume Prenume</th>
-		  
-		  <% if params[:rol] == "Student" %>
-		  	<th>Grupa</th>
-		  <% end %>
-
-		  <th>Specializare</th>
-		  <th>Eligibil Licenta</th>
-
-		  <% if params[:rol] == "Profesor" %>
-		  	<th>Acc Stud</th>
-		  	<th>Teme</th>
-		  	<th>Domenii</th>
-		  	<th>Pending-uri</th>
-		  	<th>Studenti</th>
-		  <% end %>
-
-		  <th></th>
-		</tr>
-  	</thead>
-
-  	<tbody>
-
-		<% @results.each do |user| %>
+	<table class="table table-striped table hover">
+	  	<thead>
 			<tr>
-				<% if params[:rol] == "Profesor" %>
-					<td><%= user.grad %></td>
-				<% end %>
-				<td><%= user.nume %> <%= user.prenume %></td>
-				<% if params[:rol] == "Student" %>
-				  	<td><%= user.grupa %></td>
-				<% end %>
+			  <% if params[:rol] == "Profesor" %>
+			  	<th>Grad</th>
+			  <% end %>
+			  	
+			  <th>Nume Prenume</th>
+			  
+			  <% if params[:rol] == "Student" %>
+			  	<th>Grupa</th>
+			  <% end %>
 
-				<% if params[:rol] == "Profesor" or params[:rol] == "Student" %>
-					<td><%= user.specializare %></td>
-					<% if user.este_eligibil_licenta == true %>
-						<td style="color:green"><%= user.este_eligibil_licenta %></td>
-					<% elsif user.este_eligibil_licenta == false %>
-						<td style="color:red"><%= user.este_eligibil_licenta %></td>
+			  <th>Specializare</th>
+			  <th>Eligibil Licenta</th>
+
+			  <% if params[:rol] == "Profesor" %>
+			  	<th>Acc Stud</th>
+			  	<th>Teme</th>
+			  	<th>Domenii</th>
+			  	<th>Pending-uri</th>
+			  	<th>Studenti</th>
+			  <% end %>
+
+			  <th></th>
+			</tr>
+	  	</thead>
+
+	  	<tbody>
+
+			<% @results.each do |user| %>
+				<tr>
+					
+					<% if params[:rol] == "Profesor" %>
+						<td><%= user.grad %></td>
 					<% end %>
-				<% end %>
+					
+					<td><%= user.nume %> <%= user.prenume %></td>
 
-				<% if params[:rol] == "Profesor" %>
-					<% pending = AlegeriUserTema.where(sesiune_id: get_current_sesiune.id).where(status_profesor: "Pending") %>
-					<% domeniile = Domeniu.where(sesiune_id: get_current_sesiune.id).where(user_id: user.id) %>
-					<% temeleNr = 0 %>
-					<% pendinguriNr = 0 %>
-					<% studentiNr = 0 %>
+					<% if params[:rol] == "Student" %>
+					  	<td><%= user.grupa %></td>
+					<% end %>
 
-					<% domeniile.each do |d| %>
-						<% temeleNr = temeleNr + d.temas.count %>
-						<% d.temas.each do |t| %>
-							<% pendinguriNr = pendinguriNr + pending.where(tema_id: t.id).count %>
-							<% Licenta.where(tema_id: t.id).each do |licenta| %>
-				            	<% studentiNr = studentiNr + 1 %>
-				            <% end %>
+					<% if params[:rol] == "Profesor" or params[:rol] == "Student" %>
+						<td><%= user.specializare %></td>
+						<% if user.este_eligibil_licenta == true %>
+							<td style="color:green"><%= user.este_eligibil_licenta %></td>
+						<% elsif user.este_eligibil_licenta == false %>
+							<td style="color:red"><%= user.este_eligibil_licenta %></td>
 						<% end %>
 					<% end %>
 
-				    <td><%= user.are_domeniu_propuneri_studenti %></td>
-					<td><%= temeleNr %></td>
-					<td><%= domeniile.count %></td>
-					<td><%= pendinguriNr %></td>
-					<td><%= studentiNr %></td>
-				<% end %>
+					<% if params[:rol] == "Profesor" %>
+						<% pending = AlegeriUserTema.where(sesiune_id: get_current_sesiune.id).where(status_profesor: "Pending") %>
+						<% domeniile = Domeniu.where(sesiune_id: get_current_sesiune.id).where(user_id: user.id) %>
+						<% temeleNr = 0 %>
+						<% pendinguriNr = 0 %>
+						<% studentiNr = 0 %>
 
-				<% if params[:rol] == "Profesor" or params[:rol] == "Student" %>
-				  	<td><%= link_to 'Edit', edit_user_path(user) %></td>
-				<% end %>
+						<% domeniile.each do |d| %>
+							<% temeleNr = temeleNr + d.temas.count %>
+							<% d.temas.each do |t| %>
+								<% pendinguriNr = pendinguriNr + pending.where(tema_id: t.id).count %>
+								<% Licenta.where(tema_id: t.id).each do |licenta| %>
+					            	<% studentiNr = studentiNr + 1 %>
+					            <% end %>
+							<% end %>
+						<% end %>
 
-				
-				<% if params[:rol] == nil %>
-					<td></td>
-					<td></td>
-				<% end %>
+					    <td><%= user.are_domeniu_propuneri_studenti %></td>
+						<td><%= temeleNr %></td>
+						<td><%= domeniile.count %></td>
+						<td><%= pendinguriNr %></td>
+						<td><%= studentiNr %></td>
 
+					<% end %>
 
-				
-			</tr>
-		<% end %>
+					<% if params[:rol] == "Profesor" or params[:rol] == "Student" %>
+					  	<td><%= link_to 'Edit', edit_user_path(user) %></td>
+					<% end %>
 
-	</tbody>
-</table>
+					<% if params[:rol] == nil %>
+						<td></td>
+						<td></td>
+					<% end %>
+
+				</tr>
+			<% end %>
+
+		</tbody>
+	</table>
+
 <% end %>
 

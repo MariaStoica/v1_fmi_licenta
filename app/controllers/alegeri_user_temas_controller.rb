@@ -10,7 +10,7 @@ class AlegeriUserTemasController < ApplicationController
   # GET /alegeri_user_temas/1
   # GET /alegeri_user_temas/1.json
   def show
-    @u = current_user
+    # @u = current_user
   end
 
   # GET /alegeri_user_temas/new
@@ -21,7 +21,7 @@ class AlegeriUserTemasController < ApplicationController
 
   # GET /alegeri_user_temas/1/edit
   def edit
-     @u = current_user
+     # @u = current_user
      @from = params[:from]
   end
 
@@ -45,7 +45,7 @@ class AlegeriUserTemasController < ApplicationController
   # PATCH/PUT /alegeri_user_temas/1.json
   def update
     if params[:Titlu] && params[:Catre] && params[:Mesaj]
-        #UserMailer.notification_email(User.find(current_user.id).email,params[:Catre], params[:Titlu], params[:Mesaj]).deliver
+        #UserMailer.notification_email(User.find(get_current_user.id).email,params[:Catre], params[:Titlu], params[:Mesaj]).deliver
     end
     respond_to do |format|
       if @alegeri_user_tema.update(alegeri_user_tema_params)

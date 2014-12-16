@@ -47,7 +47,7 @@ class UserSessionsController < ApplicationController
       if grad == nil 
         grad = "smth"
       end
-      user.are_domeniu_propuneri_studenti = true
+      user.are_domeniu_propuneri_studenti = false
       user.grad = grad
       if grad == "Asistent" or grad == "Preparator"
         user.este_eligibil_licenta = false
@@ -74,15 +74,14 @@ class UserSessionsController < ApplicationController
   # Omniauth failure callback
   def failure
     flash[:notice] = params[:message]
-
   end
 
   # logout - Clear our rack session BUT essentially redirect to the provider
   # to clean up the Devise session from there too !
   def destroy
     reset_session
-    
     flash[:notice] = 'You have successfully signed out!'
-    redirect_to "#{CUSTOM_PROVIDER_URL}/users/sign_out?oauth_token=" + @current_user.token
+    redirect_to root_path
+    # redirect_to "#{CUSTOM_PROVIDER_URL}/users/sign_out?oauth_token=" + get_current_user.token
   end
 end

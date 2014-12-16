@@ -49,7 +49,7 @@ V1FmiLicenta::Application.routes.draw do
   # omniauth
   get '/auth/:provider/callback', :to => 'user_sessions#create'
   get '/auth/failure', :to => 'user_sessions#failure' 
-  get '/logout', :to => 'user_sessions#destroy'
+  delete '/logout', :to => 'user_sessions#destroy'
   # match '/logout', :to => 'user_sessions#destroy', :as => :logout, via: [:get, :post]
 
   root to: "browse_pagini#browseHome"

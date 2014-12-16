@@ -6,6 +6,7 @@
    <!-- <hr> -->
 <!-- < end %> -->
 
+
 <!-- search box -->
 <%= form_tag({controller: "browse_pagini", action:"browseHomeArhiva" }, method: "get") do %>
     <div class="form-group search-form">
@@ -18,7 +19,9 @@
 
 <!-- temele din sesiunea curenta -->
 <% if params[:search] and params[:search] != "" %>
+	
 	<% if @results.count > 0 %>
+		
 		<table class="table table-striped table hover">
 			<thead>
 				<th>Nr.</th>
@@ -35,150 +38,86 @@
 				<% end %>
 			</tbody>
 		</table>
+	
 	<% elsif @results.count == 0 %>
 		Nicio tema.
 	<% end %>
+
 <% else %>
+
 	<% if @useri_profesori.count == 0 %>
 		<p> Nu sunt profesori eligibili pentru licență. </p>
 	<% end %>
+
 	<div class="css-treeview">
 		<ul> <!-- pt profi -->
 			<% @useri_profesori.each do |prof| %>
 				<li style="padding-bottom:10px; padding-top:10px;"><input type="checkbox" /><label><span style="font-size:22px;font-family:Georgia, serif;color:black"><%= link_to prof.grad + " " + prof.nume + " " + prof.prenume, prof %><span/></label>
 					<ul> <!-- pt domenii -->
+						
 						<% if Domeniu.where(user_id: prof.id).where(sesiune_id: params[:sesiune_id]).count == 0 %>
 							Nu sunt domenii.
 						<% else %>
-						<% Domeniu.where(user_id: prof.id).where(sesiune_id: params[:sesiune_id]).each do |dom| %>
-							<li style="padding-top:10px;"><input type="checkbox" /><label style="font-size:18px;font-family:Georgia, serif; color:darkgreen" for="domeniu"><%= link_to dom.nume, dom %></label>
-							<br/>
-							<ul>
-							<% if @current_user.rol == "Student" %>
-								<% if Tema.where(domeniu_id: dom.id).where(sesiune_id: params[:sesiune_id]).count == 0 %>
-									<li style="padding-top:10px"><em>Nu sunt teme.</em></li>
-								<% else %>
-									<table class="table table-striped table hover">
-										<thead>
-											<th></th>
-										</thead>
-										<tbody>
-											<% Tema.where(domeniu_id: dom.id).where(sesiune_id: params[:sesiune_id]).each do |tema| %>
-												<tr>
-													<td><%= link_to tema.nume, tema(sesiune_id: params[:sesiune_id]) %></td>
-												</tr>
-												<!-- <li style="list-style-type: circle; padding-top:10px"> -->
-													<!-- <span style="font-size:18px;font-family:Georgia, serif;color:black"><= link_to tema.nume, tema %></span> -->
-												<!-- </li> end de la tema -->
-											<% end %>
-										</tbody>
-									</table>
-								<% end %>
-							<% else %>
-								<% if Tema.where(domeniu_id: dom.id).count == 0 %>
-									<li style="padding-top:10px"><em>Nu sunt teme.</em></li>
-								<% else %>
-									<table class="table table-striped table hover">
-										<thead>
-											<th></th>
-										</thead>
-										<tbody>
-											<% Tema.where(domeniu_id: dom.id).each do |tema| %>
-												<tr>
-													<td><%= link_to tema.nume, tema %></td>
-												</tr>
-											<% end %>
-										</tbody>
-									</table>
-								<% end %>
-							<% end %>
-							</ul>
 
-							</li> <!-- end de la domeniu -->
-						<% end %>
-						<% end %>
+							<% Domeniu.where(user_id: prof.id).where(sesiune_id: params[:sesiune_id]).each do |dom| %>
+								<li style="padding-top:10px;"><input type="checkbox" /><label style="font-size:18px;font-family:Georgia, serif; color:darkgreen" for="domeniu"><%= link_to dom.nume, dom %></label>
+								
+									<br/>
+
+									<ul>
+										<% if get_current_user.rol == "Student" %>
+											<% if Tema.where(domeniu_id: dom.id).where(sesiune_id: params[:sesiune_id]).count == 0 %>
+												<li style="padding-top:10px"><em>Nu sunt teme.</em></li>
+											<% else %>
+												<table class="table table-striped table hover">
+													<thead>
+														<th></th>
+													</thead>
+													<tbody>
+														<% Tema.where(domeniu_id: dom.id).where(sesiune_id: params[:sesiune_id]).each do |tema| %>
+															<tr>
+																<td><%= link_to tema.nume, tema_path(tema, sesiune_id: params[:sesiune_id]) %></td>
+															</tr>
+															<!-- <li style="list-style-type: circle; padding-top:10px"> -->
+																<!-- <span style="font-size:18px;font-family:Georgia, serif;color:black"><= link_to tema.nume, tema %></span> -->
+															<!-- </li> end de la tema -->
+														<% end %>
+													</tbody>
+												</table>
+											<% end %>
+										<% else %>
+											
+											<% if Tema.where(domeniu_id: dom.id).count == 0 %>
+												<li style="padding-top:10px"><em>Nu sunt teme.</em></li>
+											<% else %>
+												<table class="table table-striped table hover">
+													<thead>
+														<th></th>
+													</thead>
+													<tbody>
+														<% Tema.where(domeniu_id: dom.id).each do |tema| %>
+															<tr>
+																<td><%= link_to tema.nume, tema %></td>
+															</tr>
+														<% end %>
+													</tbody>
+												</table>
+											<% end %>
+
+										<% end %>
+									</ul>
+
+								</li> <!-- end de la domeniu -->
+							<% end %> <!-- end domenii... each -->
+						<% end %> <!-- end if domenii.count -->
 					</ul>
 				</li> <!-- end de la prof -->
 				<hr>
 			<% end %>
 		</ul>
 	</div> <!-- end of div css treeview -->
+	
 	<br/><br/>
-<% end %>
-<hr><br/>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<% if params[:search] and params[:search] != "" %>
-	<%= @results.count %> teme gasite.
-		<% @results.each do |r| %>
-			<li><%= link_to r.nume, r %></li>
-		<% end %>
-<% else %>
-	<% if @useri_profesori.count == 0 %>
-		<p> Nu sunt profesori eligibili pentru licență. </p>
-	<% end %>
-	<% @useri_profesori.each do |prof| %>
-		<!-- div-ul profului -->
-		<div>
-			<div style="text-align: left">
-				<b><%= link_to prof.grad + " " + prof.nume + " " + prof.prenume, prof, style: "color:black; font-size:20px; font-family:Georgia, serif;" %></b>
-			</div>
-			<% Domeniu.where(user_id: prof.id).each do |dom| %>
-				<div> <!-- class="divdomeniu"> -->
-					<span class="clickdomeniu glyphicon glyphicon-chevron-right"></span>
-					<b><%= link_to dom.nume, dom, style: "color:#7C7062; font-size:18px; font-family:Georgia, serif; font-style:italic" %></b>
-				
-					<div class="expanddomeniu">
-						<% if @current_user.rol == "Student" and dom.nume == "Alegerea studentului" %>
-							<div class="divtema"><%= link_to "Propune temă", root_path, style: "color: darkgreen" %></div>
-						<% end %>
-					
-						<% if Tema.where(domeniu_id: dom.id).where(este_libera: true).where(sesiune_id: @selected_sesiune.id).count > 0 %>
-							
-								<% Tema.where(domeniu_id: dom.id).where(este_libera: true).where(sesiune_id: @selected_sesiune.id).each do |tema| %>
-									<div class="divtema"> <%= link_to tema.nume, tema, style: "#428bca; font-family:Georgia, serif;"%></div>
-								<%end%>
-						<% else %>
-							<i>Acest domeniu nu are teme.</i>
-						<% end %> <!-- de la teme -->
-					</div>
-				</div>
-			<% end %> <!-- de la domenii -->
-
-		</div> <!-- end divprof -->
-		<br/><br/>
-	<% end %>
 <% end %>
 

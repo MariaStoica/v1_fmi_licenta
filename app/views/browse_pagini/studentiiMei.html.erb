@@ -9,141 +9,172 @@
 <!-- < end %> -->
 
 
-<% if @alese > 0 %>
+<% if @temeAleseDeStudenti > 0 %>
+	
+	<% if @nrStudentiCuLicenta > 0%>
 
-<% if @nrStudenti > 0%>
+		<% if @nrStudentiCuLicenta == 1 %>
+			<p align="right"><strong><%= @nrStudentiCuLicenta %> student cu licență.</strong></p>
+		<% else %>
+			<p align="right"><strong><%= @nrStudentiCuLicenta %> studenți cu licență.</strong></p>
+		<% end %>
 
-	<% if @nrStudenti == 1 %>
-		<p align="right"><strong><%= @nrStudenti %> student cu licență.</strong></p>
-	<% else %>
-		<p align="right"><strong><%= @nrStudenti %> studenți cu licență.</strong></p>
-	<% end %>
+		<!-- tabel cu studentii cu licenta -->
+		<table class="table table-striped table hover">
+		  	<thead>
+				<tr>
+				  <th class="col-sm-2">Nume</th>
+				  <th class="col-sm-1">Grupa</th>
+				  <th class="col-sm-5">Tema</th>
+				  <th class="col-sm-2">Progres</th>
+				  <th class="col-sm-1"></th>
+				</tr>
+		  	</thead>
+		  	<tbody>
 
+				<% @domenii.each do |domeniu| %>
+				
+					<% domeniu.temas.each do |tema| %>
+			   	
+			   			<% Licenta.where(tema_id: tema.id).each do |licenta| %>
+			    
+			     			<% User.where(id: licenta.user_id).each do |user| %>
+				
+								<tr>
+				
+									<td><%= user.nume + " " + user.prenume %></td>
+				
+									<td><%= user.grupa %></td>
+				
+									<td>
+										<% if Licenta.find_by_tema_id(tema.id).renuntat == false %>
+											<%=link_to tema.nume,licentaHome_path(:student_id => user.id)%>
+										<% else %>
+											<span style="color:red"><%= tema.nume %></span>
+										<% end %>
+									</td>
+									
+									<td>
+										<!-- iau toate todo-urile din licenta asta -->
+										<% todos = Todo.find_by_sql("select * from todos where capitol_id in (select id from capitols where licenta_id=" + licenta.id.to_s + ")") %>
+										<!-- acum iau doar todo-urile care sunt complete -->
+										<% gata = todos.select{|t| t.este_gata == true} %>
+										<!-- calculez progresul -->
+										<%if todos.count == 0 %>
+											<% progres = 0 %>
+										<% else %>
+											<% progres = (gata.count * 100) / todos.count %>
+										<% end %>
+										<div class="progress">
+	  										<div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: <%= progres %>%;" ><span style="color:black"><%= progres %>%</span></div>
+										</div>
+									</td>
+				
+									<td>
+										<% licentaFinala = Capitol.where(licenta_id: licenta.id).where(este_licenta_finala: true) %>
+										<% if licentaFinala.count > 0 and licentaFinala.first.fisiers.count > 0 %>
+											<%= link_to "Referat licență", root_path, class: "btn btn-primary", style: "color:white" %>
+										<% end %>
+									</td>
+				
+								</tr>
+				
+							<%end%> <!-- end of user... each -->
+				
+						<%end%> <!-- end of licenta... each -->
+				
+					<%end%> <!-- end of domeniu.temas.each -->
+				
+				<%end%> <!-- end of domenii.each -->
+		  	
+		  	</tbody>
+		</table>
+
+	<% else %> <!-- else if @nrStudenti > 0 -->
+
+		Nu sunt studenți cu licență.
+	
+	<% end %> <!-- end if @nrStudenti > 0 -->
+
+	<br/><hr><br/>
+
+	<!-- tabel cu studentii care au teme alese la prof -->
 	<table class="table table-striped table hover">
 	  	<thead>
 			<tr>
 			  <th class="col-sm-2">Nume</th>
 			  <th class="col-sm-1">Grupa</th>
 			  <th class="col-sm-5">Tema</th>
-			  <th class="col-sm-2">Progres</th>
+			  <th class="col-sm-1">Status student</th>
+			  <th class="col-sm-1">Status profesor</th>
 			  <th class="col-sm-1"></th>
 			</tr>
 	  	</thead>
-
 	  	<tbody>
-			<% @domenii.each do |domeniu| %>
-				<%domeniu.temas.each do |tema| %>
-		   			<%Licenta.where(tema_id: tema.id).each do |licenta| %>
-		     			<%@users.where(id: licenta.user_id).each do |user|%>
-							<tr>
-								<td><%= user.nume + " " + user.prenume %></td>
-								<td><%= user.grupa %></td>
-								<td>
-									<% if Licenta.find_by_tema_id(tema.id).renuntat == false %>
-										<%=link_to tema.nume,licentaHome_path(:student_id => user.id)%>
-									<% else %>
-										<span style="color:red"><%= tema.nume %></span>
-									<% end %>
-								</td>
-								
-								<td>
-									<!-- iau toate todo-urile din licenta asta -->
-									<% todos = Todo.find_by_sql("select * from todos where capitol_id in (select id from capitols where licenta_id=" + licenta.id.to_s + ")") %>
-									<!-- acum iau doar todo-urile care sunt complete -->
-									<% gata = todos.select{|t| t.este_gata == true} %>
-									<!-- calculez progresul -->
-									<%if todos.count == 0 %>
-										<% progres = 0 %>
-									<% else %>
-										<% progres = (gata.count * 100) / todos.count %>
-									<% end %>
-									<div class="progress">
-  										<div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: <%= progres %>%;" ><span style="color:black"><%= progres %>%</span></div>
-									</div>
-								</td>
-								<td>
-									<% licentaFinala = Capitol.where(licenta_id: licenta.id).where(este_licenta_finala: true) %>
-									<% if licentaFinala.count > 0 and licentaFinala.first.fisiers.count > 0 %>
-										<%= link_to "Referat licență", root_path, class: "btn btn-primary", style: "color:white" %>
-									<% end %>
-								</td>
-							</tr>
-						<%end%>
-					<%end%>
-				<%end%>
-			<%end%>
-	  </tbody>
-	</table>
-<% else %>
-	Nu sunt studenți cu licență.
-<% end %>
 
-<br/><hr><br/>
+	  		<% @domenii.each do |domeniu| %>
+				
+				<% domeniu.temas.each do |tema| %>
+				<!-- nu mai afisez studentii care au dat accept / reject ci doar pe cei in pending ca doar acolo mai are sens sa isi schimbe proful raspunsul -->
+				<!-- sau... sa le vada pe toate dar ordonate dupa pendinggul studentului -->
+					
+					<% AlegeriUserTema.where(sesiune_id: get_current_sesiune.id).where(tema_id: tema.id).order(:status_student).each do |alegere| %>
+						
+						<% User.where(id: alegere.user_id).each do |user|%>
+							
+							<%if user.id != get_current_user.id %>
 
-<!-- <strong>Cereri de licenta</strong> -->
-<table class="table table-striped table hover">
-  	<thead>
-		<tr>
-		  <th class="col-sm-2">Nume</th>
-		  <th class="col-sm-1">Grupa</th>
-		  <th class="col-sm-5">Tema</th>
-		  <th class="col-sm-1">Status student</th>
-		  <th class="col-sm-1">Status profesor</th>
-		  <th class="col-sm-1"></th>
-		</tr>
-  	</thead>
-
-  	<tbody>
-
-  		<% @domenii.each do |domeniu| %>
-			<%domeniu.temas.each do |tema| %>
-			<!-- nu mai afisez studentii care au dat accept / reject ci doar pe cei in pending ca doar acolo mai are sens sa isi schimbe proful raspunsul -->
-			<!-- sau... sa le vada pe toate dar ordonate dupa pendinggul studentului -->
-				<%@alegeri.where(tema_id: tema.id).order(:status_student).each do |alegere| %>
-					<%@users.where(id: alegere.user_id).each do |user|%>
-						<%if user.id != current_user.id %>
-	  						<tr>
-								<td><%= user.nume + " " + user.prenume %></td>
-								<td><%= user.grupa %></td>
-								
-								
-								<td><%= tema.nume %></td>
-
-								<% if alegere.status_student == "Pending" %>
-									<td style="color:orange"><%= alegere.status_student %></td>
-								<% elsif alegere.status_student == "Accepted" %>
-									<td style="color:green"><%= alegere.status_student %></td>
-								<% else %>
-									<td style="color:red"><%= alegere.status_student %></td>
-								<% end %>
-								<% if alegere.status_profesor == "Pending" %>
-									<td style="color:orange"><%= alegere.status_profesor %></td>
-								<% elsif alegere.status_profesor == "Accepted" %>
-									<td style="color:green"><%= alegere.status_profesor %></td>
-								<% else %>
-									<td style="color:red"><%= alegere.status_profesor %></td>
-								<% end %>
-								<%if alegere.status_profesor == "Pending" %>
-									<td><%= link_to 'Răspunde cererii', edit_alegeri_user_tema_path(alegere, :from => "Profesor", :to => user.email, :student_id => user.id, :tema_id => tema.id), :class => 'btn btn-primary' %></td>
-								<% else %>
+		  						<tr>
+									
+									<td><%= user.nume + " " + user.prenume %></td>
+									
+									<td><%= user.grupa %></td>
+									
+									<td><%= tema.nume %></td>
+									
 									<% if alegere.status_student == "Pending" %>
-										<td><%= link_to 'Modificare raspuns', edit_alegeri_user_tema_path(alegere, :from => "Profesor", :to => user.email, :student_id => user.id, :tema_id => tema.id) %></td>
+										<td style="color:orange"><%= alegere.status_student %></td>
+									<% elsif alegere.status_student == "Accepted" %>
+										<td style="color:green"><%= alegere.status_student %></td>
 									<% else %>
-										<td></td>
+										<td style="color:red"><%= alegere.status_student %></td>
 									<% end %>
-								<%end%>
-	  						</tr>
-	 					<%end%>
-	 				<%end%>
-	 			<%end%>
-	 		<%end%>
-		<% end %>
-        
+									
+									<% if alegere.status_profesor == "Pending" %>
+										<td style="color:orange"><%= alegere.status_profesor %></td>
+									<% elsif alegere.status_profesor == "Accepted" %>
+										<td style="color:green"><%= alegere.status_profesor %></td>
+									<% else %>
+										<td style="color:red"><%= alegere.status_profesor %></td>
+									<% end %>
+									
+									<%if alegere.status_profesor == "Pending" %>
+										<td><%= link_to 'Răspunde cererii', edit_alegeri_user_tema_path(alegere, :from => "Profesor", :to => user.email, :student_id => user.id, :tema_id => tema.id), :class => 'btn btn-primary' %></td>
+									<% else %>
+										<% if alegere.status_student == "Pending" %>
+											<td><%= link_to 'Modificare raspuns', edit_alegeri_user_tema_path(alegere, :from => "Profesor", :to => user.email, :student_id => user.id, :tema_id => tema.id) %></td>
+										<% else %>
+											<td></td>
+										<% end %>
+									<%end%>
 
+		  						</tr>
 
-  </tbody>
-</table>
+		 					<%end%> <!-- end if user.id != current_user.id -->
 
-<% else %>
-Nu sunt stundenți deocamdată.
-<% end %>
+		 				<%end%> <!-- end users...each -->
+
+		 			<%end%> <!-- end alegeri...each -->
+
+		 		<%end%> <!-- end domeniu.temas -->
+
+			<% end %> <!-- end of @domenii.each -->
+
+	  	</tbody>
+	</table>
+
+<% else %> <!-- else if @alese > 0 -->
+
+	Nu sunt stundenți deocamdată.
+
+<% end %> <!-- end if @alese > 0 -->

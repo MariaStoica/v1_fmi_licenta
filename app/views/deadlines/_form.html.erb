@@ -1,37 +1,80 @@
 <%= form_for(@deadline) do |f| %>
+
+    <!-- afiseaza daca sunt erori -->
   <% if @deadline.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@deadline.errors.count, "error") %> prohibited this deadline from being saved:</h2>
-
       <ul>
       <% @deadline.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
+        <li style="color:red"><%= msg %></li>
       <% end %>
       </ul>
     </div>
+    <hr>
   <% end %>
 
   <div class="field">
     <%= f.label :nume %><br>
-    <%= f.text_field :nume %>
+    <%= f.text_field :nume, class: 'col-sm-5' %>
   </div>
+
+  <br/><br/>
+
+  <div class="field">
+    <%= f.label :descriere %><br>
+    <%= f.text_area :descriere, class: 'col-sm-5' %>
+  </div>
+
+  <br/><br/><br/>
+  
+  <div class="field">
+    <%= f.label :data_start %><br>
+    <%= f.date_select :data_start %>
+  </div>
+
+  <br/>
+
+  <div class="field">
+    <%= f.label :data_end %><br>
+    <%= f.date_select :data_end %>
+  </div>
+
+  <br/>
+
   <div class="field">
     <%= f.label :numar %><br>
     <%= f.number_field :numar %>
   </div>
+  
+  <br/>
+
+  <!-- publicul tinta -->
+  <% selectie = ["Student", "Profesor", "Toti"] %>
   <div class="field">
-    <%= f.label :descriere %><br>
-    <%= f.text_area :descriere %>
+    <%= f.label :public_tinta %> <br/>
+    <% if @deadline.new_record? == true %>
+      <% selectie.each do |item| %>
+        <%= f.radio_button :public_tinta, item %> <%= item %><br/>
+      <% end %>
+    <% else %>
+      <% selectie.each do |item| %>
+        <% if @deadline.public_tinta == item %>
+          <%= f.radio_button :public_tinta, item, checked: true %> <%= item %><br/>
+        <% else %>
+          <%= f.radio_button :public_tinta, item %> <%= item %><br/>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    
+    <!-- <= f.radio_button :public_tinta, "Student" %> <label>Student</label> <br/> -->
+    <!-- <= f.radio_button :public_tinta, "Profesor" %> <label>Profesor</label> <br/> -->
+    <!-- <= f.radio_button :public_tinta, "Toti" %> <label>Toti</label> <br/> -->
   </div>
-  <div class="field">
-    <%= f.label :data_start %><br>
-    <%= f.datetime_select :data_start %>
-  </div>
-  <div class="field">
-    <%= f.label :data_end %><br>
-    <%= f.datetime_select :data_end %>
-  </div>
+
+  <br/>
+
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Creaza deadline", :class => 'btn btn-primary' %>
   </div>
+
 <% end %>

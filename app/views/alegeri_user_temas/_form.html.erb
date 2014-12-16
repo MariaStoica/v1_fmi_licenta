@@ -14,7 +14,7 @@
 
   
   <%if @from == "Student"%>
-      <%= f.hidden_field :user_id , :value => current_user.id %>
+      <%= f.hidden_field :user_id , :value => get_current_user.id %>
   <% elsif @from == "Profesor" %>
       <%= f.hidden_field :user_id , :value => params[:student_id] %>
   <%end%>

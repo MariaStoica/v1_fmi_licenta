@@ -32,13 +32,13 @@
 				</div>
 				<div class="navbar-collapse collapse navbar-responsive-collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<% if @current_user != nil %>
+						<% if get_current_user != nil %>
 						<li>
-							<%= link_to "Salut, " + @current_user.prenume, @current_user, style: "font-family: Book Antiqua, serif; font-size: 18px" %>
+							<%= link_to "Salut, " + get_current_user.prenume, get_current_user, style: "font-family: Book Antiqua, serif; font-size: 18px" %>
 						</li>
 						<li class="divider"></li>
 						<li>
-							<%= link_to "Delogare", logout_path, style: "font-family: Book Antiqua, serif; font-size: 18px" %>
+							<%= link_to "Delogare", "/logout", method: "delete", style: "font-family: Book Antiqua, serif; font-size: 18px" %>
 						</li>
 						<% else %>
 						<li>
@@ -50,7 +50,7 @@
 			</div>
 		</div>
 
-		<% if @current_user != nil %>
+		<% if get_current_user != nil %>
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-3 col-md-2 sidebar">
@@ -61,34 +61,34 @@
 						<hr>
 
 						<!-- pentru studenti -->
-						<% if @current_user.rol == "Student" %>
-						<% if Licenta.where(user_id: @current_user.id).where(renuntat: false).first %>
-							<li><%= link_to "Acasă", licentaHome_path%></li>
-							<li><%= link_to "Fișierele mele", fisiers_path %></li>
-						<%else%>
-							<li><%= link_to "Acasă", root_path%></li>
-							<% if @current_user.este_eligibil_licenta == true %>
-								<li><%= link_to "Alegerile mele", alegerileMele_path %></li>
-							<% end %>
-						<%end%>
-						<%else%>
-						<li>
-							<%= link_to "Acasă", root_path%>
-						</li>
-						<%end%>
+						<% if get_current_user.rol == "Student" %>
+							<% if Licenta.where(user_id: get_current_user.id).where(renuntat: false).first %>
+								<li><%= link_to "Acasă", licentaHome_path%></li>
+								<li><%= link_to "Fișierele mele", fisiers_path %></li>
+							<%else%>
+								<li><%= link_to "Acasă", root_path%></li>
+								<% if get_current_user.este_eligibil_licenta == true %>
+									<li><%= link_to "Alegerile mele", alegerileMele_path %></li>
+								<% end %>
+							<%end%>
+						<% end %>
 
 						<!-- pentru profesori -->
-						<% if @current_user.rol == "Profesor" and @current_user.este_eligibil_licenta == true %>
-						<li>
-							<%= link_to "Temele mele", temeleMele_path %>
-						</li>
-						<li>
-							<%= link_to "Studenții mei", studentiiMei_path %>
-						</li>
+						<% if get_current_user.rol == "Profesor" %>
+							<%= link_to "Acasă", root_path%>
+
+							<% if get_current_user.este_eligibil_licenta == true %>
+								<li>
+									<%= link_to "Temele mele", temeleMele_path %>
+								</li>
+								<li>
+									<%= link_to "Studenții mei", studentiiMei_path %>
+								</li>
+							<% end %>
 						<% end %>
 
 						<!-- pentru administratori -->
-						<% if @current_user.rol == "Admin" %>
+						<% if get_current_user.rol == "Administrator" %>
 						<li>
 							<%= link_to "Control Panel", controlPanel_path %>
 						</li>
@@ -97,6 +97,7 @@
 						</li>
 						<% end %>
 
+						<hr/>
 						<li><%= link_to "Arhivă", arhivaHome_path%></li>
 
 					</ul>

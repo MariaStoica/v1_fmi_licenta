@@ -1,4 +1,6 @@
 <%= form_for(@fisier) do |f| %>
+
+  <!-- afisare erori -->
   <% if @fisier.errors.any? %>
     <div id="error_explanation">
       <ul>
@@ -15,12 +17,13 @@
     <%= f.text_field :name , class: 'span6'%>
   </div>
 
-<!-- cine a uploadat fisierul ca sa fac mai tarziu diff intre fisierele studentului si ale profului -->
-  <%= f.hidden_field :user_id, :value => current_user.id %>
+  <!-- cine a uploadat fisierul ca sa fac mai tarziu diff intre fisierele studentului si ale profului -->
+  <%= f.hidden_field :user_id, :value => get_current_user.id %>
 
   <br/>
+  
   <div class="field">
-     <% if current_user.rol == "Profesor" %>
+    <% if get_current_user.rol == "Profesor" %>
         <!-- verific dc capitolul din params este in licentele profului si sa fie Bibliografie -->
         <!-- < gasit = 0 %> -->
         <!-- < @licente.each do |licenta| %> -->
@@ -38,22 +41,26 @@
              <!-- redirect_to(root_path, :notice =>"Nu ai voie aici.") %> -->
         <!-- < end %> -->
 
-        <%= f.label :capitol %> : <%= Capitol.find(params[:capitol_id]).nume %>
-        <%= f.hidden_field :capitol_id, :value => params[:capitol_id] %>
-     <% elsif current_user.rol == "Student" %>
-        <%= f.label :capitol_id %><br>
-        <%= f.collection_select :capitol_id, Capitol.where(licenta_id: Licenta.where(user_id: current_user.id).where(renuntat: false).first), :id, :nume, :selected => params[:capitol_id] %>
-     <% end %>
+      <%= f.label :capitol %> : <%= Capitol.find(params[:capitol_id]).nume %>
+      <%= f.hidden_field :capitol_id, :value => params[:capitol_id] %>
+    <% elsif get_current_user.rol == "Student" %>
+      <%= f.label :capitol_id %><br>
+      <%= f.collection_select :capitol_id, Capitol.where(licenta_id: Licenta.where(user_id: get_current_user.id).where(renuntat: false).first), :id, :nume, :selected => params[:capitol_id] %>
+    <% end %>
   </div>
+  
   <br/>
+  
   <div class="field">
     <%= f.label "Browse" %><br>
     <%= f.file_field 'upload' %></p>
   </div>
-   <!-- f.hidden_field :path, :value => "public/data"/name of the fisier %> -->
+  <!-- f.hidden_field :path, :value => "public/data"/name of the fisier %> -->
 
   <br/>
+  
   <div class="actions">
     <%= f.submit 'Submit', class: "btn btn-primary" %>
   </div>
+
 <% end %>

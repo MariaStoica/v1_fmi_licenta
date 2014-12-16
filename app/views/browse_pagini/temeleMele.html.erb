@@ -15,10 +15,14 @@
 	</tr>
 	</thead>
 	<tbody>
+
 		<!-- Domeniile -->
-		<% Domeniu.where(user_id: @current_user.id).where(sesiune_id: @current_sesiune.id).each do |dom| %>
+		<% Domeniu.where(user_id: get_current_user.id).where(sesiune_id: @current_sesiune.id).each do |dom| %>
+		
 			<tr>
+		
 				<td><b><%= link_to dom.nume, dom %></b></td>
+		
 				<td>
 					<% if dom.nume != "Propuneri Studenti" %>
 						<%= link_to "", edit_domeniu_path(dom), class:"glyphicon glyphicon-pencil", :style => 'font-size:13px; position:relative; left:10px'%>
@@ -27,7 +31,9 @@
 						<% end %>
 					<% end %>
 				</td>
+		
 			</tr>
+		
 			<!-- temele unui domeniu -->
 			<tr>
 				<td>
@@ -38,6 +44,7 @@
 						<li class="list-group-item list-group-item-default"><%= link_to "+  Temă", temaNew_path(domeniu_id: dom.id) %></li>
 					</ul>
 				</td>
+				
 				<td>
 					<ul class="list-group">
 						<% Tema.where(domeniu_id: dom.id).each do |tema| %>
@@ -49,19 +56,23 @@
 					</ul>
 				</td>
 			</tr>
+
 		<% end %><!-- end al lui domenii.each -->
+
 		<!-- butonul de add domeniu de la final -->
 		<tr>
-			<td><b><%= link_to "+  Domeniu", domeniuNew_path %></b></td><td></td>
+			<td><b><%= link_to "+  Domeniu", domeniuNew_path %></b></td>
+			<td></td>
 		</tr>
+
 	</tbody>
 </table>
 
 <br/>
 
 <!-- buton pentru domeniul propuneri studenti -->
-<% if current_user.rol == "Profesor" %>
-	<% if current_user.are_domeniu_propuneri_studenti %>
+<% if get_current_user.rol == "Profesor" %>
+	<% if get_current_user.are_domeniu_propuneri_studenti %>
 		<%= link_to "Refuza propuneri de la studenti", refuzStudenti_path(refuzStudenti: true), data: {confirm: "Temele propuse de studenti(daca exista deja) vor ramane in domeniul Neclasificat si vor fi disponibile studentilor pentru a si le alege ca lucrari de licenta."}, class: "btn btn-danger", style: "float:right" %>
 	<% else %>
 		<%= link_to "Permite propuneri de la studenti", acceptStudenti_path(acceptStudenti: true), class: "btn btn-success", style: "float:right" %>

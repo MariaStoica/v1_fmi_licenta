@@ -1,6 +1,6 @@
 class AdminPaginiController < ApplicationController
+
   def controlPanel
-  	@u = current_user
     @azi = Date.today
     if params[:data_end] and params[:data_end] != ""
       stopSesiuneCurenta
@@ -8,7 +8,6 @@ class AdminPaginiController < ApplicationController
   end
 
   def userSpecializari
-  	@u = current_user
   	@results = User.all.order("users.rol")
       if params[:rol] == "Profesor"
           # dau profii intai dupa eligibilitate licenta si apoi dupa nume
@@ -44,6 +43,5 @@ class AdminPaginiController < ApplicationController
       redirect_to "/admin_pagini/controlPanel"
     end 
   end
-
 
 end

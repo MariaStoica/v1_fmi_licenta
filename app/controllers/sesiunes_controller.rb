@@ -14,7 +14,6 @@ class SesiunesController < ApplicationController
 
   # GET /sesiunes/new
   def new
-    @u = current_user
     @sesiune = Sesiune.new
   end
 

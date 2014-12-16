@@ -1,6 +1,55 @@
 <h1>Control Panel</h1>
 <br/>
 
+<% if get_current_sesiune %>
+	<!-- sa apara mare sesiunea curenta -->
+	<div class="panel panel-success">
+	  	<div class="panel-heading">
+	    	<b>Sesiunea curenta</b> . . . <%= time_ago_in_words(get_current_sesiune.deadline) %> left 
+	    	<!-- </br> -->
+	    	<!-- <em>Start: <= get_current_sesiune.data_start.strftime("%d %B %Y") %> --> 
+	    	<!-- Deadline: <= get_current_sesiune.deadline.strftime("%d %B %Y") %></em> -->
+	  	</div>
+	  	<div class="panel-body" style="background-color:#F5FFEB">
+	    	<table class="table table hover">
+	    		<thead>
+	    			<th>Id</th>
+	    			<th>Data_Start</th>
+	    			<th>Deadline</th>
+	    			<th>Data_End</th>
+	    			<th>Este_Deschisa</th>
+	    		</thead>
+	    		<tbody>
+	    			<tr>
+	    				<td><%= get_current_sesiune.id %></td>
+	    				<td><%= get_current_sesiune.data_start.strftime("%d %B %Y") %>
+	    					<br/>
+	    					<em><%= time_ago_in_words(get_current_sesiune.data_start) %> ago</em>
+	    				</td>
+	    				<td><%= get_current_sesiune.deadline.strftime("%d %B %Y") %>
+	    					<br/>
+	    					<em><%= time_ago_in_words(get_current_sesiune.deadline) %> left</em>
+	    				</td>
+	    				<td><% if get_current_sesiune.data_end %>
+	    						<%= get_current_sesiune.data_end.strftime("%d %B %Y") %>
+    						<% else %>
+    						-
+    						<% end %>
+						</td>
+						<td><% if get_current_sesiune.este_deschisa %>
+	    						<span style="color:green"><%= get_current_sesiune.este_deschisa %></span>
+    						<% else %>
+    							<span style="color:red"><%= get_current_sesiune.este_deschisa %></span>
+    						<% end %>
+						</td>
+	    			</tr>
+	    		</tbody>
+	    	</table>
+	  	</div>
+	</div>
+	<!-- dc nu e nicio sesiune activa sa nu apara nimic -->
+<% end %>
+
 <!-- azi, calendar si deadlines summary -->
 <b>Azi:</b><br/><%= @azi.strftime("%A, %d %B %Y") %> <!-- calendar goes here showing today and the deadlines to come -->
 <hr>
@@ -9,40 +58,43 @@ Lista cu toate deadlineurile<br/>
 - cea curenta bold si<br/> 
 - restul to come normale<br/><br/>
 
-	<!-- deadlines -->
-	<table class="table table-striped table hover">
-		<thead>
-			<th>Nr</th>
-			<th>Deadline</th>
-			<th>Start</th>
-			<th>Stop</th>
-			<!-- <th>Descriere</th> -->
-			<th></th> <!-- edit -->
-		</thead>
-		<tbody>
-			<% Deadline.all.each do |deadline| %>
-				<tr>
-					<td><%= deadline.numar %></td>
-					<td><%= deadline.nume %></td>
-					<td><%= deadline.data_start.strftime("%d %B %Y") %></td>
-					<% if @azi > deadline.data_start %>
-						<td><%= deadline.data_end.strftime("%d %B %Y") + " ( " + distance_of_time_in_words(@azi, deadline.data_end) + " ago )" %></td>
-					<% else %>
-						<td><%= deadline.data_end.strftime("%d %B %Y") + " ( " + distance_of_time_in_words(@azi, deadline.data_end) + " left )" %></td>
-					<% end %>
-					<!-- <td><= deadline.descriere %></td> -->
-					<td><%= link_to "Edit", edit_deadline_path(deadline) %></td>
-				</tr>
-			<% end %>
+<!-- deadlines -->
+<table class="table table-striped table hover">
+	<thead>
+		<th>Nr</th>
+		<th>Deadline</th>
+		<th>Start</th>
+		<th>Stop</th>
+		<th>Public tinta</th>
+		<!-- <th>Descriere</th> -->
+		<th></th> <!-- edit -->
+	</thead>
+	<tbody>
+		<% Deadline.all.each do |deadline| %>
 			<tr>
-				<td></td>
-				<td><%= link_to "+ Adauga deadline", new_deadline_path %></td>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td><%= deadline.numar %></td>
+				<td><%= deadline.nume %></td>
+				<td><%= deadline.data_start.strftime("%d %B %Y") %></td>
+				<% if @azi > deadline.data_start %>
+					<td><%= deadline.data_end.strftime("%d %B %Y") + " ( " + distance_of_time_in_words(@azi, deadline.data_end) + " ago )" %></td>
+				<% else %>
+					<td><%= deadline.data_end.strftime("%d %B %Y") + " ( " + distance_of_time_in_words(@azi, deadline.data_end) + " left )" %></td>
+				<% end %>
+				<td><%= deadline.public_tinta %></td>
+				<!-- <td><= deadline.descriere %></td> -->
+				<td><%= link_to "Edit", edit_deadline_path(deadline) %></td>
 			</tr>
-		</tbody>
-	</table>
+		<% end %>
+		<tr>
+			<td></td>
+			<td><%= link_to "+ Adauga deadline", new_deadline_path %></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
 
 <br/>
 // cand se insereaza un deadline nou in tabel, numarul se updateaza singur in fctie de data_start si data_end al sau si al celorlalte deadlineuri din tabel<br/>

@@ -1,4 +1,4 @@
-<% if current_user.rol == "Profesor"%>
+<% if get_current_user.rol == "Profesor"%>
 	<%= @student.nume + " " + @student.prenume + " - " + @student.grupa.to_s %>
 	<br/>
 	<%= @tema.nume %>
@@ -11,7 +11,7 @@
 
 <h1>
 	<%= "Cap " + @capitol.numar.to_s + ". " + @capitol.nume %>
-	<% if @current_user.rol == "Student" %>
+	<% if get_current_user.rol == "Student" %>
 	<%= link_to "", edit_capitol_path(@capitol), class:"glyphicon glyphicon-pencil", :style => 'font-size:14px; color:darkblue; position:relative; left:10px'%>
 	<%= link_to "", @capitol, class:"glyphicon glyphicon-trash", method: :delete, data: { confirm: 'Are you sure?' }, :style => 'color:red; font-size:13px; position:relative; left:15px' %>
 	<% end %>
@@ -25,108 +25,107 @@
 <!-- < end %> -->
 
 <div class="container">
-<div class="row row-offcanvas-right">
-	<div class="col-sm-8">
+	<div class="row row-offcanvas-right">
+		<div class="col-sm-8">
 
-		<br/>
-
-		<!-- afisez todo-urile sale -->
-		<% if @todouri.count == 0 %>
-			<ul class="list-group">
-				<h4 class="list-group-item">ToDos</h4>
-				<%if current_user.rol == "Student" %>
-					<li class="list-group-item"><%= link_to "+ Adaugă ToDo", new_todo_path(:capitol_id => @capitol.id) %></li>
-				<% elsif current_user.rol == "Profesor" %>
-					<li class="list-group-item"><em>Nu sunt todo-uri.</em></li>
-				<% end %>
-			</ul>
-		<% else %>
-			<ul class="list-group">
-				<h4 class="list-group-item">ToDos</h4>
-				<% @todouri.each do |todo| %>
-					<% if todo.este_gata == true %>
-					<li class="list-group-item list-group-item-success"><%= todo.continut %></li>
-					<% elsif todo.este_gata == false %>
-					<li class="list-group-item list-group-item-danger"><%= todo.continut %></li>
-					<% end %>
-				<% end %>
-				<%if current_user.rol == "Student" %>
-					<li class="list-group-item"><%= link_to "+ Adaugă ToDo", new_todo_path(:capitol_id => @capitol.id) %></li>
-				<% end %>
-			</ul>
-		<% end %>
-
-		<!-- afisez fisierele sale -->
-		<% if @fisierele.count == 0 %>
-			<ul class="list-group">
-				<h4 class="list-group-item">Fișiere</h4>
-				<%if (@capitol.nume == "Bibliografie" and current_user.rol == "Profesor") or current_user.rol == "Student" %>
-					<li class="list-group-item"><%= link_to "+ Adaugă fișier", new_fisier_path(:capitol_id => @capitol.id) %></li>
-				<% elsif current_user.rol == "Profesor" and  @capitol.nume != "Bibliografie" %>
-					<li class="list-group-item"><em>Nu sunt fișiere.</em></li>
-				<% end %>
-			</ul>
-		<% else %>
-			<ul class="list-group">
-				<h4 class="list-group-item">Fișiere</h4>
-				<% @fisierele.each do |fis| %>
-				<!-- as avea nevoie de user_id pt fiecare fisier ca sa stiu cine l-a incarcat - sau de un bool dc e incarcat de prof sau de student ca sa pun culorile sau sa le grupez -->
-					<li class="list-group-item list-group-item-info">
-						<%= link_to "", download_fisier_path(fis), class: "glyphicon glyphicon-download-alt"%>
-						<%= link_to fis.name, fis%>
-						(urcat de <%= User.find(fis.user_id).prenume + " " + User.find(fis.user_id).nume %> acum 2 zile)
-					</li>
-				<% end %>
-				<%if (@capitol.nume == "Bibliografie" and current_user.rol == "Profesor") or current_user.rol == "Student" %>
-					<li class="list-group-item"><%= link_to "+ Adaugă fișier", new_fisier_path(:capitol_id => @capitol.id) %></li>
-				<% end %>
-			</ul>
-		<% end %>
-	</div>
-
-	<!-- comentariile -->
-	<div class="col-sm-3 sidebar-offcanvas" style="overflow:auto; height:550px; position:relative; top:10px">
-		<br/>
-		<%if @comentarii.count == 0%>
-			<em>Nu sunt comentarii.</em>
-			<br/><br/>
-		<%else%>
-			<%@comentarii.each do |comentariu|%>
-				<% if User.find(comentariu.user_id).rol == "Profesor" %>
-					<div class="panel panel-default">
-				  		<div class="panel-heading">
-				    		<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
-							<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
-				  		</div>
-				  		<div class="panel-body">
-				    		<%= comentariu.continut %>
-				  		</div>
-					</div>
-				<% else %>
-					<div class="panel panel-info">
-				  		<div class="panel-heading">
-				    		<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
-							<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
-				  		</div>
-				  		<div class="panel-body">
-				    		<%= comentariu.continut %>
-				  		</div>
-					</div>
-				<% end %>
-			<%end%>
-		<%end%>
-			
-		<%= form_tag(capitols_adauga_comentariu_path(:student_id => @student_id), method: "post") do%>
-			<%= hidden_field_tag(:capitol, @capitol.id , class: "form-control") %>
-			<div class="field">
-				<%= text_area_tag(:comentariu, nil , :required => true, class: "form-control",rows:5, placeholder: "Scrie comentariu") %>
-			</div>
 			<br/>
-			<%= submit_tag "Adaugă comentariu", class: "btn btn-primary" %>
-		<%end%>
-		
-		
-	</div>
 
-</div>
+			<!-- afisez todo-urile sale -->
+			<% if @todouri.count == 0 %>
+				<ul class="list-group">
+					<h4 class="list-group-item">ToDos</h4>
+					<%if get_current_user.rol == "Student" %>
+						<li class="list-group-item"><%= link_to "+ Adaugă ToDo", new_todo_path(:capitol_id => @capitol.id) %></li>
+					<% elsif get_current_user.rol == "Profesor" %>
+						<li class="list-group-item"><em>Nu sunt todo-uri.</em></li>
+					<% end %>
+				</ul>
+			<% else %>
+				<ul class="list-group">
+					<h4 class="list-group-item">ToDos</h4>
+					<% @todouri.each do |todo| %>
+						<% if todo.este_gata == true %>
+						<li class="list-group-item list-group-item-success"><%= todo.continut %></li>
+						<% elsif todo.este_gata == false %>
+						<li class="list-group-item list-group-item-danger"><%= todo.continut %></li>
+						<% end %>
+					<% end %>
+					<%if get_current_user.rol == "Student" %>
+						<li class="list-group-item"><%= link_to "+ Adaugă ToDo", new_todo_path(:capitol_id => @capitol.id) %></li>
+					<% end %>
+				</ul>
+			<% end %>
+
+			<!-- afisez fisierele sale -->
+			<% if @fisierele.count == 0 %>
+				<ul class="list-group">
+					<h4 class="list-group-item">Fișiere</h4>
+					<%if (@capitol.nume == "Bibliografie" and get_current_user.rol == "Profesor") or get_current_user.rol == "Student" %>
+						<li class="list-group-item"><%= link_to "+ Adaugă fișier", new_fisier_path(:capitol_id => @capitol.id) %></li>
+					<% elsif get_current_user.rol == "Profesor" and  @capitol.nume != "Bibliografie" %>
+						<li class="list-group-item"><em>Nu sunt fișiere.</em></li>
+					<% end %>
+				</ul>
+			<% else %>
+				<ul class="list-group">
+					<h4 class="list-group-item">Fișiere</h4>
+					<% @fisierele.each do |fis| %>
+					<!-- as avea nevoie de user_id pt fiecare fisier ca sa stiu cine l-a incarcat - sau de un bool dc e incarcat de prof sau de student ca sa pun culorile sau sa le grupez -->
+						<li class="list-group-item list-group-item-info">
+							<%= link_to "", download_fisier_path(fis), class: "glyphicon glyphicon-download-alt"%>
+							<%= link_to fis.name, fis%>
+							(urcat de <%= User.find(fis.user_id).prenume + " " + User.find(fis.user_id).nume %> acum 2 zile)
+						</li>
+					<% end %>
+					<%if (@capitol.nume == "Bibliografie" and get_current_user.rol == "Profesor") or get_current_user.rol == "Student" %>
+						<li class="list-group-item"><%= link_to "+ Adaugă fișier", new_fisier_path(:capitol_id => @capitol.id) %></li>
+					<% end %>
+				</ul>
+			<% end %>
+		</div>
+
+		<!-- comentariile -->
+		<div class="col-sm-3 sidebar-offcanvas" style="overflow:auto; height:550px; position:relative; top:10px">
+			<br/>
+			<%if @comentarii.count == 0%>
+				<em>Nu sunt comentarii.</em>
+				<br/><br/>
+			<%else%>
+				<%@comentarii.each do |comentariu|%>
+					<% if User.find(comentariu.user_id).rol == "Profesor" %>
+						<div class="panel panel-default">
+					  		<div class="panel-heading">
+					    		<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
+								<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
+					  		</div>
+					  		<div class="panel-body">
+					    		<%= comentariu.continut %>
+					  		</div>
+						</div>
+					<% else %>
+						<div class="panel panel-info">
+					  		<div class="panel-heading">
+					    		<b><%= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b><br/> 
+								<em><%= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em>
+					  		</div>
+					  		<div class="panel-body">
+					    		<%= comentariu.continut %>
+					  		</div>
+						</div>
+					<% end %>
+				<%end%>
+			<%end%>
+				
+			<%= form_tag(capitols_adauga_comentariu_path(:student_id => @student_id), method: "post") do%>
+				<%= hidden_field_tag(:capitol, @capitol.id , class: "form-control") %>
+				<div class="field">
+					<%= text_area_tag(:comentariu, nil , :required => true, class: "form-control",rows:5, placeholder: "Scrie comentariu") %>
+				</div>
+				<br/>
+				<%= submit_tag "Adaugă comentariu", class: "btn btn-primary" %>
+			<%end%>
+			
+		</div>
+
+	</div>
 </div>

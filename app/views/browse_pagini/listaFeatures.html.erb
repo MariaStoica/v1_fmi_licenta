@@ -1,6 +1,60 @@
 <h1>Lista Features</h1>
 <br/>
 
+Pentru viitorii developeri - STOP - rails for zombies time! apoi va intoarceti aici.<br/><br/>
+
+<!-- ce face fiecare camp din fiecare model -->
+
+<em>db > <b>schema.rb</b></em>
+<br/>
+<b>User</b>
+<table class="table table-striped table hover">
+	<thead>
+		<th></th>
+		<th></th>
+	</thead>
+	<tbody>
+		<tr>
+			<td style="background-color: #F8F8FF">email</td>
+			<td style="background-color: #F8F8FF">emailul userului</td>
+		</tr>
+		<tr>
+			<td style="background-color: #F0FFFF">nume</td>
+			<td style="background-color: #F0FFFF">numele userului</td>
+		</tr>
+		<tr>
+			<td style="background-color: #F8F8FF">prenume</td>
+			<td style="background-color: #F8F8FF">prenumele userului</td>
+		</tr>
+		<tr>
+			<td style="background-color: #F0FFFF">rol</td>
+			<td style="background-color: #F0FFFF">poate fi "Student", "Profesor" sau "Admin"</td>
+		</tr>
+		<tr>
+			<td style="background-color: #F8F8FF">grupa</td>
+			<td style="background-color: #F8F8FF">grupa studentului, altfel nil</td>
+		</tr>
+		<tr>
+			<td style="background-color: #F0FFFF">grad</td>
+			<td style="background-color: #F0FFFF">gradul profesorului "Profesor" > "Conferentiar" > "Lector" > "Asistent" > "Preparator", altfel nil</td>
+		</tr>
+		<tr>
+			<td style="background-color: #F8F8FF">este_eligibil_licenta</td>
+			<td style="background-color: #F8F8FF">doar studentii care isi dau licenta in sesiunea asta sunt eligibili. Profesorii cu grad mai mare de lector pot sa isi ia studenti la licenta, altfel nu sunt eligibili. Userii care nu sunt eligibili pt licenta, pot doar sa vizualizeze arhiva si temele din sesiunea curenta, fara a putea interactiona cu ele.</td>
+		</tr>
+		<tr>
+			<td style="background-color: #F0FFFF">specializare</td>
+			<td style="background-color: #F0FFFF">specializarea studentului poate fi: "Matematica", "Matematica Aplicata", "Matematica-Informatica", "Informatica", "CTI", iar la profesori: "Matematica", "Informatica", "Ambele". Exista profesori care desi apartin unui departament, pot sa ia studenti din toate specializarile - asa ca ei sunt marcati cu "Ambele" de catre admin in useriSpecializari</td>
+		</tr>
+		<tr>
+			<td style="background-color: #F8F8FF">are_domeniu_propuneri_studenti</td>
+			<td style="background-color: #F8F8FF">camp folosit doar de profesori, altfel nil. default este false. (vezi user_sessions_controller.rb) Cand il seteaza ca true, se creaza un domeniu nou numit "Propuneri Studenti". Cand il seteaza ca false, dc avea domeniu pt studenti inainte, se redenumeste in neclasificate.</td>
+		</tr>
+	</tbody>
+</table>
+
+<!-- features pe view -->
+
 <b>Browse</b>
 <table class="table table-striped table hover">
 	<thead>
@@ -12,7 +66,11 @@
 	<tbody>
 		<tr>
 			<td><span class="glyphicon glyphicon-ok" style="color:green"/></td>
-			<td><b>Browse teme si domenii.</b> <p>Se afiseaza temele neluate ale profilor dupa specializarea studentului logat organizate dupa prof si domeniul din care fac parte. Profii logati vad toate temele si domeniile indiferent de specializarea lor. Au si ei pagina TemeleMele pt a-si gestiona temele si domeniile. Fiecare domeniu are pe pagina sa pe langa descriere si lista de teme din el. Iar pe pagina fiecarei teme, pt studenti, sunt 2 butoane: unul pt a alege tema pt licenta si celalalt pt a merge la pagina de discutii a temei.</p></td>
+			<td><b>Browse teme si domenii.</b>
+				<p><ul style="list-style-type: circle;">
+					<li>Se afiseaza temele neluate din sesiunea curenta ale profilor eligibili pt licenta, dupa specializarea studentului logat. Sunt organizate dupa prof si domeniul din care fac parte. Profii logati vad toate temele si domeniile din sesiunea curenta indiferent de specializarea lor.</li> 
+					<li>Au si ei pagina TemeleMele pt a-si gestiona temele si domeniile. Fiecare domeniu are pe pagina sa pe langa descriere si lista de teme din el. Iar pe pagina fiecarei teme, pt studenti, sunt 2 butoane: unul pt a alege tema pt licenta si celalalt pt a merge la pagina de discutii a temei.</li></ul></p>
+			</td>
 		</tr>
 		<tr>
 			<td><span class="glyphicon glyphicon-ok" style="color:green"/></td>
@@ -24,7 +82,27 @@
 		</tr>
 		<tr>
 			<td><span class="glyphicon glyphicon-ok" style="color:green"/></td>
-			<td><b>Discutii pe tema.</b> <p>Fiecare tema are propria ei pagina unde studentii si proful temei posteaza comentarii. Asa se pot afla mai multe despre tema respectiva si este vizibila conversatia oricui.</p></td>
+			<td><b>Discutii pe tema</b>
+				<p><ul>
+				<li><em>browse_pagini > <b>intreabaPage.html.erb</b></em></li>
+				<li><em>browse_pagini_controller # <b>intreabaPage</b></em></li>
+				<li><em>browse_pagini_controller # <b>adauga_comentariu</b></em></li>
+				</ul></p>
+				<p>Fiecare tema are propria ei pagina de discutii, unde studentii si profesorul temei posteaza comentarii. Asa se pot afla mai multe despre tema respectiva, iar conversatia este vizibila oricui.</p>
+			</td>
+		</tr>
+		<tr>
+			<td><span class="glyphicon glyphicon-ok" style="color:green"/></td>
+			<td><b>Temele profesorilor</b>
+				<p><ul>
+				<li><em>browse_pagini > <b>temeleMele.html.erb</b></em></li>
+				<li><em>browse_pagini_controller # <b>temeleMele</b></em></li>
+				<li><em>browse_pagini_controller # <b>acceptStudenti</b></em></li>
+				<li><em>browse_pagini_controller # <b>refuzStudenti</b></em></li> 
+				 
+				</ul></p>
+				<p>Profesorii isi gestioneaza temele si domeniile pe pagina temeleMele. Pot sa permita sau nu ca studentii sa le propuna teme.</p>
+			</td>
 		</tr>
 		<tr>
 			<td><span class="glyphicon glyphicon-ok" style="color:green"/></td>
