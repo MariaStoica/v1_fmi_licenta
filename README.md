@@ -6,7 +6,7 @@ Aplicatia web pentru gestionarea dezvoltarii lucrarii de licenta de la alegerea 
 
 ### 0. New to Ruby on Rails:
 
-Uita-te mai intai pe **MyRubyOnRailsCheatSheet** daca nu esti familiar cu limbajul, iar daca nu stii Ruby on Rails fa mai intai de toate Rails For Zombies 1 si 2 (http://railsforzombies.org). Iti ia cam 2 zile dar macar intelegi RoR foarte bine si te poti apuca de treaba. In cheat sheet-ul meu gasesti cam toate functiile si comenzile folosite in aplicatia de licenta impreuna cu alte resurse. Sunt si comenzi puse la indemana in caz ca le uiti. Recomandarea mea e sa tii cheat sheet-ul asta deschis ca sa te poti uita pe el cand iti trebuie ceva. Eu folosesc Evernote pentru asta.
+Uita-te mai intai pe **MyRubyOnRailsCheatSheet.pdf** daca nu esti familiar cu limbajul, iar daca nu stii Ruby on Rails fa mai intai de toate Rails For Zombies 1 si 2 (http://railsforzombies.org). Iti ia cam 2 zile dar macar intelegi RoR foarte bine si te poti apuca de treaba. In cheat sheet-ul meu gasesti cam toate functiile si comenzile folosite in aplicatia de licenta impreuna cu alte resurse. Sunt si comenzi puse la indemana in caz ca le uiti. Recomandarea mea e sa tii cheat sheet-ul asta deschis ca sa te poti uita pe el cand iti trebuie ceva. Eu folosesc Evernote pentru asta.
 
 ------
 
@@ -168,7 +168,7 @@ Pentru a accesa orice resursa a aplicatiei de licenta, userul trebuie sa fie log
 > * **StudentiiMei** - pagina pentru profesori in care vad studentii pe care ii au la licenta imrpeuna cu progresul fiecaruia al lucrarea sa
 > * **BrowseHomeArhiva** - pagina cu toate sesiunile anterioare
 > * **ListaFeatures** - o pagina in care am enumerat toate functionalitatile aplicatiei
-> * **ViewDataBase** - o pagina pe care am afisat toata baza de date - ca sa nu fie nevoie sa stai in consola rails pentru vizualizare. Dar trebuie sa intri in consola daca vrei sa faci vreo modificare. `$ rails c` (vezi cheat sheet la Data Base pentru diverse comenzi)
+> * **ViewDataBase** - o pagina pe care am afisat toata baza de date - ca sa nu fie nevoie sa stai in consola rails pentru vizualizare. Dar trebuie sa intri in consola daca vrei sa faci vreo modificare. `$ rails c` (vezi cheat sheet la 5. The Data Base pentru diverse comenzi)
 
 * **licenta_pagini**_controller.rb
 
@@ -201,7 +201,7 @@ au fost generate de catre scaffold cand am creat modelele. Nu contin nimic in pl
 
 ### 4. Alte observatii
 * infelctions ca sa fie cuvantul in Romana si un s - pentru usurinta
-* Codul care da mailuri a fost comentat pentru ca nu functioneaza pe heroku daca nu configurezi un serviciu de mail. Dar local, merge sa dai mail daca decomentezi codul. (vezi ror cheat sheet la Mail pentru modul de implementare al mailului)
+* Codul care da mailuri a fost comentat pentru ca nu functioneaza pe heroku daca nu configurezi un serviciu de mail. Dar local, merge sa dai mail daca decomentezi codul. (vezi cheat sheet la Mail pentru un overview al modului de implementare al mailului)
 
 
 
