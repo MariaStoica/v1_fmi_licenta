@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141214125725) do
+ActiveRecord::Schema.define(version: 20141217000926) do
 
   create_table "alegeri_user_temas", force: true do |t|
     t.integer  "user_id"
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(version: 20141214125725) do
     t.integer  "sesiune_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "ex_licenta_id"
   end
 
   add_index "licenta_salvatas", ["sesiune_id"], name: "index_licenta_salvatas_on_sesiune_id"
@@ -154,7 +155,7 @@ ActiveRecord::Schema.define(version: 20141214125725) do
     t.text     "descriere"
     t.integer  "domeniu_id"
     t.boolean  "este_libera"
-    t.integer  "user_id"     # si studentii pot sa adauge teme, nu doar profesorii
+    t.integer  "user_id"
     t.integer  "sesiune_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -186,7 +187,7 @@ ActiveRecord::Schema.define(version: 20141214125725) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "specializare"
-    t.boolean  "c"
+    t.boolean  "are_domeniu_propuneri_studenti"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

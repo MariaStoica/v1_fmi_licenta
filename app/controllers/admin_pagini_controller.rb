@@ -39,9 +39,22 @@ class AdminPaginiController < ApplicationController
 
   def stopSesiuneCurenta
     if params[:data_end] and params[:data_end] != ""
-      current_sesiune = Sesiune.where("data_end is null").first
-      current_sesiune.update_attributes(data_end: params[:data_end])
-      current_sesiune.save
+      # copiaza tot ce e in licenta in licenta_salvata cu sesiunea curenta
+      Licenta.each do |lic|
+        # folosesc ex_licenta_id ca sa gasesc capitolele, totodurile si fisierele unei anumite licente ca in tabelele lor sunt memorate dupa id-ul licentei din tabelul Licenta
+        LicentaSalvata.create(sesiune_id: get_current_sesiune.id, user_id: lic.user_id, tema_id: lic.tema_id, ex_licenta_id: lic.id)
+      end
+
+      # si apoi goleste licenta
+      Licenta.delete_all
+
+      # se golesc deadline-urile
+      Deadline.delete_all
+
+      # current_sesiune = Sesiune.where(este_deschisa: true).first
+      get_current_sesiune.update_attributes(data_end: params[:data_end])
+
+      # hai inapoi
       redirect_to "/admin_pagini/controlPanel"
     end 
   end
