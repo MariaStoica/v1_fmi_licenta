@@ -45,7 +45,43 @@ Cel mai bine e sa incepi cu baza de date din seeds.rb (prin rularea comenzii `$ 
 
 ### 3. Cum functioneaza aplicatia de licenta:
 
-#### 3.0. Baza de date (sau cine-i cine si care ce vrea)
+#### 3.0. Ce poate sa faca fiecare user (vezi si /browse_pagini/listaFeatures)
+
+###### Administratorul...
+
+* ...are grija de pornirea si oprirea sesiunii de functionare a aplicatiei (in vacanta de vara e inchisa, in timpul anului universitar e deschisa).
+* ...creaza deadline-uri si reminders cu diverse lucruri pe care le au de facut profesorii si studentii in felul urmator: (datele si alert-urile sunt orientative)
+	0. Sesiunea se deschide pe 1 Oct
+	1. (1 Oct - 1 Nov) Profesorii isi introduc domeniile si temele pentru anul curent.
+	2. (2 Nov - 2 Ian) Studentii isi aleg temele de licenta
+	3. (3 Ian - 3 Feb) Profesorii trebuie sa fi dat un raspuns (Accept sau Reject) la toate solicitarile pe care le-au avut. Daca mai exista Pending-uri trebuiesc lamurite.
+	4. (4 Feb - 6 Jun) Studentii isi aleg tema pentru licenta si incep sa lucreze la ea. Trebuie ca versiunea finala sa fie urcata inainte de 6 Jun.
+	5. ( - ) Profesorii trebuie sa fi create referatele de licenta pentru toti studentii lor care au urcat versiunea finala de licenta.
+	6. Sesiunea se inchide pe 30 Jun
+* ...updateaza informatii despre useri - unii profesori au specializare dubla si pot primi studenti atat de la informatica cat si de la matematica. Iar unii studenti, desi sunt in an terminal, nu isi dau licenta si atunci nu au voie sa interactioneze cu aplicatia mai mult decat vizualizarea arhivei.
+
+###### Profesorul...
+
+* ...poate vedea anunturile si deadline-urile puse de administrator
+* ...isi gestioneaza temele si domeniile. Poate accepta sau nu teme de la studenti.
+* ...poate sa vada si sa raspunda la discutiile temelor sale.
+* ...isi poate vedea studentii cu licenta si progresul pe care l-au facut pana acum. Poate vedea si studentii care au ales teme din domeniile sale sau care au propus.
+* ...poate vedea pagina de licenta a studentilor pe care ii are la licenta. Poate sa le vada fisierele incarcate si sa discute cu ei la nivel de licenta, capitol si fisier. Poate sa urce fisiere numai in capitolul Bibliografie.
+* ...poate genera referatul de licenta numai dupa ce studentul a incarcat versiunea finala si progresul este 100%
+* ...poate accesa arhiva la orice moment.
+
+###### Studentul...
+
+* ...poate vedea anunturile si deadline-urile puse de administrator
+* ...poate vedea si cauta in temele profesorilor din aceeasi specializare ca el/ea.
+* ...poate sa discute la nivel de tema inainte sa o aleaga. Cand adauga un comentariu la disctuiile temei respective, profesorul posesor primeste mail.
+* ...nu poate sa vada tema propusa de un alt student decat daca acesta nu o ia la licenta. In momentul acela devine vizibila si celorlalti studenti.
+* ...poate adauga capitole si todo-uri la licenta si fisiere. Poate sa discute cu profesorul coordonator la nivel de licenta, capitol sau fisier.
+* ...poate incarca versiunea finala a licentei numai dupa ce progresul este 100%.
+* ...poate renunta la licenta in orice moment dupa ce si-a ales o tema pentru licenta si inainte sa urce versiunea finala a licentei. In momentul acesta, tema aleasa devine libera, progresul (capitolele, todo-urile si fisierele) asociat licentei (tema si studentul) ramane in baza de date. Daca tema asta e luata de alt student atunci progresul ei se sterge din baza de date. Daca nu o ia nimeni, studentul care a renuntat la ea poate sa revina la tema fara sa fi pierdut progresul.
+* ...poate accesa arhiva la orice moment.
+
+#### 3.1. Baza de date (sau cine-i cine si care ce vrea)
 
 ![alt text](https://github.com/RoR-FMI/licenta/blob/master/LicentaFMI_ERD_simplu.png "Aplicatia de licenta FMI baza de date siplificata")
 
@@ -124,7 +160,7 @@ Capurile taiate cu rosu nu exista in schema (au fost adaugate de Ponyorm (http:/
 > Disctuie la nivelul unui fisier uploadat. Intrebari, feedback, nelamurir, imbunatatiri etc. 
 
 
-#### 3.1. Sesiunile de functionare ale aplicatiei de licenta
+#### 3.2. Sesiunile de functionare ale aplicatiei de licenta
 
 Aplicatia de licenta este disponibila tot anul si se poate gasi in una din urmatoarele 2 stari:
 
@@ -148,11 +184,11 @@ Cand este **deschisa** (in timpul anului) se intampla mai multe lucruri (care su
 - generarea referatului de licenta
 
 
-#### 3.2. Autentificarea
+#### 3.3. Autentificarea
 
 Pentru a accesa orice resursa a aplicatiei de licenta, userul trebuie sa fie logat. Asta se face cu ajutorul site-ului de autentificare (http://fmi-api.herokuapp.com). Daca nu esti logat si te duci pe un link din aplicatia de licenta, esti redirectionat pe site-ul de auth unde introduci e-mailul si parola. Primesti un token de autentificare si apoi esti redirectionat inapoi la pagina de home a aplicatiei de licenta.
 
-#### 3.3. Despre paginile si controllerele din aplicatie
+#### 3.4. Despre paginile si controllerele din aplicatie
 
 * **admin_pagini**_controller.rb
 
@@ -198,15 +234,16 @@ Controllerele
 
 au fost generate de catre scaffold cand am creat modelele. Nu contin nimic in plus fata de codul generat.
 
+------
 
 ### 4. Alte observatii
-* infelctions ca sa fie cuvantul in Romana si un s - pentru usurinta
 * Codul care da mailuri a fost comentat pentru ca nu functioneaza pe heroku daca nu configurezi un serviciu de mail. Dar local, merge sa dai mail daca decomentezi codul. (vezi cheat sheet la Mail pentru un overview al modului de implementare al mailului)
 
-
+------
 
 ### 5. Ce-a mai ramas de implementat (vezi si issues)
 
+* generarea referatului de licenta
 
 ------
 
