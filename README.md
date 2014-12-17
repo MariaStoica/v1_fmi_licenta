@@ -50,13 +50,13 @@ Cel mai bine e sa incepi cu baza de date din seeds.rb (prin rularea comenzii `$ 
 ###### Administratorul...
 
 * ...are grija de pornirea si oprirea sesiunii de functionare a aplicatiei (in vacanta de vara e inchisa, in timpul anului universitar e deschisa).
-* ...creaza deadline-uri si reminders cu diverse lucruri pe care le au de facut profesorii si studentii in felul urmator: (datele si alert-urile sunt orientative)
+* ...creaza deadline-uri si reminders cu diverse lucruri pe care le au de facut profesorii si studentii in felul urmator: (datele si alert-urile sunt orientative). De asemenea pot fi si alerturi penru completarea unor documente necesare la secretariat.
 	0. Sesiunea se deschide pe 1 Oct
 	1. (1 Oct - 1 Nov) Profesorii isi introduc domeniile si temele pentru anul curent.
-	2. (2 Nov - 2 Ian) Studentii isi aleg temele de licenta
-	3. (3 Ian - 3 Feb) Profesorii trebuie sa fi dat un raspuns (Accept sau Reject) la toate solicitarile pe care le-au avut. Daca mai exista Pending-uri trebuiesc lamurite.
-	4. (4 Feb - 6 Jun) Studentii isi aleg tema pentru licenta si incep sa lucreze la ea. Trebuie ca versiunea finala sa fie urcata inainte de 6 Jun.
-	5. ( - ) Profesorii trebuie sa fi create referatele de licenta pentru toti studentii lor care au urcat versiunea finala de licenta.
+	2. (2 Nov - 2 Dec) Studentii isi aleg temele de licenta
+	3. (3 Dec - 3 Ian) Profesorii trebuie sa fi dat un raspuns (Accept sau Reject) la toate solicitarile pe care le-au avut. Daca mai exista Pending-uri trebuiesc lamurite.
+	4. (4 Ian - 6 Jun) Studentii isi aleg tema pentru licenta si incep sa lucreze la ea. Trebuie ca versiunea finala sa fie urcata inainte de 6 Jun.
+	5. (4 Feb - 8 Jun) Profesorii trebuie sa fi create referatele de licenta pentru toti studentii lor care au urcat versiunea finala de licenta.
 	6. Sesiunea se inchide pe 30 Jun
 * ...updateaza informatii despre useri - unii profesori au specializare dubla si pot primi studenti atat de la informatica cat si de la matematica. Iar unii studenti, desi sunt in an terminal, nu isi dau licenta si atunci nu au voie sa interactioneze cu aplicatia mai mult decat vizualizarea arhivei.
 
