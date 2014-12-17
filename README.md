@@ -204,7 +204,7 @@ Pentru a accesa orice resursa a aplicatiei de licenta, userul trebuie sa fie log
 > * **StudentiiMei** - pagina pentru profesori in care vad studentii pe care ii au la licenta imrpeuna cu progresul fiecaruia al lucrarea sa
 > * **BrowseHomeArhiva** - pagina cu toate sesiunile anterioare
 > * **ListaFeatures** - o pagina in care am enumerat toate functionalitatile aplicatiei
-> * **ViewDataBase** - o pagina pe care am afisat toata baza de date - ca sa nu fie nevoie sa stai in consola rails pentru vizualizare. Dar trebuie sa intri in consola daca vrei sa faci vreo modificare. `$ rails c` (vezi cheat sheet la 5. The Data Base pentru diverse comenzi)
+> * **ViewDataBase** - o pagina pe care am afisat toata baza de date - ca sa nu fie nevoie sa stai in consola rails pentru vizualizare. Dar trebuie sa intri in consola daca vrei sa faci vreo modificare. `$ rails c` (vezi cheat sheet la **5. The Data Base** pentru diverse comenzi)
 
 * **licenta_pagini**_controller.rb
 
@@ -237,7 +237,7 @@ au fost generate de catre scaffold cand am creat modelele. Nu contin nimic in pl
 ------
 
 ### 4. Alte observatii
-* Codul care da mailuri a fost comentat pentru ca nu functioneaza pe heroku daca nu configurezi un serviciu de mail. Dar local, merge sa dai mail daca decomentezi codul. (vezi cheat sheet la Mail pentru un overview al modului de implementare al mailului)
+* Codul care da mailuri a fost comentat pentru ca nu functioneaza pe heroku daca nu configurezi un serviciu de mail. Dar local, merge sa dai mail daca decomentezi codul. (vezi cheat sheet la **7. Useful Ruby Code** la *# mail setup* pentru un overview al modului de implementare al mailului)
 
 ------
 
