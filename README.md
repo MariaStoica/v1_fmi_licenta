@@ -173,6 +173,10 @@ Mai exact:
 * Profesorii pot doar sa vada arhiva de teme din anii trecuti pana in prezent (inclusiv sesiunea care tocmai s-a inchieat) si lucrarile de licenta ale studentilor pe care i-a avut.
 * Studentii pot doar sa vizualizeze arhiva de teme. Cei care si-au dat licenta anul curent mai au acces la pagina lor de licenta (ca vizualizare) pana cand incepe urmatoarea sesiune (licenta le este pastrat in baza de date).
 
+![alt text](https://github.com/RoR-FMI/licenta/blob/master/screenshots/admin_ControlPanelSesiuneOprita.png "Pagina ControlPanel cand nu e nicio sesiune deschia.")
+
+---
+
 Cand este **deschisa** (in timpul anului) se intampla mai multe lucruri (care sunt detaliate in punctele urmatoare):
 - alerte, deadlineuri, reminders si hartii de completat
 - domeniile si temele propuse de profesori
@@ -181,6 +185,8 @@ Cand este **deschisa** (in timpul anului) se intampla mai multe lucruri (care su
 - alegerea temei de licenta
 - incepe treaba: pagina de licenta, capitole, fisiere, todos, progres, submit final version
 - generarea referatului de licenta
+
+![alt text](https://github.com/RoR-FMI/licenta/blob/master/screenshots/admin_controlPanelSesiuneActiva.png "Pagina ControlPanel cand sesiunea este deschisa.")
 
 
 #### 3.3. Autentificarea
@@ -193,12 +199,18 @@ Pentru a accesa orice resursa a aplicatiei de licenta, userul trebuie sa fie log
 
 > * **ControlPanel** - locul de unde administratorul porneste o sesiune noua sau o inchide pe cea curenta si gestioneaza alertele si deadline-urile
 > * **UserSpecializari** - aici poate vedea toti userii (profesori si studenti) care s-au logat in aplicatia de licenta macar o data - poate vedea cati studenti are fiecare profesor si daca mai are cereri de licenta la care nu a raspuns
+>
+> ![alt text](https://github.com/RoR-FMI/licenta/blob/master/screenshots/admin_Users.png)
 
 * **browse_pagini**_controller.rb
 
 > * **BrowseHome** - cu toate domeniile si temele din sesiunea curenta atunci cand aplicatia e deschisa
 > * **IntreabaPage** - pagina cu discutia legata de o tema. diferenta dintre temele afisate se face prin parametrii in link
+>
+> ![alt text](https://github.com/RoR-FMI/licenta/blob/master/screenshots/toti_discutiiTema.png) 
 > * **AlegerileMele** - pagina pentru studenti in care vad la ce teme au dat Alege Tema si care profesori nu le-au raspuns (Pending) sau le-au raspuns fie cu Accept fie cu Reject
+>
+> ![alt text](https://github.com/RoR-FMI/licenta/blob/master/screenshots/student_alegerileMele.png)
 > * **TemeleMele** - pagina pentru profesori in care isi gestioneaza domeniile, temele si acceptul pentru temele propuse de studenti
 > * **StudentiiMei** - pagina pentru profesori in care vad studentii pe care ii au la licenta imrpeuna cu progresul fiecaruia al lucrarea sa
 > * **BrowseHomeArhiva** - pagina cu toate sesiunile anterioare
