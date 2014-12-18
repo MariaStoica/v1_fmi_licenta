@@ -23,6 +23,9 @@
     <%= f.datetime_select :deadline %>
   </div>
   <br/>
+
+  <%= f.hidden_field :este_deschisa, :value => true %>
+
   <div class="actions">
     <%= f.submit "Start", :class => 'btn btn-success' %>
   </div>

@@ -61,4 +61,7 @@ class AdminPaginiController < ApplicationController
     end 
   end
 
+  def startSesiune
+  end
+
 end

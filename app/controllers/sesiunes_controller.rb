@@ -31,16 +31,16 @@ class SesiunesController < ApplicationController
       if @sesiune.save
 
         # duplic temele si domeniile din ultima sesiune
-        @ultima_sesiune = Sesiune.where.not(data_end: nil).last
-        Domeniu.where(sesiune_id: @ultima_sesiune.id).each do |dom|
-          nou_dom = Domeniu.create(nume: dom.nume, descriere: dom.descriere, user_id: dom.user_id, sesiune_id: @sesiune.id)
-          Tema.where(sesiune_id: @ultima_sesiune.id).where(domeniu_id: dom.id).each do |tema|
-            Tema.create(nume: tema.nume, descriere: tema.descriere, domeniu_id: nou_dom.id, este_libera: tema.este_libera, user_id: tema.user_id, sesiune_id: @sesiune.id)
-          end
-        end
+        # @ultima_sesiune = Sesiune.where.not(data_end: nil).last
+        # Domeniu.where(sesiune_id: @ultima_sesiune.id).each do |dom|
+        #   nou_dom = Domeniu.create(nume: dom.nume, descriere: dom.descriere, user_id: dom.user_id, sesiune_id: @sesiune.id)
+        #   Tema.where(sesiune_id: @ultima_sesiune.id).where(domeniu_id: dom.id).each do |tema|
+        #     Tema.create(nume: tema.nume, descriere: tema.descriere, domeniu_id: nou_dom.id, este_libera: tema.este_libera, user_id: tema.user_id, sesiune_id: @sesiune.id)
+        #   end
+        # end
 
         # sterg tabelul Licenta
-        Licenta.all.delete_all
+        # Licenta.all.delete_all
 
         format.html { redirect_to controlPanel_path, notice: 'Sesiune was successfully created.' }
         format.json { render action: 'show', status: :created, location: @sesiune }
@@ -83,7 +83,7 @@ class SesiunesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def sesiune_params
-      params.require(:sesiune).permit(:data_start, :data_end, :deadline)
+      params.require(:sesiune).permit(:data_start, :data_end, :deadline, :este_deschisa)
     end
     
 end
