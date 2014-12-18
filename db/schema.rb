@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141217000926) do
+ActiveRecord::Schema.define(version: 20141218124116) do
 
   create_table "alegeri_user_temas", force: true do |t|
     t.integer  "user_id"
@@ -84,7 +84,6 @@ ActiveRecord::Schema.define(version: 20141217000926) do
 
   create_table "deadlines", force: true do |t|
     t.string   "nume"
-    t.integer  "numar"
     t.text     "descriere"
     t.date     "data_start"
     t.date     "data_end"

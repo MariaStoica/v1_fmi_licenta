@@ -1,5 +1,5 @@
-fclass DeadlinesController < ApplicationController
-  before_filter :login_required
+class DeadlinesController < ApplicationController
+  before_filter :checkIfAdmin
   before_action :set_deadline, only: [:show, :edit, :update, :destroy]
 
   # GET /deadlines
@@ -62,6 +62,16 @@ fclass DeadlinesController < ApplicationController
     end
   end
 
+
+  protected
+
+    def checkIfAdmin
+      if !get_current_user or !get_current_user.rol == "Administrator"
+        redirect_to root_path
+      end
+    end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_deadline
@@ -70,6 +80,8 @@ fclass DeadlinesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def deadline_params
-      params.require(:deadline).permit(:nume, :numar, :descriere, :data_start, :data_end, :public_tinta)
+      params.require(:deadline).permit(:nume, :descriere, :data_start, :data_end, :public_tinta)
     end
+
 end
+

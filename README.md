@@ -165,7 +165,6 @@ Capurile taiate cu rosu nu exista in schema (au fost adaugate de Ponyorm (http:/
 Aplicatia de licenta este disponibila tot anul si se poate gasi in una din urmatoarele 2 stari:
 
 1. **inchisa**
-
 2. **deschisa**
 
 Cand este **inchisa** (in vacanta de vara), userii sunt limitati doar la vizionare in mare parte.

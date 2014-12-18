@@ -40,12 +40,13 @@
 
   <br/>
 
-  <div class="field">
-    <%= f.label :numar %><br>
-    <%= f.number_field :numar %>
-  </div>
+  <!-- update automat in functie de data_start -->
+  <!-- <div class="field"> -->
+    <!-- <= f.label :numar %><br> -->
+    <!-- <= f.number_field :numar %> -->
+  <!-- </div> -->
   
-  <br/>
+  <!-- <br/> -->
 
   <!-- publicul tinta -->
   <% selectie = ["Student", "Profesor", "Toti"] %>
@@ -74,7 +75,11 @@
   <br/>
 
   <div class="actions">
-    <%= f.submit "Creaza deadline", :class => 'btn btn-primary' %>
+    <% if @deadline.new_record? %>
+      <%= f.submit "Creaza anunt", :class => 'btn btn-primary' %>
+    <% else %>
+      <%= f.submit "Actualizeaza anunt", :class => 'btn btn-primary' %>
+    <% end %>
   </div>
 
 <% end %>

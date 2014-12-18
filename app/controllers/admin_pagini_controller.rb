@@ -1,8 +1,10 @@
 class AdminPaginiController < ApplicationController
+  include AdminPaginiHelper
 
   before_filter :login_required
 
   def controlPanel
+    set_nr_max_studenti_per_prof 25
     @azi = Date.today
     if params[:data_end] and params[:data_end] != ""
       stopSesiuneCurenta
@@ -40,7 +42,7 @@ class AdminPaginiController < ApplicationController
   def stopSesiuneCurenta
     if params[:data_end] and params[:data_end] != ""
       # copiaza tot ce e in licenta in licenta_salvata cu sesiunea curenta
-      Licenta.each do |lic|
+      Licenta.all.each do |lic|
         # folosesc ex_licenta_id ca sa gasesc capitolele, totodurile si fisierele unei anumite licente ca in tabelele lor sunt memorate dupa id-ul licentei din tabelul Licenta
         LicentaSalvata.create(sesiune_id: get_current_sesiune.id, user_id: lic.user_id, tema_id: lic.tema_id, ex_licenta_id: lic.id)
       end
@@ -52,7 +54,7 @@ class AdminPaginiController < ApplicationController
       Deadline.delete_all
 
       # current_sesiune = Sesiune.where(este_deschisa: true).first
-      get_current_sesiune.update_attributes(data_end: params[:data_end])
+      get_current_sesiune.update_attributes(data_end: params[:data_end], este_deschisa: false)
 
       # hai inapoi
       redirect_to "/admin_pagini/controlPanel"
