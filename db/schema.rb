@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141218124116) do
+ActiveRecord::Schema.define(version: 20141219041159) do
 
   create_table "alegeri_user_temas", force: true do |t|
     t.integer  "user_id"
@@ -116,25 +116,13 @@ ActiveRecord::Schema.define(version: 20141218124116) do
   add_index "fisiers", ["capitol_id"], name: "index_fisiers_on_capitol_id"
   add_index "fisiers", ["user_id"], name: "index_fisiers_on_user_id"
 
-  create_table "licenta_salvatas", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "tema_id"
-    t.integer  "sesiune_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "ex_licenta_id"
-  end
-
-  add_index "licenta_salvatas", ["sesiune_id"], name: "index_licenta_salvatas_on_sesiune_id"
-  add_index "licenta_salvatas", ["tema_id"], name: "index_licenta_salvatas_on_tema_id"
-  add_index "licenta_salvatas", ["user_id"], name: "index_licenta_salvatas_on_user_id"
-
   create_table "licentas", force: true do |t|
     t.integer  "user_id"
     t.integer  "tema_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "renuntat"
+    t.integer  "sesiune_id"
   end
 
   add_index "licentas", ["tema_id"], name: "index_licentas_on_tema_id"

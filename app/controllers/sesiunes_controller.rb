@@ -1,5 +1,5 @@
 class SesiunesController < ApplicationController
-  before_filter :login_required
+  before_filter :checkIfAdmin
   before_action :set_sesiune, only: [:show, :edit, :update, :destroy]
 
   # GET /sesiunes
@@ -30,17 +30,15 @@ class SesiunesController < ApplicationController
     respond_to do |format|
       if @sesiune.save
 
-        # duplic temele si domeniile din ultima sesiune
-        # @ultima_sesiune = Sesiune.where.not(data_end: nil).last
-        # Domeniu.where(sesiune_id: @ultima_sesiune.id).each do |dom|
-        #   nou_dom = Domeniu.create(nume: dom.nume, descriere: dom.descriere, user_id: dom.user_id, sesiune_id: @sesiune.id)
-        #   Tema.where(sesiune_id: @ultima_sesiune.id).where(domeniu_id: dom.id).each do |tema|
-        #     Tema.create(nume: tema.nume, descriere: tema.descriere, domeniu_id: nou_dom.id, este_libera: tema.este_libera, user_id: tema.user_id, sesiune_id: @sesiune.id)
-        #   end
-        # end
-
-        # sterg tabelul Licenta
-        # Licenta.all.delete_all
+        # duplic temele si domeniile din ultima sesiune si le adaug in baza de date cu sesiune_id asta pe care tocmai am creat-o
+        @ultima_sesiune = Sesiune.where(este_deschisa: false).last
+        Domeniu.where(sesiune_id: @ultima_sesiune.id).each do |dom|
+          nou_dom = Domeniu.create(nume: dom.nume, descriere: dom.descriere, user_id: dom.user_id, sesiune_id: @sesiune.id)
+          Tema.where(sesiune_id: @ultima_sesiune.id).where(domeniu_id: dom.id).each do |tema|
+            Tema.create(nume: tema.nume, descriere: tema.descriere, domeniu_id: nou_dom.id, este_libera: tema.este_libera, user_id: tema.user_id, sesiune_id: @sesiune.id)
+            # ce faci dc user_id-ul temei este un student care a terminat? si th i se desfiinteaza contul?
+          end
+        end
 
         format.html { redirect_to controlPanel_path, notice: 'Sesiune was successfully created.' }
         format.json { render action: 'show', status: :created, location: @sesiune }

@@ -27,7 +27,7 @@ class CapitolsController < ApplicationController
   # GET /capitols/new
   def new
     @capitol = Capitol.new
-    licenta_id = Licenta.where(user_id: @u.id)
+    licenta_id = Licenta.where(user_id: get_current_user.id)
     @capitole = Capitol.where(licenta_id: licenta_id)
   end
 

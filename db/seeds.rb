@@ -102,3 +102,17 @@ Tema.create(nume: "Fractal Compression of Medical Images", domeniu_id: 4, user_i
 Tema.create(nume: "Algoritmi genetici",       domeniu_id: 5, user_id: 3, sesiune_id: 1 ,este_libera: true, descriere: "In the field of artificial intelligence, a genetic algorithm (GA) is a search heuristic that mimics the process of natural selection. This heuristic (also sometimes called a metaheuristic) is routinely used to generate useful solutions to optimization and search problems.[1] Genetic algorithms belong to the larger class of evolutionary algorithms (EA), which generate solutions to optimization problems using techniques inspired by natural evolution, such as inheritance, mutation, selection, and crossover.")
 Tema.create(nume: "Evolutionary programming", domeniu_id: 5, user_id: 3, sesiune_id: 1 ,este_libera: true, descriere: "Evolutionary programming is one of the four major evolutionary algorithm paradigms. It is similar to genetic programming, but the structure of the program to be optimized is fixed, while its numerical parameters are allowed to evolve.")
 
+# DEADLINES a.k.a. anunturile adminului cu fazele licentei pe parcursul anului
+Deadline.create(nume: "Setarea domeniilor si a temelor", data_start: "1-10-2014", data_end: "1-11-2014", descriere: "Profesorii isi organizeaza domeniile si temele pentru anul curent.", public_tinta: "Profesor")
+Deadline.create(nume: "Alegerea si discutarea temelor", data_start: "2-11-2014", data_end: "1-12-2014", descriere: "Studentii considera teme pentru licenta.", public_tinta: "Student")
+Deadline.create(nume: "Raspunderea la cererile de licenta", data_start: "2-12-2014", data_end: "1-1-2015", descriere: "Profesorii trebuie sa raspunda la toate cererile cu Accept sau Reject - nu trebuie sa mai ramane niciun Pending. ", public_tinta: "Profesor")
+Deadline.create(nume: "Alegerea licentei", data_start: "2-1-2015", data_end: "1-2-2015", descriere: "Alegerea temei pentru licenta.", public_tinta: "Student")
+Deadline.create(nume: "Versiunea finala a licentei", data_start: "1-3-2015", data_end: "1-6-2015", descriere: "Urcarea versiunii finale de licenta.", public_tinta: "Student")
+Deadline.create(nume: "Referatul de licenta", data_start: "2-3-2015", data_end: "8-6-2015", descriere: "Profesorii trebuie sa completeze referatul de licenta dupa ce versiunea finala a fost urcata.", public_tinta: "Profesor")
+
+
+
+
+
+
+

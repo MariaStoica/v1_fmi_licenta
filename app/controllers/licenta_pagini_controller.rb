@@ -73,20 +73,24 @@ class LicentaPaginiController < ApplicationController
   
   def check_if_owner_or_prof_of_owner
     # dc prof - vezi sa fie cel coordonator (vezi in alegeri si statusuri)
-    if(params[:student_id])
-        licenta = Licenta.where(user_id: params[:student_id]).first
-        temaid = AlegeriUserTema.where(user_id: params[:student_id]).first.tema_id
-        tema = Tema.find(temaid)
-        if get_current_user.id != Domeniu.find(tema.domeniu_id).user_id
-            redirect_to(root_path, :notice =>"Nu ai voie aici.")
-        end
-    # dc student - vezi sa fie cel mentionat in licenta
+    if get_current_user #or get_current_user.rol == "Student" or get_current_user.rol == "Profesor"
+      if(params[:student_id])
+          licenta = Licenta.where(user_id: params[:student_id]).first
+          temaid = AlegeriUserTema.where(user_id: params[:student_id]).first.tema_id
+          tema = Tema.find(temaid)
+          if get_current_user.id != Domeniu.find(tema.domeniu_id).user_id
+              redirect_to(root_path, :notice =>"Nu ai voie pe pagina de licenta.")
+          end
+      # dc student - vezi sa fie cel mentionat in licenta
+      else
+          licenta = Licenta.where(user_id: get_current_user.id).first
+          if licenta.user_id != get_current_user.id
+              redirect_to(root_path, :notice =>"Nu ai voie pe pagina de licenta.")
+          end
+      end
     else
-        licenta = Licenta.where(user_id: get_current_user.id).first
-        if licenta.user_id != get_current_user.id
-            redirect_to(root_path, :notice =>"Nu ai voie aici.")
-        end
-    end
+      redirect_to root_path
+    end # end of if get_current_user
   end
   
 end

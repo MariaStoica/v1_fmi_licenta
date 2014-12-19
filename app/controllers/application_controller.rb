@@ -20,6 +20,29 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def checkIfAdmin
+    if !get_current_user or get_current_user.rol != "Administrator"
+      flash[:notice] = "Nu esti admin."
+      redirect_to root_path
+    end
+  end
+
+  def checkIfProf
+    if !get_current_user or get_current_user.rol != "Profesor"
+      flash[:notice] = "Nu esti profesor."
+      redirect_to root_path
+    end
+  end
+
+  def checkIfStudent
+    if !get_current_user or get_current_user.rol != "Student"
+      flash[:notice] = "Nu esti student."
+      redirect_to root_path
+    end
+  end
+
+
+
   def get_current_user
       @current_user = nil
     if session[:user_id]

@@ -1,6 +1,8 @@
 class BrowsePaginiController < ApplicationController
   
-  before_filter :login_required, except: :neutralPage
+  before_filter :login_required, except: :neutralPage#, :temeleMele, :studentiiMei, :alegerileMele]
+  before_filter :checkIfProf, only: [:temeleMele, :studentiiMei]
+  before_filter :checkIfStudent, only: :alegerileMele
 
   def neutralPage
     if get_current_user
@@ -22,7 +24,7 @@ class BrowsePaginiController < ApplicationController
 
       # dc studentul are deja licenta, nu mai are ce cauta pe pg de browse - este dus direct la licenta sa
       if get_current_user
-        my_licentas = Licenta.where(user_id: get_current_user.id)
+        my_licentas = Licenta.where(user_id: get_current_user.id, sesiune_id: get_current_sesiune.id)
         if my_licentas
           my_licentas.each do |lic|
             if lic.renuntat != true
@@ -164,7 +166,7 @@ class BrowsePaginiController < ApplicationController
     @nrStudentiCuLicenta = 0
     @domenii.each do |domeniu|
         domeniu.temas.each do |tema|
-            Licenta.where(tema_id: tema.id, renuntat: false).each do |licenta|
+            Licenta.where(tema_id: tema.id, sesiune_id: get_current_sesiune.id, renuntat: false).each do |licenta|
                 @nrStudentiCuLicenta = @nrStudentiCuLicenta + 1
             end
         end
@@ -199,12 +201,12 @@ class BrowsePaginiController < ApplicationController
       # renuntat == false inseamna ca a fost renuntata si a luat-o inapoi proprietarul
       
       # caut tema asta 
-      previousLicenta = Licenta.find_by_tema_id(params[:temaaleasa_id]) # nu ai nevoie de first pt ca e find si tema_id in model e sa fie unic
+      previousLicenta = Licenta.where(sesiune_id: get_current_sesiune.id).find_by_tema_id(params[:temaaleasa_id]) # nu ai nevoie de first pt ca e find si tema_id in model e sa fie unic
       licenta = previousLicenta
 
       # dc nu e - o iau eu pt prima data
       if previousLicenta == nil
-        licenta = Licenta.create(user_id: get_current_user.id , tema_id: params[:temaaleasa_id], renuntat: false)
+        licenta = Licenta.create(user_id: get_current_user.id , tema_id: params[:temaaleasa_id], renuntat: false, sesiune_id: get_current_sesiune.id)
         # creez capitolele de inceput 
         Capitol.create(nume: "Introducere", licenta_id: licenta.id, numar: 1)
         Capitol.create(nume: "Concluzii", licenta_id: licenta.id, numar: 2)
@@ -236,7 +238,7 @@ class BrowsePaginiController < ApplicationController
             cap.destroy
           end
           previousLicenta.destroy
-          licenta = Licenta.create(user_id: get_current_user.id , tema_id: params[:temaaleasa_id], renuntat: false)
+          licenta = Licenta.create(user_id: get_current_user.id , tema_id: params[:temaaleasa_id], renuntat: false, sesiune_id: get_current_sesiune.id)
           # creez capitolele de inceput
           Capitol.create(nume: "Introducere", licenta_id: licenta.id, numar: 1)
           Capitol.create(nume: "Concluzii", licenta_id: licenta.id, numar: 2)

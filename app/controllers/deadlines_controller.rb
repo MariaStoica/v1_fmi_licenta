@@ -63,15 +63,6 @@ class DeadlinesController < ApplicationController
   end
 
 
-  protected
-
-    def checkIfAdmin
-      if !get_current_user or !get_current_user.rol == "Administrator"
-        redirect_to root_path
-      end
-    end
-
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_deadline

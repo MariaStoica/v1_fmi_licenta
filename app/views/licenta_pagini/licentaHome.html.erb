@@ -127,8 +127,9 @@
 			</table>
 
 			<br/>
-			<%= link_to "Submit licenta finala", submitLicentaFinala_path(licenta_id: @licenta.id), class: "btn btn-success" %>
-
+			<% if get_current_user.rol == "Student" %>
+				<%= link_to "Submit licenta finala", submitLicentaFinala_path(licenta_id: @licenta.id), class: "btn btn-success" %>
+			<% end %>
 			<!-- <end%> -->
 		</div>
 
