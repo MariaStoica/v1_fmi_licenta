@@ -184,8 +184,9 @@ Cand este **deschisa** (in timpul anului) se intampla mai multe lucruri (care su
 
 ![alt text](https://github.com/RoR-FMI/licenta/blob/master/screenshots/admin_controlPanelSesiuneActiva.png "Pagina ControlPanel cand sesiunea este deschisa.")
 
-Cand Administratorul opreste sesiunea, get_current_sesiune devine este_deschisa: false si i se adauga data_end = Date.today. 
-Cand Administratorul deschide o sesiune noua, se creaza un rand nou in tabelul Sesiunes, toate domeniile si temele din sesiunea precedenta se duplica cu sesiune_id: get_current_sesiune.id (codul se afla in sesiunes_controller#create).
+Cand Administratorul opreste sesiunea, *get_current_sesiune* devine *este_deschisa: false* si i se adauga *data_end = Date.today*.
+
+Cand Administratorul deschide o sesiune noua, se creaza un rand nou in tabelul Sesiunes, toate domeniile si temele din sesiunea precedenta se duplica cu *sesiune_id: get_current_sesiune.id* (codul se afla in sesiunes_controller#create).
 
 
 #### 3.3. Autentificarea
