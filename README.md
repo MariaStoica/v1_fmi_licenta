@@ -267,6 +267,7 @@ au fost generate de catre scaffold cand am creat modelele. Nu contin nimic in pl
 ### 5. Ce-a mai ramas de implementat (vezi si issues)
 
 * generarea referatului de licenta
+* completarea altor acte necesare la secretariat care tin de licenta
 
 ------
 
