@@ -62,7 +62,7 @@ User.create(email: "maria@student.com",
 User.create(email: "stef@student.com",   
 			nume: "Lache", prenume: "Stefan", 
 			rol: "Student", 
-			grupa: 301, grad: nil, 
+			grupa: 314, grad: nil, 
 			este_eligibil_licenta: true, 
 			token: nil, 
 			specializare: "Matematica", 
@@ -71,7 +71,7 @@ User.create(email: "stef@student.com",
 User.create(email: "marius@student.com", 
 			nume: "Melemciuc", prenume: "Marius", 
 			rol: "Student", 
-			grupa: 132, grad: nil, 
+			grupa: 224, grad: nil, 
 			este_eligibil_licenta: false, 
 			token: nil, 
 			specializare: "Informatica", 
@@ -101,6 +101,12 @@ Tema.create(nume: "Fractal Compression of Medical Images", domeniu_id: 4, user_i
 # Temele de info
 Tema.create(nume: "Algoritmi genetici",       domeniu_id: 5, user_id: 3, sesiune_id: 1 ,este_libera: true, descriere: "In the field of artificial intelligence, a genetic algorithm (GA) is a search heuristic that mimics the process of natural selection. This heuristic (also sometimes called a metaheuristic) is routinely used to generate useful solutions to optimization and search problems.[1] Genetic algorithms belong to the larger class of evolutionary algorithms (EA), which generate solutions to optimization problems using techniques inspired by natural evolution, such as inheritance, mutation, selection, and crossover.")
 Tema.create(nume: "Evolutionary programming", domeniu_id: 5, user_id: 3, sesiune_id: 1 ,este_libera: true, descriere: "Evolutionary programming is one of the four major evolutionary algorithm paradigms. It is similar to genetic programming, but the structure of the program to be optimized is fixed, while its numerical parameters are allowed to evolve.")
+
+# ALEGERI_USER_TEMA
+
+AlegeriUserTema.create(tema_id:1 , user_id:6 , sesiune_id: 1, status_profesor: "Accepted", status_student: "Pending")
+AlegeriUserTema.create(tema_id:3 , user_id:6 , sesiune_id: 1, status_profesor: "Accepted", status_student: "Pending")
+AlegeriUserTema.create(tema_id:5 , user_id:5 , sesiune_id: 1, status_profesor: "Accepted", status_student: "Pending")
 
 # DEADLINES a.k.a. anunturile adminului cu fazele licentei pe parcursul anului
 Deadline.create(nume: "Setarea domeniilor si a temelor", data_start: "1-10-2014", data_end: "1-11-2014", descriere: "Profesorii isi organizeaza domeniile si temele pentru anul curent.", public_tinta: "Profesor")

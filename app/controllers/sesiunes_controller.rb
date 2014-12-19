@@ -35,7 +35,7 @@ class SesiunesController < ApplicationController
         Domeniu.where(sesiune_id: @ultima_sesiune.id).each do |dom|
           nou_dom = Domeniu.create(nume: dom.nume, descriere: dom.descriere, user_id: dom.user_id, sesiune_id: @sesiune.id)
           Tema.where(sesiune_id: @ultima_sesiune.id).where(domeniu_id: dom.id).each do |tema|
-            Tema.create(nume: tema.nume, descriere: tema.descriere, domeniu_id: nou_dom.id, este_libera: tema.este_libera, user_id: tema.user_id, sesiune_id: @sesiune.id)
+            Tema.create(nume: tema.nume, descriere: tema.descriere, domeniu_id: nou_dom.id, este_libera: true, user_id: tema.user_id, sesiune_id: @sesiune.id)
             # ce faci dc user_id-ul temei este un student care a terminat? si th i se desfiinteaza contul?
           end
         end
