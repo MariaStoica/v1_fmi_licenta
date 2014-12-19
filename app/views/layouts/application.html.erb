@@ -62,7 +62,7 @@
 
 						<!-- pentru studenti -->
 						<% if get_current_user.rol == "Student" %>
-							<% if Licenta.where(user_id: get_current_user.id).where(renuntat: false).first %>
+							<% if Licenta.where(user_id: get_current_user.id, sesiune_id:get_current_sesiune.id).where(renuntat: false).first %>
 								<li><%= link_to "Acasă", licentaHome_path%></li>
 								<li><%= link_to "Fișierele mele", fisiers_path %></li>
 							<%else%>

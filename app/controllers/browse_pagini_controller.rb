@@ -17,10 +17,10 @@ class BrowsePaginiController < ApplicationController
       redirect_to controlPanel_path
     else
 
-      @current_sesiune = Sesiune.where("data_end is null").first
-      if @current_sesiune == nil
-        @current_sesiune = Sesiune.where("data_end is not null").last
-      end
+      # @current_sesiune = Sesiune.where("data_end is null").first
+      # if @current_sesiune == nil
+      #   @current_sesiune = Sesiune.where("data_end is not null").last
+      # end
 
       # dc studentul are deja licenta, nu mai are ce cauta pe pg de browse - este dus direct la licenta sa
       if get_current_user
@@ -141,25 +141,25 @@ class BrowsePaginiController < ApplicationController
 
 
   def temeleMele
-    @current_sesiune = Sesiune.where("data_end is null").first
-    if @current_sesiune == nil
-      @current_sesiune = Sesiune.where("data_end is not null").last
-    end
+    # @current_sesiune = Sesiune.where("data_end is null").first
+    # if @current_sesiune == nil
+    #   @current_sesiune = Sesiune.where("data_end is not null").last
+    # end
 
     # afiseaza toate domeniile profului curent, in view se afiseaza si toate temele domeniilor astora
-    @domenii = Domeniu.where(user_id: get_current_user.id).where(sesiune_id: @current_sesiune.id)
+    @domenii = Domeniu.where(user_id: get_current_user.id).where(sesiune_id: get_current_sesiune.id)
 
   end # end of temeleMele
 
 
   def studentiiMei
     #toate domeniile din sesiunea curenta ale userului curent logat
-    @domenii = Domeniu.where(sesiune_id: get_current_sesiune).where(user_id: get_current_user.id)
+    @domenii = Domeniu.where(sesiune_id: get_current_sesiune.id).where(user_id: get_current_user.id)
     
     @temeAleseDeStudenti = 0
     @domenii.each do |dom|
         dom.temas.each do |t|
-            @temeAleseDeStudenti = @temeAleseDeStudenti + AlegeriUserTema.where(sesiune_id: get_current_sesiune).where(tema_id: t.id).count
+            @temeAleseDeStudenti = @temeAleseDeStudenti + AlegeriUserTema.where(sesiune_id: get_current_sesiune.id).where(tema_id: t.id).count
         end
     end
     

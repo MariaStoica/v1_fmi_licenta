@@ -36,6 +36,7 @@
 <% end %>
 
 <!-- deadlines pt tipul celui logat -->
+<!-- separa if pt studenti si pt profi -->
 <% if deadlineuriSpecifice.count > 0 %>
 	<% if get_current_user.rol == "Student" %>
 		Anuntutri pentru studenti
@@ -116,16 +117,28 @@
 		<ul>
 			<% @useri_profesori.each do |prof| %>
 				<li style="padding-bottom:10px; padding-top:10px;"><input type="checkbox" /><label><span style="font-size:22px;font-family:Georgia, serif;color:black"><%= link_to prof.grad + " " + prof.nume + " " + prof.prenume, prof %><span/></label>
+
+				<% domenii = Domeniu.where(sesiune_id: get_current_sesiune.id).where(user_id: prof.id) 
+				 nrStudentiCuLicenta = 0
+			     domenii.each do |domeniu|
+			        domeniu.temas.each do |tema|
+			            Licenta.where(tema_id: tema.id, sesiune_id: get_current_sesiune.id, renuntat: false).each do |licenta|
+			                nrStudentiCuLicenta = nrStudentiCuLicenta + 1
+			            end
+			        end
+			    end %>
+
+				<em> (<%= 25-nrStudentiCuLicenta %> locuri libere)</em>
 					
 					<!-- pt domenii -->
 					<ul>
 						
-						<% if Domeniu.where(user_id: prof.id).where(sesiune_id: @current_sesiune.id).count == 0 %>
+						<% if Domeniu.where(user_id: prof.id).where(sesiune_id: get_current_sesiune.id).count == 0 %>
 						
 							<li style="padding-top:10px;"><em>Niciun domeniu.</em></li>
 						
 						<% else %>
-							<% Domeniu.where(user_id: prof.id).where(sesiune_id: @current_sesiune.id).each do |dom| %>
+							<% Domeniu.where(user_id: prof.id).where(sesiune_id: get_current_sesiune.id).each do |dom| %>
 								<li style="padding-top:10px;"><input type="checkbox" /><label style="font-size:18px;font-family:Georgia, serif; color:darkgreen" for="dom"><%= link_to dom.nume, dom %></label>
 								
 									<br/>
@@ -134,7 +147,7 @@
 									
 									<% if get_current_user.rol == "Student" %>
 										
-										<% teme_de_afisat = Tema.where(domeniu_id: dom.id).where(este_libera: true).where("user_id = ? or user_id = ?", "#{dom.user_id}", "#{get_current_user.id}") %>
+										<% teme_de_afisat = Tema.where(domeniu_id: dom.id, sesiune_id: get_current_sesiune.id).where(este_libera: true).where("user_id = ? or user_id = ?", "#{dom.user_id}", "#{get_current_user.id}") %>
 										
 										<% if teme_de_afisat.count == 0 %>
 										
@@ -162,7 +175,7 @@
 
 									<% else %>
 										
-										<% if Tema.where(domeniu_id: dom.id).where(sesiune_id: @current_sesiune.id).count == 0 %>
+										<% if Tema.where(domeniu_id: dom.id).where(sesiune_id: get_current_user.id).count == 0 %>
 										
 											<li style="padding-top:10px"><em>Nu sunt teme.</em></li>
 										
@@ -173,7 +186,7 @@
 													<th></th>
 												</thead>
 												<tbody>
-													<% Tema.where(domeniu_id: dom.id).where(sesiune_id: @current_sesiune.id).each do |tema| %>
+													<% Tema.where(domeniu_id: dom.id).where(sesiune_id: get_current_user.id).each do |tema| %>
 														<tr>
 															<td><%= link_to tema.nume, tema %></td>
 														</tr>

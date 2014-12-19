@@ -117,11 +117,7 @@ Capurile taiate cu rosu nu exista in schema (au fost adaugate de Ponyorm (http:/
 
 * **Licenta**
 
-> Reprezinta o combinatie de user si tema sa.
-
-* **LicentaSalvata**
-
-> Tabelul Licenta e folosit in sesiunea curenta pentru a tine cont de ce studenti renunta la licenta sau isi schimba tema. LicentaSalvata este o copie de backup a licentlor (a combinatiilor de user si tema) pentru cazul in care studentii revin la prima tema si sa nu isi piarda munca. Daca altcineva le ia tema la care au renuntat, atunci progresul lor se pierde din baza de date. (se sterg capitolele, fisierele si todo-urile)
+> Reprezinta o combinatie de user, tema sa si sesiunea(anul) in care a avut loc.
 
 * **Capitol**
 
@@ -177,7 +173,7 @@ Mai exact:
 
 ---
 
-Cand este **deschisa** (in timpul anului) se intampla mai multe lucruri (care sunt detaliate in punctele urmatoare):
+Cand este **deschisa** (in timpul anului) se intampla mai multe lucruri (care sunt detaliate in lista paginilor la 3.4.):
 - alerte, deadlineuri, reminders si hartii de completat
 - domeniile si temele propuse de profesori
 - discutarea temelor
@@ -188,6 +184,9 @@ Cand este **deschisa** (in timpul anului) se intampla mai multe lucruri (care su
 
 ![alt text](https://github.com/RoR-FMI/licenta/blob/master/screenshots/admin_controlPanelSesiuneActiva.png "Pagina ControlPanel cand sesiunea este deschisa.")
 
+Cand Administratorul opreste sesiunea, get_current_sesiune devine este_deschisa: false si i se adauga data_end = Date.today. 
+Cand Administratorul deschide o sesiune noua, se creaza un rand nou in tabelul Sesiunes, toate domeniile si temele din sesiunea precedenta se duplica cu sesiune_id: get_current_sesiune.id (codul se afla in sesiunes_controller#create).
+
 
 #### 3.3. Autentificarea
 
@@ -197,7 +196,7 @@ Pentru a accesa orice resursa a aplicatiei de licenta, userul trebuie sa fie log
 
 * **admin_pagini**_controller.rb
 
-> * **ControlPanel** - locul de unde administratorul porneste o sesiune noua sau o inchide pe cea curenta si gestioneaza alertele si deadline-urile
+> * **ControlPanel** - locul de unde administratorul porneste o sesiune noua sau o inchide pe cea curenta si gestioneaza alertele si deadline-urile.
 > * **UserSpecializari** - aici poate vedea toti userii (profesori si studenti) care s-au logat in aplicatia de licenta macar o data - poate vedea cati studenti are fiecare profesor si daca mai are cereri de licenta la care nu a raspuns
 >
 > ![alt text](https://github.com/RoR-FMI/licenta/blob/master/screenshots/admin_Users.png)
@@ -235,27 +234,7 @@ Pentru a accesa orice resursa a aplicatiei de licenta, userul trebuie sa fie log
 
 * **user_sessions**_controller.rb
 
-> Aici, in metoda *create*, verific daca userul logat exista deja in baza de date a aplicatiei de licenta. Daca da, ii updatez tokenul de autentificare. Daca nu, fac un GET ca sa iau toate datele despre user si il adaug in baza mea de date.
-
-Controllerele
-
-* *alegeri_user_temas*_controller.rb
-* *capitols*_controller.rb
-* *comentariu_capitols*_controller.rb
-* *comentariu_fisiers*_controller.rb
-* *comentariu_licentas*_controller.rb
-* *comentariu_temas*_controller.rb
-* *deadlines*_controller.rb
-* *domenius*_controller.rb
-* *fisiers*_controller.rb
-* *licenta_salvata*_controller.rb
-* *licentas*_controller.rb
-* *sesiune*_controller.rb
-* *temas*_controller.rb
-* *todos*_controller.rb
-* *users*_controller.rb
-
-au fost generate de catre scaffold cand am creat modelele. Nu contin nimic in plus fata de codul generat.
+> Aici, in metoda *create*, verific daca userul logat exista deja in baza de date a aplicatiei de licenta. Daca da, ii updatez toate atributele pentru a fi mereu in sync cu datele oficiale. Daca nu, fac un GET ca sa iau toate datele despre user si il adaug in baza mea de date.
 
 ------
 
