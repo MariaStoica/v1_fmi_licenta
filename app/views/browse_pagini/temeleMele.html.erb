@@ -1,12 +1,50 @@
+
+<!-- afiseaza mesaje -->
+<% if flash[:notice] %> 
+<!-- && flash[:notice] != "Alegerea selectata deja exista" && flash[:notice] != "Alegere salvata cu succes"%> -->
+	<div id="notice", style="color:green"><%= flash[:notice] %></div>
+	<hr>
+<% end %>
+
+<!-- deadlines -->
+<% deadlineuriPublice = Deadline.where(public_tinta: 'Toti').where("data_start <= ? and data_end >= ?", "#{Date.today}", "#{Date.today}") %>
+<% deadlineuriSpecifice = Deadline.where(public_tinta: get_current_user.rol).where("data_start <= ? and data_end >= ?", "#{Date.today}", "#{Date.today}") %>
+
+<!-- deadlines pt toata lumea -->
+<% if deadlineuriPublice.count > 0 %>
+	Anunturi de interes general
+	<br/>
+	<ul class="list-group">
+		<% deadlineuriPublice.each do |deadline| %>
+	  			<li class="list-group-item list-group-item-info"><%= deadline.nume + " - " + deadline.data_end.strftime("%d %B %Y") + " ( " + distance_of_time_in_words(Date.today, deadline.data_end) + " left )" %></li>
+		<% end %>
+	</ul>
+<% end %>
+
+<!-- deadlines pt tipul celui logat -->
+<% if deadlineuriSpecifice.count > 0 %>
+	<% if get_current_user.rol == "Student" %>
+		Anuntutri pentru studenti
+		<br/>
+	<% elsif get_current_user.rol == "Profesor" %>
+		Anuntutri pentru profesori
+		<br/>
+	<% end %>	
+	<ul class="list-group">
+		<% deadlineuriSpecifice.each do |deadline| %>
+		  		<li class="list-group-item list-group-item-success"><%= deadline.nume + " " + deadline.data_end.strftime("%d %B %Y") + " ( " + distance_of_time_in_words(Date.today, deadline.data_end) + " left )" %></li>
+		<% end %>
+	</ul>
+<% end %>
+
+<br/>
+
+
 <h1>Temele mele</h1>
 <br/><br/>
 
-<!-- afiseaza mesaje -->
-<!-- < if flash[:notice] && flash[:notice] != "Alegerea selectata deja exista" && flash[:notice] != "Alegere salvata cu succes"%> -->
-	<!-- <div id="notice", style="color:green"><= flash[:notice] %></div> -->
-	<!-- <hr> -->
-<!-- < end %> -->
 
+<!-- temele mele -->
 <table class="table table-striped table hover">
 	<thead>
 	<tr>
@@ -17,7 +55,7 @@
 	<tbody>
 
 		<!-- Domeniile -->
-		<% Domeniu.where(user_id: get_current_user.id).where(sesiune_id: @current_sesiune.id).each do |dom| %>
+		<% Domeniu.where(user_id: get_current_user.id).where(sesiune_id: get_current_sesiune.id).each do |dom| %>
 		
 			<tr>
 		
@@ -79,60 +117,3 @@
 	<% end %>
 <% end %>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- < if has_domenii == false %> -->
-	<!-- Nu aveți domenii sau teme. -->
-<!-- < end %> -->
-
-<!-- butoanele de adaugat -->
-<!-- <div style="text-align:left"> -->
-<!-- <= link_to "  Domeniu", domeniuNew_path, class: "glyphicon glyphicon-plus", style: "color:#7C7062; font-size:18px; font-family:Georgia, serif; font-style:italic" %> -->
-<!-- <br/> -->
-<!-- < if has_domenii %> -->
-	<!-- <= link_to "  Temă", temaNew_path, class: "glyphicon glyphicon-plus", style: "color:#428bca; font-size:18px; font-family:Georgia, serif;" %> -->
-<!-- < end %> -->
-<!-- </div> -->
-<!-- <br/><br/> -->
-
-<!-- afisez toate domeniile si temele profesorului -->
-<!-- < Domeniu.where(user_id: @current_user.id).each do |dom| %> -->
-	<!-- <div>	 -->
-		<!-- <span class="clickdomeniu glyphicon glyphicon-chevron-right"></span> -->
-		<!-- <b><= link_to dom.nume, dom, style: "color:#7C7062; font-size:18px; font-family:Georgia, serif; font-style:italic" %></b> -->
-		<!-- <= link_to "", edit_domeniu_path(dom), class:"glyphicon glyphicon-pencil", :style => 'font-size:13px; position:relative; left:10px'%>  -->
-					
-		<!-- < if Tema.where(domeniu_id: dom.id).count == 0 %> -->
-			<!-- <= link_to "", dom, class:"glyphicon glyphicon-trash", method: :delete, data: { confirm: 'Are you sure?' }, :style => 'color:red; font-size:13px; position:relative; left:15px' %> -->
-			<!-- <div class="expanddomeniu"> -->
-				<!-- <i>Aici nu sunt teme.</i> -->
-			<!-- </div> -->
-		<!-- < end %> -->
-		<!-- <div class="expanddomeniu"> -->
-			<!-- < Tema.where(domeniu_id: dom.id).each do |tema| %> -->
-				<!-- <div class="divtema"> -->
-					<!-- <= link_to tema.nume, tema, :style => 'color:#428bca; font-size:18px' %> -->
-					<!-- <= link_to "", edit_tema_path(tema), class: "glyphicon glyphicon-pencil", style: "font-size:13px; position:relative; left:10px"%>  -->
-					<!-- <= link_to "", tema, class: "glyphicon glyphicon-trash", method: :delete, data: { confirm: 'Sigur?' }, :style => 'color:red; font-size:13px; position:relative; left:15px' %> -->
-				<!-- </div> -->
-			<!-- < end %> -->
-		<!-- </div> -->
-	<!-- </div> -->
-<!-- < end %> -->
-
-<!-- TODO: vrei propuneri de la studenti? -->
-<!-- daca nu am domeniul pt studenti -->
-	<!-- adauga-l -->
-<!-- daca am domeniul pt studenti -->
-	<!-- daca nu mai are teme, sterge-l -->

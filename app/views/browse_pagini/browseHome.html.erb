@@ -1,5 +1,5 @@
 
-<!-- <= @current_user.nume + @current_user.prenume %> cu current_user nu merge - tre cu @current_user -->
+<!-- <= get_current_user.nume + get_current_user.prenume %> -->
 <!-- <= session[:user_id]['extra'] %> -->
 <!-- url: <= @url %> -->
 <!-- <br/> -->
@@ -11,16 +11,10 @@
 <!-- <br/> -->
 <!-- grupa: <= @info_curent['group_year'].to_s + @info_curent['group_series'].to_s + @info_curent['group_number'].to_s %> -->
 
-<!-- < ultima_sesiune = Sesiune.where.not(data_end: nil).last %> -->
-<!-- <=  ultima_sesiune.id.to_s + ". " + ultima_sesiune.data_start.to_s + " - " + ultima_sesiune.data_end.to_s %> -->
-
-<!-- < ultima_sesiune = get_current_sesiune %> -->
-<!-- <=  ultima_sesiune.id.to_s + ". " + ultima_sesiune.data_start.to_s + " - " + ultima_sesiune.data_end.to_s %> -->
-
 
 <!-- deadlines -->
-<% deadlineuriPublice = Deadline.where(public_tinta: 'Toti') %>
-<% deadlineuriSpecifice = Deadline.where(public_tinta: get_current_user.rol) %>
+<% deadlineuriPublice = Deadline.where(public_tinta: 'Toti').where("data_start <= ? and data_end >= ?", "#{Date.today}", "#{Date.today}") %>
+<% deadlineuriSpecifice = Deadline.where(public_tinta: get_current_user.rol).where("data_start <= ? and data_end >= ?", "#{Date.today}", "#{Date.today}") %>
 
 <!-- deadlines pt toata lumea -->
 <% if deadlineuriPublice.count > 0 %>
@@ -28,15 +22,12 @@
 	<br/>
 	<ul class="list-group">
 		<% deadlineuriPublice.each do |deadline| %>
-			<% if deadline.data_start < Date.today %> <!-- adica dc a inceput deja -->	
-	  			<li class="list-group-item list-group-item-info"><%= deadline.nume + " " + deadline.data_end.strftime("%d %B %Y") + " ( " + distance_of_time_in_words(Date.today, deadline.data_end) + " left )" %></li>
-			<% end %>
+	  			<li class="list-group-item list-group-item-info"><%= deadline.nume + " - " + deadline.data_end.strftime("%d %B %Y") + " ( " + distance_of_time_in_words(Date.today, deadline.data_end) + " left )" %></li>
 		<% end %>
 	</ul>
 <% end %>
 
 <!-- deadlines pt tipul celui logat -->
-<!-- separa if pt studenti si pt profi -->
 <% if deadlineuriSpecifice.count > 0 %>
 	<% if get_current_user.rol == "Student" %>
 		Anuntutri pentru studenti
@@ -47,14 +38,14 @@
 	<% end %>	
 	<ul class="list-group">
 		<% deadlineuriSpecifice.each do |deadline| %>
-			<% if deadline.data_start < Date.today %>	
 		  		<li class="list-group-item list-group-item-success"><%= deadline.nume + " " + deadline.data_end.strftime("%d %B %Y") + " ( " + distance_of_time_in_words(Date.today, deadline.data_end) + " left )" %></li>
-		  	<% end %>
 		<% end %>
 	</ul>
 <% end %>
 
 <br/>
+
+
 
 <!-- < if flash[:notice] && flash[:notice] != "Alegerea selectata deja exista" && flash[:notice] != "Alegere salvata cu succes"%> -->
 <% if flash[:notice] %>
@@ -211,48 +202,3 @@
 	<br/><br/>
 
 <% end %>
-
-
-<!-- TODO: ia din controller @specializare_result @profi_results @domenii_result @teme_results si afiseaza ca sa fie cf searchului. dc nu e search, da-le pe toate -->
-
-<!-- < if params[:search] and params[:search] != "" %> -->
-	<!-- <= @results.count %> teme gasite. -->
-		<!-- < @results.each do |r| %> -->
-			<!-- <li><= link_to r.nume, r %></li> -->
-		<!-- < end %> -->
-<!-- < else %> -->
-	<!-- < if @useri_profesori.count == 0 %> -->
-		<!-- <p> Nu sunt profesori eligibili pentru licență. </p> -->
-	<!-- < end %> -->
-	<!-- < @useri_profesori.each do |prof| %> -->
-		<!-- div-ul profului -->
-		<!-- <div> -->
-			<!-- <div style="text-align: left"> -->
-				<!-- <b><= link_to prof.grad + " " + prof.nume + " " + prof.prenume, prof, style: "color:black; font-size:20px; font-family:Georgia, serif;" %></b> -->
-			<!-- </div> -->
-			<!-- < Domeniu.where(user_id: prof.id).each do |dom| %> -->
-				<!-- <div> class="divdomeniu"> -->
-					<!-- <span class="clickdomeniu glyphicon glyphicon-chevron-right"></span> -->
-					<!-- <b><= link_to dom.nume, dom, style: "color:#7C7062; font-size:18px; font-family:Georgia, serif; font-style:italic" %></b> -->
-				
-					<!-- <div class="expanddomeniu"> -->
-						<!-- < if @current_user.rol == "Student" and dom.nume == "Alegerea studentului" %> -->
-							<!-- <div class="divtema"><= link_to "Propune temă", root_path, style: "color: darkgreen" %></div> -->
-						<!-- < end %> -->
-					
-						<!-- < if Tema.where(domeniu_id: dom.id).where(este_libera: true).count > 0 %> -->
-								<!-- < Tema.where(domeniu_id: dom.id).where(este_libera: true).each do |tema| %> -->
-									<!-- <div class="divtema"> <= link_to tema.nume, tema, style: "#428bca; font-family:Georgia, serif;"%></div> -->
-								<!-- <end%> -->
-						<!-- < else %> -->
-							<!-- <i>Acest domeniu nu are teme.</i> -->
-						<!-- < end %> de la teme -->
-					<!-- </div> -->
-				<!-- </div> -->
-			<!-- < end %> de la domenii -->
-
-		<!-- </div> end divprof -->
-		<!-- <br/><br/> -->
-	<!-- < end %> -->
-<!-- < end %> -->
-

@@ -84,22 +84,14 @@
 											<% elsif todo.este_gata == false %>
 												<li class="list-group-item list-group-item-danger"><%= link_to "TODO: " + todo.continut, edit_todo_path(todo, capitol_id: capitol.id), {:style => "color:red"} %></li>
 											<% end %>
-											<!-- < if todo.este_gata %> -->
-												<!-- <li style="color:green"><strike><= link_to "DONE: " + todo.continut, edit_todo_path(todo, capitol_id: capitol.id), {:style => "color:green"} %></strike></li> -->
-											<!-- <else%> -->
-												<!-- <li style="color:red"><= link_to "TODO: " + todo.continut, edit_todo_path(todo, capitol_id: capitol.id), {:style => "color:red"} %></li> -->
-											<!-- <end%> -->
+											
 										<%elsif get_current_user.rol == "Profesor" %>
 											<% if todo.este_gata == true %>
 												<li class="list-group-item list-group-item-success"><%= "DONE: " + todo.continut %></li>
 											<% elsif todo.este_gata == false %>
 												<li class="list-group-item list-group-item-danger"><%= "TODO: " + todo.continut %></li>
 											<% end %>
-											<!-- < if todo.este_gata %> -->
-												<!-- <li style="color:green"><= "DONE: " + todo.continut %></li> -->
-											<!-- <else%> -->
-												<!-- <li style="color:red"><= "TODO: " + todo.continut %></li> -->
-											<!-- <end%> -->
+											
 										<%end%>
 								<%end%>
 								</ul>
@@ -151,11 +143,7 @@
 						    <%= comentariu.continut %>
 						  </div>
 						</div>
-						<!-- <p style="color:green"> -->
-						<!-- <b><= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b>  -->
-						<!-- <em><= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em> -->
-						<!-- <br/> -->
-						<!-- <=comentariu.continut%></p> -->
+						
 					<% else %>
 						<div class="panel panel-info">
 						  <div class="panel-heading">
@@ -166,11 +154,7 @@
 						    <%= comentariu.continut %>
 						  </div>
 						</div>
-						<!-- <p style="color:blue"> -->
-						<!-- <b><= User.find(comentariu.user_id).nume + " " + User.find(comentariu.user_id).prenume%> : </b> -->
-						<!-- <em><= comentariu.created_at.strftime("%d %b. %Y,  %H:%M") %></em> -->
-						<!-- <br/> -->
-						<!-- <=comentariu.continut%></p> -->
+						
 					<% end %>
 				<%end%>
 			<%end%>

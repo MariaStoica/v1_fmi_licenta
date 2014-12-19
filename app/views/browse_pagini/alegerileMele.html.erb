@@ -1,13 +1,49 @@
+
+<!-- notificari -->
+<% if flash[:notice] %>
+   <hr>
+   <div id="notice"><%= flash[:notice] %></div>
+   <hr>
+<% end %>
+
+<!-- deadlines -->
+<% deadlineuriPublice = Deadline.where(public_tinta: 'Toti').where("data_start <= ? and data_end >= ?", "#{Date.today}", "#{Date.today}") %>
+<% deadlineuriSpecifice = Deadline.where(public_tinta: get_current_user.rol).where("data_start <= ? and data_end >= ?", "#{Date.today}", "#{Date.today}") %>
+
+<!-- deadlines pt toata lumea -->
+<% if deadlineuriPublice.count > 0 %>
+	Anunturi de interes general
+	<br/>
+	<ul class="list-group">
+		<% deadlineuriPublice.each do |deadline| %>
+	  			<li class="list-group-item list-group-item-info"><%= deadline.nume + " - " + deadline.data_end.strftime("%d %B %Y") + " ( " + distance_of_time_in_words(Date.today, deadline.data_end) + " left )" %></li>
+		<% end %>
+	</ul>
+<% end %>
+
+<!-- deadlines pt tipul celui logat -->
+<% if deadlineuriSpecifice.count > 0 %>
+	<% if get_current_user.rol == "Student" %>
+		Anuntutri pentru studenti
+		<br/>
+	<% elsif get_current_user.rol == "Profesor" %>
+		Anuntutri pentru profesori
+		<br/>
+	<% end %>	
+	<ul class="list-group">
+		<% deadlineuriSpecifice.each do |deadline| %>
+		  		<li class="list-group-item list-group-item-success"><%= deadline.nume + " " + deadline.data_end.strftime("%d %B %Y") + " ( " + distance_of_time_in_words(Date.today, deadline.data_end) + " left )" %></li>
+		<% end %>
+	</ul>
+<% end %>
+
+<br/>
+
+
 <h1>Alegerile mele</h1>
 <br/>
 
-<!-- notificari -->
-<!-- < if flash[:notice] %> -->
-   <!-- <hr> -->
-   <!-- <div id="notice"><= flash[:notice] %></div> -->
-   <!-- <hr> -->
-<!-- < end %> -->
-
+<!-- alegerile mele -->
 <% if @alegeri.count > 0 %>
 	
 <table class="table table-striped table hover">

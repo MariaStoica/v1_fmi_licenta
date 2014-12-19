@@ -4,6 +4,7 @@ class Fisier < ActiveRecord::Base
 
 validates :name, presence: true
 validates :capitol_id, presence: true
+# validates :path, presence: true
 
 
     def self.save(fisier,upload)

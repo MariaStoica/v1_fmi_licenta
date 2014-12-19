@@ -1,12 +1,15 @@
 class CapitolsController < ApplicationController
-  before_filter :login_required
+  before_filter :check_if_owner_or_prof_of_owner, only: :show
+  before_filter :check_if_student, only: [:new, :create]
+  before_filter :check_if_owner ,only: [:edit, :update, :destroy]
+
   before_action :set_capitol, only: [:show, :edit, :update, :destroy]
 
   # GET /capitols
   # GET /capitols.json
-  def index
-    @capitols = Capitol.all
-  end
+  # def index
+    # @capitols = Capitol.all
+  # end
 
   # GET /capitols/1
   # GET /capitols/1.json
@@ -26,9 +29,9 @@ class CapitolsController < ApplicationController
 
   # GET /capitols/new
   def new
-    @capitol = Capitol.new
-    licenta_id = Licenta.where(user_id: get_current_user.id)
-    @capitole = Capitol.where(licenta_id: licenta_id)
+      @capitol = Capitol.new
+      licenta_id = Licenta.where(user_id: get_current_user.id)
+      @capitole = Capitol.where(licenta_id: licenta_id)
   end
 
   # GET /capitols/1/edit
@@ -40,24 +43,28 @@ class CapitolsController < ApplicationController
   def create
     @capitol = Capitol.new(capitol_params)
 
-    respond_to do |format|
-      if @capitol.save
+    if Licenta.find(@capitol.licenta_id).user_id == get_current_user.id
+      respond_to do |format|
+        if @capitol.save
 
-        # actualizeaza numerele la restul capitolelor de dupa asta nou
-        if Capitol.where("numar = ?", "#{@capitol.numar}").count > 1
-          @capitole = Capitol.where("numar >= ? and id != ?", "#{@capitol.numar}", "#{@capitol.id}")
-          @capitole.each do |cap|
-            numar = cap.numar + 1
-            cap.update_attributes(numar: numar)
+          # actualizeaza numerele la restul capitolelor de dupa asta nou
+          if Capitol.where("numar = ?", "#{@capitol.numar}").count > 1
+            @capitole = Capitol.where("numar >= ? and id != ?", "#{@capitol.numar}", "#{@capitol.id}")
+            @capitole.each do |cap|
+              numar = cap.numar + 1
+              cap.update_attributes(numar: numar)
+            end
           end
-        end
 
-        format.html { redirect_to root_path, notice: 'Capitol was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @capitol }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @capitol.errors, status: :unprocessable_entity }
+          format.html { redirect_to root_path, notice: 'Capitol was successfully created.' }
+          format.json { render action: 'show', status: :created, location: @capitol }
+        else
+          format.html { render action: 'new' }
+          format.json { render json: @capitol.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      redirect_to root_path
     end
   end
 
@@ -99,6 +106,70 @@ class CapitolsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  protected
+
+  def check_if_owner_or_prof_of_owner
+    @capitol = Capitol.find(params[:id])
+    if get_current_user
+      licenta_capitol_id = @capitol.licenta_id
+      # licenta studentului logat trebuie sa fie aceeasi cu licenta capitolului pe care il acceseaza 
+      if get_current_user.rol == "Student"
+        licenta = Licenta.where(user_id: get_current_user.id, sesiune_id: get_current_sesiune.id).first
+        if licenta
+          if licenta.id != licenta_capitol_id
+            redirect_to root_path
+          end
+        else
+          redirect_to root_path
+        end
+      # id-ul profului logat trebuie sa fie acelasi cu id-ul posesorului domeniului temei din licenta de care apartine capitolul :))
+      elsif get_current_user.rol == "Profesor"
+        tema_id = Licenta.find(licenta_capitol_id).tema_id
+        domeniu_id = Tema.find(tema_id).domeniu_id
+        prof_id = Domeniu.find(domeniu_id).user_id
+        if prof_id != get_current_user.id
+          redirect_to root_path
+        end
+      else
+        redirect_to root_path
+      end # end of if rol
+    else
+      redirect_to root_path
+    end # end of if current user
+  end
+
+  def check_if_student
+    if get_current_user
+      if get_current_user.rol != "Student"
+        redirect_to root_path
+      end
+    end
+  end
+
+  def check_if_owner
+    @capitol = Capitol.find(params[:id])
+    if get_current_user
+      licenta_capitol_id = @capitol.licenta_id
+      # licenta studentului logat trebuie sa fie aceeasi cu licenta capitolului pe care il acceseaza 
+      if get_current_user.rol == "Student"
+        licenta = Licenta.where(user_id: get_current_user.id, sesiune_id: get_current_sesiune.id).first
+        if licenta
+          if licenta.id != licenta_capitol_id
+            redirect_to root_path
+          end
+        else
+          redirect_to root_path
+        end
+      else
+        redirect_to root_path
+      end # end of if rol
+    else
+      redirect_to root_path
+    end # end of if current user
+  end
+
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

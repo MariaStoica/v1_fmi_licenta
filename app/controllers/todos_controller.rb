@@ -1,5 +1,6 @@
 class TodosController < ApplicationController
-  before_filter :login_required
+  before_filter :check_if_owner, only: [:show, :edit, :update, :destroy]
+  before_filter :check_if_student, only: [:index, :new, :create]
   before_action :set_todo, only: [:show, :edit, :update, :destroy]
 
   # GET /todos
@@ -27,6 +28,7 @@ class TodosController < ApplicationController
   def create
     @todo = Todo.new(todo_params)
 
+    if get_current_user.rol == "Student" and Licenta.find(Capitol.find(@todo.capitol_id).licenta_id).user_id == get_current_user.id
     respond_to do |format|
       if @todo.save
         format.html { redirect_to root_path, notice: 'Todo was successfully created.' }
@@ -35,6 +37,7 @@ class TodosController < ApplicationController
         format.html { render action: 'new' }
         format.json { render json: @todo.errors, status: :unprocessable_entity }
       end
+    end
     end
   end
 
@@ -61,6 +64,40 @@ class TodosController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  protected
+
+  def check_if_owner
+    @capitol = Capitol.find(params[:id])
+    if get_current_user
+      licenta_capitol_id = @capitol.licenta_id
+      # licenta studentului logat trebuie sa fie aceeasi cu licenta capitolului pe care il acceseaza 
+      if get_current_user.rol == "Student"
+        licenta = Licenta.where(user_id: get_current_user.id, sesiune_id: get_current_sesiune.id).first
+        if licenta
+          if licenta.id != licenta_capitol_id
+            redirect_to root_path
+          end
+        else
+          redirect_to root_path
+        end
+      else
+        redirect_to root_path
+      end # end of if rol
+    else
+      redirect_to root_path
+    end # end of if current user
+  end
+
+  def check_if_student
+    if get_current_user
+      if get_current_user.rol != "Student"
+        redirect_to root_path
+      end
+    end
+  end
+
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

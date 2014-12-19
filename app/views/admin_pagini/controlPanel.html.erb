@@ -146,23 +146,6 @@
 <!-- start / stop sesiune -->
 <% if !get_current_sesiune %>
 
-	<!-- sesiune oprita -->
-	<!-- <b>Status: sesiune oprita</b> -->
-	<!-- <br/> -->
-	<!-- <em> Profii pot sa: <br/> -->
-		 <!-- 1. vizualizeze arhiva - prima pagina va deveni ultima intrare in arhiva <br/> -->
-		 <!-- 2. isi gestioneze temele si domeniile <br/>  -->
-		 <!-- 3. pot sa raspunda pe forum la temele lor <br/>  -->
-		 <!-- 4. pot sa isi vizualizeze studentii de la licenta in Studentii Mei - ceilalti doar in stare de raspuns dispar <br/>  -->
-		 <!-- 5. au acces la lucrarile de licenta ale studentilor din sesiunea trecuta pana in momentul in care se porneste urm sesiune  -->
-		 <!-- <br/><br/> -->
-		 <!-- Studentii pot sa: <br/>  -->
-		 <!-- 1. vizualizeze arhiva - prima pagina va deveni ultima intrare in arhiva <br/> -->
-		 <!-- 2. pot sa puna intrebari pe forum la temele lor <br/> -->
-		 <!-- 3. nu au acces la alegerile mele<br/> -->
-		 <!-- 4. pot sa isi vada pagina de licenta pana la startul urm sesiuni - din momentul in care referatul e emis nu mai pot modifica sau uploada todos sau fisiere. doar comentarii -->
-	<!-- </em> -->
-	<!-- <br/><br/> -->
 	<% ultimaSesiune = Sesiune.where(este_deschisa: false).last %>
 	<b>Data opririi ultimei sesiuni:</b> <%= ultimaSesiune.data_end.strftime("%A, %d %B %Y") %> 
 	<em>( <%= time_ago_in_words(ultimaSesiune.data_end) %> )</em>
@@ -172,25 +155,7 @@
 	<br/><br/>
 	
 
-<% else  %>
-
-	<!-- sesiune activa -->
-	<!-- <b>Status:</b> sesiune activa  -->
-	<!-- <br/> -->
-	<!-- <b>Sesiune pornita din data:</b>  -->
-	<!-- < if @azi > get_current_sesiune.data_start %> -->
-		<!-- <= get_current_sesiune.data_start.strftime("%A, %d %B %Y") + " ~ " + distance_of_time_in_words(@azi, get_current_sesiune.data_start) + " ago" %> -->
-	<!-- < else %> -->
-		<!-- <= get_current_sesiune.data_start.strftime("%A, %d %B %Y") + " ~ " + distance_of_time_in_words(@azi, get_current_sesiune.data_start) + " left" %> -->
-	<!-- < end %> -->
-	<!-- <br/> -->
-
-	<!-- <b>Sfarsit sesiune indicat:</b>  -->
-	<!-- < if @azi > get_current_sesiune.deadline %> -->
-		<!-- <= get_current_sesiune.deadline.strftime("%A, %d %B %Y") + " ~ " + distance_of_time_in_words(@azi, get_current_sesiune.deadline) + " ago"%> -->
-	<!-- < else %> -->
-		<!-- <= get_current_sesiune.deadline.strftime("%A, %d %B %Y") + " ~ " + distance_of_time_in_words(@azi, get_current_sesiune.deadline) + " left"%> -->
-	<!-- < end %> -->	
+<% else  %>	
 
 	<br/>
 	# se va da mail cu 1 sapt inainte sa expire, apoi cu 1 zi inainte, apoi cu 1h

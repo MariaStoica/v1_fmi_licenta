@@ -115,6 +115,7 @@ Deadline.create(nume: "Raspunderea la cererile de licenta", data_start: "2-12-20
 Deadline.create(nume: "Alegerea licentei", data_start: "2-1-2015", data_end: "1-2-2015", descriere: "Alegerea temei pentru licenta.", public_tinta: "Student")
 Deadline.create(nume: "Versiunea finala a licentei", data_start: "1-3-2015", data_end: "1-6-2015", descriere: "Urcarea versiunii finale de licenta.", public_tinta: "Student")
 Deadline.create(nume: "Referatul de licenta", data_start: "2-3-2015", data_end: "8-6-2015", descriere: "Profesorii trebuie sa completeze referatul de licenta dupa ce versiunea finala a fost urcata.", public_tinta: "Profesor")
+Deadline.create(nume: "test alert everybody", data_start: "1-10-2014", data_end: "8-6-2015", descriere: "desc", public_tinta: "Toti")
 
 
 

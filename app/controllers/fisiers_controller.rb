@@ -1,5 +1,7 @@
 class FisiersController < ApplicationController
-  before_filter :login_required
+  before_filter :check_if_owner_or_prof_of_owner, only: [:show, :edit, :update, :destroy, :download]
+  before_filter :check_if_student_or_prof, only: [:index, :new, :create]
+
   before_action :set_fisier, only: [:show, :edit, :update, :destroy, :download]              
                    
   # GET /fisiers
@@ -28,8 +30,6 @@ class FisiersController < ApplicationController
   # GET /fisiers/new
   def new
     @fisier = Fisier.new
-    # proful n-are voie sa bage fisiere in alte capitole in afara de bibliografie
-    # dc schimba parametrii de mana, o sa poata adauga numai in cap bibliografie al licentelor la care este prof coordonator - dc a iesit din raza o sa il trimit inapoi la root. oricum, nu e moral sa umblii cu parametrii de mana - asa ca macar nu se baga peste licenta unuia la care nu e prof coord - doar in licentele la care e si cap alea sa fie doar bibliografia.
     if get_current_user.rol == "Profesor"
         # domeniile profului
         @domenii = Domeniu.where(user_id: get_current_user.id)
@@ -50,6 +50,8 @@ class FisiersController < ApplicationController
   # POST /fisiers.json
   def create
     @fisier = Fisier.new(fisier_params)
+    # profesorii au voie sa adauge fisiere in bibliografie doar la licentele pe care le au in coordonare
+    if (get_current_user.rol == "Profesor" and Capitol.find(@fisier.capitol_id).nume == "Bibliografie" and Domeniu.find(Tema.find(Licenta.find(Capitol.find(@fisier.capitol_id).licenta_id).tema_id).domeniu_id).user_id == get_current_user.id) or ( get_current_user.rol == "Student" and Licenta.find(Capitol.find(@fisier.capitol_id).licenta_id).user_id == get_current_user.id)
     respond_to do |format|
       if @fisier.save
           #@fisier.update_attributes(path: "public/data/" + @fisier.name)
@@ -60,6 +62,7 @@ class FisiersController < ApplicationController
         format.html { render action: 'new' }
         format.json { render json: @fisier.errors, status: :unprocessable_entity }
       end
+    end
     end
   end
 
@@ -98,6 +101,51 @@ class FisiersController < ApplicationController
     #redirect_to licentaHome_path(:student_id => params[:student_id])
     redirect_to Fisier.find(params[:fisier])
   end
+
+
+  protected
+
+  def check_if_owner_or_prof_of_owner
+    @capitol = Capitol.find(params[:id])
+    if get_current_user
+      licenta_capitol_id = @capitol.licenta_id
+      # licenta studentului logat trebuie sa fie aceeasi cu licenta capitolului pe care il acceseaza 
+      if get_current_user.rol == "Student"
+        licenta = Licenta.where(user_id: get_current_user.id, sesiune_id: get_current_sesiune.id).first
+        if licenta
+          if licenta.id != licenta_capitol_id
+            redirect_to root_path
+          end
+        else
+          redirect_to root_path
+        end
+      # id-ul profului logat trebuie sa fie acelasi cu id-ul posesorului domeniului temei din licenta de care apartine capitolul :))
+      elsif get_current_user.rol == "Profesor"
+        tema_id = Licenta.find(licenta_capitol_id).tema_id
+        domeniu_id = Tema.find(tema_id).domeniu_id
+        prof_id = Domeniu.find(domeniu_id).user_id
+        if prof_id != get_current_user.id
+          redirect_to root_path
+        end
+      else
+        redirect_to root_path
+      end # end of if rol
+    else
+      redirect_to root_path
+    end # end of if current user
+  end
+
+  def check_if_student_or_prof
+    if get_current_user
+      if get_current_user.rol != "Student" and get_current_user.rol != "Profesor"
+        redirect_to root_path
+      end
+    end
+  end
+
+  
+
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
