@@ -205,6 +205,8 @@ Pentru a accesa orice resursa a aplicatiei de licenta, userul trebuie sa fie log
 * **browse_pagini**_controller.rb
 
 > * **BrowseHome** - cu toate domeniile si temele din sesiunea curenta atunci cand aplicatia e deschisa
+>
+> ![alt text](https://github.com/RoR-FMI/licenta/blob/master/screenshots/student_browseHome.png)
 > * **IntreabaPage** - pagina cu discutia legata de o tema. diferenta dintre temele afisate se face prin parametrii in link
 >
 > ![alt text](https://github.com/RoR-FMI/licenta/blob/master/screenshots/toti_discutiiTema.png) 
@@ -212,7 +214,11 @@ Pentru a accesa orice resursa a aplicatiei de licenta, userul trebuie sa fie log
 >
 > ![alt text](https://github.com/RoR-FMI/licenta/blob/master/screenshots/student_alegerileMele.png)
 > * **TemeleMele** - pagina pentru profesori in care isi gestioneaza domeniile, temele si acceptul pentru temele propuse de studenti
+>
+> ![alt text](https://github.com/RoR-FMI/licenta/blob/master/screenshots/prof_temeleMele.png)
 > * **StudentiiMei** - pagina pentru profesori in care vad studentii pe care ii au la licenta imrpeuna cu progresul fiecaruia al lucrarea sa
+>
+> ![alt text](https://github.com/RoR-FMI/licenta/blob/master/screenshots/prof_studentiiMei.png)
 > * **BrowseHomeArhiva** - pagina cu toate sesiunile anterioare
 > * **ListaFeatures** - o pagina in care am enumerat toate functionalitatile aplicatiei
 > * **ViewDataBase** - o pagina pe care am afisat toata baza de date - ca sa nu fie nevoie sa stai in consola rails pentru vizualizare. Dar trebuie sa intri in consola daca vrei sa faci vreo modificare. `$ rails c` (vezi cheat sheet la **5. The Data Base** pentru diverse comenzi)
@@ -220,6 +226,12 @@ Pentru a accesa orice resursa a aplicatiei de licenta, userul trebuie sa fie log
 * **licenta_pagini**_controller.rb
 
 > * **LicentaHome** - pagina de home a studentilor care si-au ales deja licenta. Aici sunt afisate: progresul total, lista de todo-uri pe capitol, alerte si alte deadline-uri de actualitate si discutia la nivel de licenta cu profesorul coordonator
+>
+> Cum vede studentul:
+> ![alt text](https://github.com/RoR-FMI/licenta/blob/master/screenshots/student_licentaPage.png)
+>
+> Cum vede profesorul:
+> ![alt text](https://github.com/RoR-FMI/licenta/blob/master/screenshots/prof_licentaPage.png)
 
 * **user_sessions**_controller.rb
 
